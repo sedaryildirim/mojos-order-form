@@ -10,7 +10,8 @@ const CONFIG = {
   suppliers: [
     { id: "makro", name: "Order Makro" },
     { id: "foodproject", name: "Order Food Project" },
-    { id: "drinks", name: "Order Drinks" }
+    { id: "drinks", name: "Order Drinks" },
+    { id: "winepro", name: "Order Wine Pro" }
   ],
   // CC'd on every order email (leave "" to disable)
   ccEmail: ""

@@ -1525,5 +1525,28 @@ const DATA = {
         ]
       }
     ]
+  },
+  "winepro": {
+    "categories": [
+      {
+        "name": "Wine",
+        "items": [
+          {
+            "id": "WICH-R067",
+            "name": "VINA TOLDOS Red 2025",
+            "unit": "Bottle",
+            "price": 239,
+            "par": 0
+          },
+          {
+            "id": "WICH-W039",
+            "name": "VINA TOLDOS White 2025",
+            "unit": "Bottle",
+            "price": 239,
+            "par": 0
+          }
+        ]
+      }
+    ]
   }
 };
