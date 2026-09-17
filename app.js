@@ -368,7 +368,7 @@ function renderReviewScreen() {
 
   if (n === 0) {
     list.innerHTML = `<div class="review-empty">No items selected yet.</div>`;
-    $("#sendBtn").disabled = true;
+    setSubmitButtonsDisabled(true);
     return;
   }
 
@@ -417,10 +417,15 @@ function renderReviewScreen() {
     gate.className = "review-gate-warning";
     gate.innerHTML = `&#9888; ${incomplete.length} of ${total} categories not marked complete: ${names}. Go back and mark them complete before sending.`;
     list.appendChild(gate);
-    $("#sendBtn").disabled = true;
+    setSubmitButtonsDisabled(true);
   } else {
-    $("#sendBtn").disabled = false;
+    setSubmitButtonsDisabled(false);
   }
+}
+
+function setSubmitButtonsDisabled(disabled) {
+  $("#emailOrderBtn").disabled = disabled;
+  $("#copyReviewBtn").disabled = disabled;
 }
 
 function buildOrderText() {
@@ -465,7 +470,19 @@ function supplierShortName() {
 
 let lastOrderText = "";
 
-function sendOrder() {
+function clearSentDraft() {
+  // clear this branch+supplier's draft now that it's been submitted
+  if (allDrafts[state.branch.id]) delete allDrafts[state.branch.id][state.supplier.id];
+  persistAllDrafts();
+}
+
+function showConfirmScreen(heading, body) {
+  $("#confirmHeading").textContent = heading;
+  $("#confirmBody").textContent = body;
+  showScreen("confirmScreen");
+}
+
+function emailOrder() {
   const subject = `${supplierShortName()} ${state.branch.name.toUpperCase()} ORDER ${formatDateDDMMYYYY(new Date())}`;
   const body = buildOrderText();
   lastOrderText = body;
@@ -473,11 +490,31 @@ function sendOrder() {
   if (CONFIG.ccEmail) mailto += `&cc=${encodeURIComponent(CONFIG.ccEmail)}`;
   window.location.href = mailto;
 
-  // clear this branch+supplier's draft now that it's been sent
-  if (allDrafts[state.branch.id]) delete allDrafts[state.branch.id][state.supplier.id];
-  persistAllDrafts();
+  clearSentDraft();
+  setTimeout(() => showConfirmScreen(
+    "Order sent",
+    "Your mail app has opened with the order pre-filled. Tap send there to confirm."
+  ), 400);
+}
 
-  setTimeout(() => showScreen("confirmScreen"), 400);
+function copyOrderFromReview() {
+  const body = buildOrderText();
+  lastOrderText = body;
+  copyTextToClipboard(body, () => {
+    clearSentDraft();
+    showConfirmScreen(
+      "Order copied",
+      "The order has been copied to your clipboard. Paste it into WhatsApp, Line, email, or wherever you send orders."
+    );
+  });
+}
+
+function copyTextToClipboard(text, onDone) {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(onDone).catch(() => fallbackCopy(text, onDone));
+  } else {
+    fallbackCopy(text, onDone);
+  }
 }
 
 function copyOrderText() {
@@ -491,12 +528,7 @@ function copyOrderText() {
       btn.classList.remove("copied");
     }, 2000);
   };
-
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(lastOrderText).then(done).catch(() => fallbackCopy(lastOrderText, done));
-  } else {
-    fallbackCopy(lastOrderText, done);
-  }
+  copyTextToClipboard(lastOrderText, done);
 }
 
 function fallbackCopy(text, onDone) {
@@ -573,7 +605,8 @@ function init() {
     renderReviewScreen();
     showScreen("reviewScreen");
   });
-  $("#sendBtn").addEventListener("click", sendOrder);
+  $("#emailOrderBtn").addEventListener("click", emailOrder);
+  $("#copyReviewBtn").addEventListener("click", copyOrderFromReview);
   $("#switchBranch").addEventListener("click", () => {
     armConfirm($("#switchBranch"), "Tap ⇆ again to change order sheet — your progress stays saved.", () => {
       renderSupplierScreen();

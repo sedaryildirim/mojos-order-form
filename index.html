@@ -61,9 +61,12 @@
     <div>Review Order</div>
   </header>
   <div class="review-list" id="reviewList"></div>
-  <div class="bottombar">
-    <button class="btn secondary" id="backToOrder">Edit</button>
-    <button class="btn block" id="sendBtn">Send Order</button>
+  <div class="bottombar stacked">
+    <button class="btn secondary block" id="backToOrder">Edit</button>
+    <div class="action-row">
+      <button class="btn" id="emailOrderBtn">&#9993; Email Order</button>
+      <button class="btn" id="copyReviewBtn">&#128203; Copy Order</button>
+    </div>
   </div>
 </section>
 
@@ -71,8 +74,8 @@
 <section id="confirmScreen" class="screen">
   <div class="confirm-screen">
     <div class="confirm-icon">&#10003;</div>
-    <h2>Order ready to send</h2>
-    <p>Your mail app has opened with the order pre-filled. Tap send there to confirm.</p>
+    <h2 id="confirmHeading">Order sent</h2>
+    <p id="confirmBody">Your mail app has opened with the order pre-filled. Tap send there to confirm.</p>
     <button class="btn secondary copy-btn" id="copyOrderBtn">&#128203; Copy Order Text</button>
     <button class="btn" id="newOrderBtn">Start New Order</button>
   </div>
