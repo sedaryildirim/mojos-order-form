@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Mojo's Ordering</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Branch select -->
+<section id="branchScreen" class="screen">
+  <div class="branch-screen">
+    <div class="logo">Mojo's Ordering</div>
+    <div class="tagline">Select your branch to start an order</div>
+    <div class="branch-grid" id="branchGrid"></div>
+  </div>
+</section>
+
+<!-- Order form -->
+<section id="orderScreen" class="screen">
+  <header class="topbar">
+    <div>
+      Order Sheet
+      <span class="branch-tag" id="branchTag"></span>
+    </div>
+    <button class="icon-btn" id="switchBranch" title="Switch branch">&#8646;</button>
+  </header>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="Search items...">
+  </div>
+  <div class="content" id="orderContent"></div>
+  <div class="bottombar">
+    <div class="count"><strong id="selectedCount">0</strong> items selected</div>
+    <button class="btn" id="reviewBtn" disabled>Review Order</button>
+  </div>
+</section>
+
+<!-- Review -->
+<section id="reviewScreen" class="screen">
+  <header class="topbar">
+    <div>Review Order</div>
+  </header>
+  <div class="review-list" id="reviewList"></div>
+  <div class="bottombar">
+    <button class="btn secondary" id="backToOrder">Edit</button>
+    <button class="btn block" id="sendBtn">Send Order</button>
+  </div>
+</section>
+
+<!-- Confirmation -->
+<section id="confirmScreen" class="screen">
+  <div class="confirm-screen">
+    <div class="confirm-icon">&#10003;</div>
+    <h2>Order ready to send</h2>
+    <p>Your mail app has opened with the order pre-filled. Tap send there to confirm.</p>
+    <button class="btn" id="newOrderBtn">Start New Order</button>
+  </div>
+</section>
+
+<script src="config.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
