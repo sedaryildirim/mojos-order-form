@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-17T09:15:00Z",
+  "title": "Design System: Mojo's Ordering",
+  "extensions": {
+    "colorMeta": {
+      "charred-terracotta": { "role": "primary", "displayName": "Charred Terracotta", "canonical": "#e0673f", "tonalRamp": ["#42180b", "#7b2d14", "#b0411c", "#dd582c", "#e58261", "#eda891", "#f5cec2", "#fbeee9"] },
+      "charred-terracotta-pressed": { "role": "primary-active", "displayName": "Charred Terracotta Pressed", "canonical": "#c2532f" },
+      "seasoned-cast-iron": { "role": "neutral-bg", "displayName": "Seasoned Cast Iron", "canonical": "#14130f", "tonalRamp": ["#2c2a21", "#524e3d", "#756f57", "#968f73", "#b0ab96", "#c8c5b6", "#e0ded6", "#f4f3f0"] },
+      "ash-surface": { "role": "neutral-surface", "displayName": "Ash Surface", "canonical": "#1e1c17", "tonalRamp": ["#2b2821", "#514b3e", "#736c59", "#958c74", "#afa897", "#c8c3b7", "#e0ddd7", "#f4f3f1"] },
+      "ash-surface-raised": { "role": "neutral-surface-raised", "displayName": "Ash Surface Raised", "canonical": "#262319", "tonalRamp": ["#2e2b1e", "#564f39", "#7b7151", "#9e926b", "#b6ad90", "#ccc6b2", "#e3dfd4", "#f5f4f0"] },
+      "warm-parchment": { "role": "neutral-text", "displayName": "Warm Parchment", "canonical": "#f2ede4", "tonalRamp": ["#342a19", "#604f2e", "#8a7042", "#af915a", "#c3ac83", "#d6c6a9", "#e8dfcf", "#f7f4ee"] },
+      "faded-soot": { "role": "neutral-text-muted", "displayName": "Faded Soot", "canonical": "#a49b8d", "tonalRamp": ["#2b2722", "#4f493f", "#71685b", "#928877", "#ada599", "#c6c1b8", "#dfdcd7", "#f4f3f1"] },
+      "hairline-ash": { "role": "neutral-border", "displayName": "Hairline Ash", "canonical": "#35312a" },
+      "verified-green": { "role": "success", "displayName": "Verified Green", "canonical": "#4caf68" },
+      "verified-green-bg": { "role": "success-bg", "displayName": "Verified Green Background", "canonical": "#1c2b1e" },
+      "alert-red": { "role": "danger", "displayName": "Alert Red", "canonical": "#d6564a" },
+      "caution-amber-bg": { "role": "warning-bg", "displayName": "Caution Amber Background", "canonical": "#3d2a14" },
+      "caution-amber-text": { "role": "warning-text", "displayName": "Caution Amber Text", "canonical": "#f2c98d" },
+      "caution-amber-border": { "role": "warning-border", "displayName": "Caution Amber Border", "canonical": "#6b4a1f" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "The 'Mojo's Ordering' wordmark on branch/supplier screens only." },
+      "headline": { "displayName": "Headline", "purpose": "Branch and supplier picker buttons." },
+      "title": { "displayName": "Title", "purpose": "Topbar current-screen title." },
+      "body": { "displayName": "Body", "purpose": "Item names, review line items, primary reading content." },
+      "label": { "displayName": "Label", "purpose": "Field labels (PAR/STOCK/TO ORDER) and category eyebrow text, always uppercase and faded-soot colored." }
+    },
+    "shadows": [],
+    "motion": [
+      { "name": "chevron-rotate", "value": "transform 0.15s ease", "purpose": "Category chevron flip on expand/collapse." },
+      { "name": "auto-scroll", "value": "scrollIntoView({behavior: 'smooth', block: 'start'})", "purpose": "Scrolls to the next category after marking one complete." }
+    ],
+    "breakpoints": []
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Main call-to-action: Review Order, Send Order, branch/supplier selection.",
+      "html": "<button class=\"ds-btn-primary\">Send Order</button>",
+      "css": ".ds-btn-primary { background: #e0673f; color: #241206; padding: 13px 20px; min-height: 44px; border: none; border-radius: 12px; font-size: 15px; font-weight: 600; } .ds-btn-primary:active { background: #c2532f; } .ds-btn-primary:disabled { opacity: 0.4; } .ds-btn-primary:focus-visible { outline: 2px solid #f2ede4; outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Lower-emphasis actions: Edit (review screen), Copy Order Text (confirm screen).",
+      "html": "<button class=\"ds-btn-secondary\">Edit</button>",
+      "css": ".ds-btn-secondary { background: transparent; color: #e0673f; border: 1px solid #e0673f; padding: 13px 20px; min-height: 44px; border-radius: 12px; font-size: 15px; font-weight: 600; } .ds-btn-secondary:focus-visible { outline: 2px solid #f2ede4; outline-offset: 2px; }"
+    },
+    {
+      "name": "Icon Button",
+      "kind": "button",
+      "refersTo": "icon-button",
+      "description": "Topbar actions (Clear All, Change Supplier). Danger variant gets a permanent red border; armed state fills solid with a two-tap confirm toast.",
+      "html": "<button class=\"ds-icon-btn ds-icon-btn-danger\" aria-label=\"Clear all\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><path d=\"M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6h16Z\"/></svg></button>",
+      "css": ".ds-icon-btn { width: 44px; height: 44px; background: #262319; border: 1px solid #35312a; border-radius: 12px; color: #f2ede4; display: flex; align-items: center; justify-content: center; } .ds-icon-btn-danger { border-color: #d6564a; color: #d6564a; } .ds-icon-btn.ds-armed { background: #d6564a; border-color: #d6564a; color: #1a0d0a; } .ds-icon-btn:focus-visible { outline: 2px solid #f2ede4; outline-offset: 2px; }"
+    },
+    {
+      "name": "Category Card",
+      "kind": "card",
+      "refersTo": "category-card",
+      "description": "Collapsible category accordion. Turns green (border + background) when marked complete.",
+      "html": "<div class=\"ds-category ds-category-completed\"><button class=\"ds-category-header\"><span>&#10003; Dairy &amp; Eggs <span class=\"ds-meta\">(17)</span></span><span>&#9662;</span></button></div>",
+      "css": ".ds-category { background: #1e1c17; border: 1px solid #35312a; border-radius: 14px; overflow: hidden; } .ds-category-completed { background: #1c2b1e; border-color: #4caf68; } .ds-category-header { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: transparent; border: none; color: #f2ede4; font-size: 16px; font-weight: 600; } .ds-meta { font-size: 12px; font-weight: 400; color: #a49b8d; margin-left: 8px; }"
+    },
+    {
+      "name": "Item Row Fields",
+      "kind": "input",
+      "refersTo": "stepper-button",
+      "description": "The Par / Stock / To-Order field group on each item row. Par is read-only and shows an em-dash with a dashed border when unset. Stock is a plain number input. To Order is a minus/number/plus stepper.",
+      "html": "<div class=\"ds-fields-row\"><div class=\"ds-field\"><label>Par</label><div class=\"ds-par-value ds-par-unset\">&mdash;</div></div><div class=\"ds-field\"><label>Stock</label><input class=\"ds-stock-input\" type=\"number\" value=\"0\"></div><div class=\"ds-field\"><label>To Order</label><div class=\"ds-stepper\"><button class=\"ds-stepper-btn\">&minus;</button><input class=\"ds-stepper-input\" type=\"number\" value=\"0\"><button class=\"ds-stepper-btn\">&plus;</button></div></div></div>",
+      "css": ".ds-fields-row { display: flex; gap: 8px; align-items: flex-end; } .ds-field label { display: block; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.03em; color: #a49b8d; margin-bottom: 4px; } .ds-par-value { background: #262319; border: 1px solid #35312a; border-radius: 10px; padding: 8px 6px; text-align: center; font-size: 14px; font-weight: 600; color: #a49b8d; } .ds-par-unset { color: #6b6255; font-style: italic; font-weight: 400; border-style: dashed; } .ds-stock-input { width: 100%; height: 44px; padding: 8px 6px; text-align: center; border-radius: 10px; border: 1px solid #35312a; background: #262319; color: #f2ede4; font-size: 14px; font-weight: 600; } .ds-stepper { display: flex; align-items: center; border: 1px solid #35312a; border-radius: 10px; overflow: hidden; background: #262319; } .ds-stepper-btn { width: 44px; height: 44px; border: none; background: transparent; font-size: 19px; font-weight: 700; color: #e0673f; } .ds-stepper-btn:active { background: rgba(224,103,63,0.15); } .ds-stepper-input { width: 100%; text-align: center; border: none; background: transparent; color: #f2ede4; font-size: 14px; font-weight: 700; }"
+    },
+    {
+      "name": "Status Banner",
+      "kind": "custom",
+      "refersTo": "caution-amber-bg",
+      "description": "Shared shape for the three status colors: Caution Amber (incomplete categories, MOQ shortfall, send-gate), Alert Red (destructive confirm toast), Verified Green (category complete, expressed via Category Card instead of a banner).",
+      "html": "<div class=\"ds-banner ds-banner-caution\">&#9888; 3 of 11 categories not marked complete.</div>",
+      "css": ".ds-banner { padding: 10px 16px; font-size: 13px; text-align: center; line-height: 1.4; } .ds-banner-caution { background: #3d2a14; color: #f2c98d; border-top: 1px solid #6b4a1f; } .ds-banner-danger { background: #d6564a; color: #1a0d0a; font-weight: 600; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Stock Room Ledger",
+    "overview": "This is a working ledger kept on a shelf in the storage room, not a showroom piece. Someone checks it while holding a case of tinned tomatoes, taps a number, moves on. Every design decision serves that moment: legible at a glance, forgiving of a rushed thumb, and honest about what's been done and what hasn't. It rejects the vocabulary of consumer apps and SaaS dashboards alike, no onboarding flourish, no gradient CTA, no hero metric tile, because neither is what a ledger looks like.\n\nThe palette is warm and dim rather than cold and dark: a near-black brown-black background (not pure #000), one committed accent used for action and status, and everything else a tonal step of the same warm neutral. Nothing here is decorative. If a color, weight, or spacing choice doesn't help someone read a number faster or trust that a tap registered, it's cut.",
+    "keyCharacteristics": [
+      "One warm accent, used deliberately for action and current-state, never as background decoration",
+      "Flat surfaces layered by tone, not by shadow",
+      "Numbers and labels carry the hierarchy; nothing competes with them for attention",
+      "Every interactive control sized for a thumb, not a cursor"
+    ],
+    "rules": [
+      { "name": "The One Accent Rule", "body": "Charred Terracotta appears only where something is actionable or is a live number (buttons, totals, active icons). It never fills a background or decorates a static element.", "section": "colors" },
+      { "name": "The Tonal Depth Rule", "body": "Elevation is expressed by stepping through Seasoned Cast Iron to Ash Surface to Ash Surface Raised, never by shadow.", "section": "colors" },
+      { "name": "The Flat Scale Rule", "body": "No fluid or clamp-based sizing anywhere. Staff view this at a fixed distance on a fixed device class; a heading that resizes with viewport width solves a problem this product doesn't have.", "section": "typography" },
+      { "name": "The No-Shadow Rule", "body": "If an element needs to look lifted, step it one tone lighter instead of adding a shadow. No exceptions, including the confirmation screen's success icon.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep Charred Terracotta reserved for actionable elements and live numbers per the One Accent Rule.",
+      "Do express elevation with the three-step tonal ladder, never with box-shadow.",
+      "Do size every tappable control to at least 44x44px.",
+      "Do use dark text (#241206) on Charred Terracotta buttons, not white; white-on-accent fails WCAG AA contrast (3.4:1 measured, 4.5:1 required).",
+      "Do distinguish an unset data value (dashed border, em-dash, italic, Faded Soot) from a real zero.",
+      "Do confirm destructive or disruptive actions with the in-app armed-tap-and-toast pattern, not the browser's native confirm()."
+    ],
+    "donts": [
+      "Don't add drop shadows, glows, or glassmorphism anywhere; this system is explicitly flat.",
+      "Don't build hero-metric tiles, gradient CTAs, or onboarding modals.",
+      "Don't style this like a consumer food-delivery app (Uber Eats/Grab); no browsing affordances, no delight-seeking micro-interactions, no imagery.",
+      "Don't use a second accent color; new statuses get a new named neutral-adjacent tone instead.",
+      "Don't use border-left or border-right as a colored accent stripe on any card, row, or banner.",
+      "Don't use white (#fff) or pure black (#000) anywhere."
+    ]
+  }
+}
