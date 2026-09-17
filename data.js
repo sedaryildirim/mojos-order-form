@@ -1525,6 +1525,19 @@ const DATA = {
             "par": null
           }
         ]
+      },
+      {
+        "name": "Bottles to Return",
+        "items": [
+          {
+            "id": "drk-bottles-return",
+            "name": "Bottles to Return",
+            "unit": "Case (24 Bottles)",
+            "price": 0,
+            "step": 24,
+            "noParStock": true
+          }
+        ]
       }
     ]
   },

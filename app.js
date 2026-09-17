@@ -223,11 +223,20 @@ function renderOrderScreen() {
       const key = itemKey(ci, ii);
       const parUnset = item.par === null || item.par === undefined;
       const par = parUnset ? 0 : item.par;
+      const step = item.step || 1;
       const row = document.createElement("div");
       row.className = "item-row";
       row.dataset.key = key;
 
-      row.innerHTML = `
+      row.innerHTML = item.noParStock ? `
+        <div class="item-name">${item.name}</div>
+        <div class="item-sub">${item.unit}${item.price ? " &middot; ฿" + item.price : ""}${step > 1 ? ` &middot; orders in multiples of ${step}` : ""}</div>
+        <div class="stepper stepper-wide">
+          <button type="button" class="dec" aria-label="Decrease ${item.name}">&minus;</button>
+          <input type="number" inputmode="numeric" min="0" step="${step}" class="order-input" value="${state.toOrder[key] || 0}" aria-label="${item.name}">
+          <button type="button" class="inc" aria-label="Increase ${item.name}">&plus;</button>
+        </div>
+      ` : `
         <div class="item-name">${item.name}</div>
         <div class="item-sub">${item.unit} &middot; ${item.price ? "฿" + item.price : ""}</div>
         <div class="fields-row">
@@ -262,6 +271,7 @@ function renderOrderScreen() {
 
       function setOrder(v) {
         v = Math.max(0, Math.floor(Number(v) || 0));
+        if (step > 1) v = Math.round(v / step) * step;
         orderInput.value = v;
         if (v > 0) { state.toOrder[key] = v; row.classList.add("has-qty"); }
         else { delete state.toOrder[key]; row.classList.remove("has-qty"); }
@@ -288,9 +298,9 @@ function renderOrderScreen() {
         setOrder(suggested);
       }
 
-      stockInput.addEventListener("change", () => setStock(stockInput.value));
-      dec.addEventListener("click", () => setOrderManual((Number(orderInput.value) || 0) - 1));
-      inc.addEventListener("click", () => setOrderManual((Number(orderInput.value) || 0) + 1));
+      if (stockInput) stockInput.addEventListener("change", () => setStock(stockInput.value));
+      dec.addEventListener("click", () => setOrderManual((Number(orderInput.value) || 0) - step));
+      inc.addEventListener("click", () => setOrderManual((Number(orderInput.value) || 0) + step));
       orderInput.addEventListener("change", () => setOrderManual(orderInput.value));
 
       if (state.toOrder[key] > 0) row.classList.add("has-qty");
