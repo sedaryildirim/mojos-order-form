@@ -307,6 +307,19 @@ function resetOrder() {
   showScreen("branchScreen");
 }
 
+function clearAll() {
+  const n = totalItemsSelected();
+  const msg = n > 0
+    ? `Clear all stock counts and order quantities for ${state.branch.name}? This cannot be undone.`
+    : "Clear all stock counts and category progress? This cannot be undone.";
+  if (!confirm(msg)) return;
+  state.stock = {};
+  state.toOrder = {};
+  state.completed = {};
+  saveDraft();
+  renderOrderScreen();
+}
+
 function init() {
   state.data = DATA;
 
@@ -325,6 +338,7 @@ function init() {
     }
   });
   $("#newOrderBtn").addEventListener("click", resetOrder);
+  $("#clearAllBtn").addEventListener("click", clearAll);
   $("#searchInput").addEventListener("input", e => filterItems(e.target.value));
 
   if (state.branch) {
