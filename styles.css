@@ -27,6 +27,9 @@ html, body {
 body {
   padding-bottom: calc(72px + var(--safe-bottom));
 }
+body.has-warning {
+  padding-bottom: calc(112px + var(--safe-bottom));
+}
 
 .screen { display: none; min-height: 100vh; }
 .screen.active { display: block; }
@@ -271,6 +274,22 @@ body {
 .category.completed .complete-btn {
   background: var(--success);
   color: #0d180f;
+}
+
+/* ---------- Incomplete categories warning ---------- */
+.incomplete-warning {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 64px;
+  z-index: 19;
+  background: #3d2a14;
+  color: #f2c98d;
+  border-top: 1px solid #6b4a1f;
+  padding: 10px 16px;
+  font-size: 13px;
+  text-align: center;
+  line-height: 1.4;
 }
 
 /* ---------- Bottom action bar ---------- */

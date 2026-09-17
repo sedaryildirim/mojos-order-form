@@ -172,6 +172,7 @@ function renderOrderScreen() {
       catEl.classList.toggle("completed", !!state.completed[ci]);
       completeBtn.textContent = state.completed[ci] ? "Category Completed ✓" : "Mark Category Complete";
       saveDraft();
+      updateIncompleteWarning();
     });
     body.appendChild(completeBtn);
 
@@ -188,6 +189,25 @@ function updateBottomBar() {
   $("#selectedCount").textContent = n;
   $("#estTotal").textContent = formatMoney(totalEstimatedCost());
   $("#reviewBtn").disabled = n === 0;
+  updateIncompleteWarning();
+}
+
+function updateIncompleteWarning() {
+  const total = state.data.categories.length;
+  const incomplete = state.data.categories.filter((_, ci) => !state.completed[ci]);
+  const warning = $("#incompleteWarning");
+  if (incomplete.length === 0) {
+    warning.classList.add("hidden");
+    document.body.classList.remove("has-warning");
+    return;
+  }
+  const names = incomplete.map(c => c.name).join(", ");
+  $("#incompleteText").textContent =
+    incomplete.length === total
+      ? `No categories marked complete yet (${total} remaining).`
+      : `${incomplete.length} of ${total} categories not marked complete: ${names}`;
+  warning.classList.remove("hidden");
+  document.body.classList.add("has-warning");
 }
 
 function filterItems(query) {
