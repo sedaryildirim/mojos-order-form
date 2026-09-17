@@ -94,6 +94,17 @@ body.has-warning {
   margin-bottom: 32px;
   font-size: 14px;
 }
+.back-link {
+  position: absolute;
+  top: 18px;
+  left: 16px;
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 14px;
+  padding: 6px 4px;
+}
+.branch-screen { position: relative; }
 .branch-grid {
   display: grid;
   gap: 14px;
@@ -110,6 +121,7 @@ body.has-warning {
   border: 2px solid var(--border);
 }
 .branch-btn:active { transform: scale(0.98); border-color: var(--accent); }
+.supplier-empty { display: block; font-size: 12px; font-weight: 400; color: var(--muted); margin-top: 4px; }
 
 /* ---------- Search ---------- */
 .search-wrap {

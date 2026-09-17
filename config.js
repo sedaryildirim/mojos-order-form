@@ -6,6 +6,12 @@ const CONFIG = {
     { id: "nathon", name: "Nathon", email: "mojos.nathon@gmail.com" },
     { id: "lamai", name: "Lamai", email: "mojos.lamai@gmail.com" }
   ],
+  // Each id must match a key in the DATA object in data.js
+  suppliers: [
+    { id: "makro", name: "Order Makro" },
+    { id: "foodproject", name: "Order Food Project" },
+    { id: "drinks", name: "Order Drinks" }
+  ],
   // CC'd on every order email (leave "" to disable)
   ccEmail: ""
 };

@@ -17,15 +17,25 @@
   </div>
 </section>
 
+<!-- Supplier select -->
+<section id="supplierScreen" class="screen">
+  <div class="branch-screen">
+    <button class="back-link" id="backToBranch">&#8592; Change branch</button>
+    <div class="logo">Mojo's Ordering</div>
+    <div class="tagline" id="supplierBranchTag"></div>
+    <div class="branch-grid" id="supplierGrid"></div>
+  </div>
+</section>
+
 <!-- Order form -->
 <section id="orderScreen" class="screen">
   <header class="topbar">
     <div>
-      Order Sheet
+      <span id="supplierTitle">Order Sheet</span>
       <span class="branch-tag" id="branchTag"></span>
     </div>
     <button class="icon-btn" id="clearAllBtn" title="Clear all">&#128465;</button>
-    <button class="icon-btn" id="switchBranch" title="Switch branch">&#8646;</button>
+    <button class="icon-btn" id="switchBranch" title="Change supplier">&#8646;</button>
   </header>
   <div class="search-wrap">
     <input type="text" id="searchInput" placeholder="Search items...">

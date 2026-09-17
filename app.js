@@ -1,12 +1,14 @@
 const state = {
   branch: null,
+  supplier: null,
   data: null,
   stock: {},     // "catIdx-itemIdx" -> current stock count
   toOrder: {},   // "catIdx-itemIdx" -> qty to order
   completed: {}  // catIdx -> true
 };
 
-const STORAGE_KEY = "mojos_order_draft_v2";
+const STORAGE_KEY = "mojos_order_drafts_v3";
+let allDrafts = {}; // { [branchId]: { [supplierId]: {stock, toOrder, completed} } }
 
 function $(sel, el = document) { return el.querySelector(sel); }
 function $all(sel, el = document) { return [...el.querySelectorAll(sel)]; }
@@ -17,28 +19,40 @@ function showScreen(id) {
   window.scrollTo(0, 0);
 }
 
+function emptySlice() { return { stock: {}, toOrder: {}, completed: {} }; }
+
+function loadAllDrafts() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : {};
+  } catch (e) { return {}; }
+}
+
+function getSlice(branchId, supplierId) {
+  return (allDrafts[branchId] && allDrafts[branchId][supplierId]) || emptySlice();
+}
+
+function persistAllDrafts() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(allDrafts));
+}
+
 function saveDraft() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({
-    branch: state.branch ? state.branch.id : null,
+  if (!state.branch || !state.supplier) return;
+  allDrafts[state.branch.id] = allDrafts[state.branch.id] || {};
+  allDrafts[state.branch.id][state.supplier.id] = {
     stock: state.stock,
     toOrder: state.toOrder,
     completed: state.completed
-  }));
+  };
+  persistAllDrafts();
+  localStorage.setItem("mojos_last_selection", JSON.stringify({ branch: state.branch.id, supplier: state.supplier.id }));
 }
 
-function loadDraft() {
+function loadLastSelection() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return;
-    const draft = JSON.parse(raw);
-    if (draft.stock) state.stock = draft.stock;
-    if (draft.toOrder) state.toOrder = draft.toOrder;
-    if (draft.completed) state.completed = draft.completed;
-    if (draft.branch) {
-      const b = CONFIG.branches.find(b => b.id === draft.branch);
-      if (b) state.branch = b;
-    }
-  } catch (e) { /* ignore corrupt draft */ }
+    const raw = localStorage.getItem("mojos_last_selection");
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) { return null; }
 }
 
 function itemKey(catIdx, itemIdx) { return catIdx + "-" + itemIdx; }
@@ -70,20 +84,56 @@ function renderBranchScreen() {
     const btn = document.createElement("button");
     btn.className = "branch-btn";
     btn.textContent = b.name;
-    btn.addEventListener("click", () => {
-      state.branch = b;
-      saveDraft();
-      renderOrderScreen();
-      showScreen("orderScreen");
-    });
+    btn.addEventListener("click", () => selectBranch(b));
     grid.appendChild(btn);
   });
 }
 
+function selectBranch(b) {
+  state.branch = b;
+  renderSupplierScreen();
+  showScreen("supplierScreen");
+}
+
+function renderSupplierScreen() {
+  $("#supplierBranchTag").textContent = state.branch.name + " branch — choose an order sheet";
+  const grid = $("#supplierGrid");
+  grid.innerHTML = "";
+  CONFIG.suppliers.forEach(s => {
+    const count = (DATA[s.id] && DATA[s.id].categories.length) || 0;
+    const btn = document.createElement("button");
+    btn.className = "branch-btn";
+    btn.innerHTML = count === 0
+      ? `${s.name} <span class="supplier-empty">(no items yet)</span>`
+      : s.name;
+    btn.addEventListener("click", () => selectSupplier(s));
+    grid.appendChild(btn);
+  });
+}
+
+function selectSupplier(s) {
+  state.supplier = s;
+  state.data = DATA[s.id] || { categories: [] };
+  const slice = getSlice(state.branch.id, s.id);
+  state.stock = slice.stock;
+  state.toOrder = slice.toOrder;
+  state.completed = slice.completed;
+  saveDraft();
+  renderOrderScreen();
+  showScreen("orderScreen");
+}
+
 function renderOrderScreen() {
+  $("#supplierTitle").textContent = state.supplier.name;
   $("#branchTag").textContent = state.branch.name + " branch";
   const content = $("#orderContent");
   content.innerHTML = "";
+
+  if (state.data.categories.length === 0) {
+    content.innerHTML = `<div class="review-empty">No items in this order sheet yet.<br>Add categories/items to data.js.</div>`;
+    updateBottomBar();
+    return;
+  }
 
   state.data.categories.forEach((cat, ci) => {
     const catEl = document.createElement("div");
@@ -136,7 +186,7 @@ function renderOrderScreen() {
       const dec = $(".dec", row);
       const inc = $(".inc", row);
 
-      function setOrder(v, { fromCalc = false } = {}) {
+      function setOrder(v) {
         v = Math.max(0, Math.floor(Number(v) || 0));
         orderInput.value = v;
         if (v > 0) { state.toOrder[key] = v; row.classList.add("has-qty"); }
@@ -152,7 +202,7 @@ function renderOrderScreen() {
         saveDraft();
         // auto-suggest to-order from par minus stock
         const suggested = Math.max(par - (v === "" ? 0 : v), 0);
-        setOrder(suggested, { fromCalc: true });
+        setOrder(suggested);
       }
 
       stockInput.addEventListener("change", () => setStock(stockInput.value));
@@ -203,8 +253,13 @@ function updateBottomBar() {
 
 function updateIncompleteWarning() {
   const total = state.data.categories.length;
-  const incomplete = state.data.categories.filter((_, ci) => !state.completed[ci]);
   const warning = $("#incompleteWarning");
+  if (total === 0) {
+    warning.classList.add("hidden");
+    document.body.classList.remove("has-warning");
+    return;
+  }
+  const incomplete = state.data.categories.filter((_, ci) => !state.completed[ci]);
   if (incomplete.length === 0) {
     warning.classList.add("hidden");
     document.body.classList.remove("has-warning");
@@ -273,7 +328,7 @@ function renderReviewScreen() {
 function buildOrderText() {
   const lines = [];
   const now = new Date();
-  lines.push(`Mojo's Order - ${state.branch.name} branch`);
+  lines.push(`Mojo's Order - ${state.supplier.name} - ${state.branch.name} branch`);
   lines.push(`Date: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`);
   lines.push("");
 
@@ -297,30 +352,34 @@ function buildOrderText() {
 }
 
 function sendOrder() {
-  const subject = `Mojo's Order - ${state.branch.name} - ${new Date().toLocaleDateString()}`;
+  const subject = `Mojo's Order - ${state.branch.name} - ${state.supplier.name} - ${new Date().toLocaleDateString()}`;
   const body = buildOrderText();
   let mailto = `mailto:${encodeURIComponent(state.branch.email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   if (CONFIG.ccEmail) mailto += `&cc=${encodeURIComponent(CONFIG.ccEmail)}`;
   window.location.href = mailto;
 
-  localStorage.removeItem(STORAGE_KEY);
+  // clear this branch+supplier's draft now that it's been sent
+  if (allDrafts[state.branch.id]) delete allDrafts[state.branch.id][state.supplier.id];
+  persistAllDrafts();
+
   setTimeout(() => showScreen("confirmScreen"), 400);
 }
 
 function resetOrder() {
+  state.branch = null;
+  state.supplier = null;
   state.stock = {};
   state.toOrder = {};
   state.completed = {};
-  state.branch = null;
-  localStorage.removeItem(STORAGE_KEY);
+  localStorage.removeItem("mojos_last_selection");
   showScreen("branchScreen");
 }
 
 function clearAll() {
   const n = totalItemsSelected();
   const msg = n > 0
-    ? `Clear all stock counts and order quantities for ${state.branch.name}? This cannot be undone.`
-    : "Clear all stock counts and category progress? This cannot be undone.";
+    ? `Clear all stock counts and order quantities for ${state.branch.name} – ${state.supplier.name}? This cannot be undone.`
+    : "Clear all stock counts and category progress for this order sheet? This cannot be undone.";
   if (!confirm(msg)) return;
   state.stock = {};
   state.toOrder = {};
@@ -330,11 +389,10 @@ function clearAll() {
 }
 
 function init() {
-  state.data = DATA;
-
-  loadDraft();
+  allDrafts = loadAllDrafts();
   renderBranchScreen();
 
+  $("#backToBranch").addEventListener("click", () => showScreen("branchScreen"));
   $("#backToOrder").addEventListener("click", () => showScreen("orderScreen"));
   $("#reviewBtn").addEventListener("click", () => {
     renderReviewScreen();
@@ -342,20 +400,26 @@ function init() {
   });
   $("#sendBtn").addEventListener("click", sendOrder);
   $("#switchBranch").addEventListener("click", () => {
-    if (confirm("Switch branch? Your current quantities stay saved.")) {
-      showScreen("branchScreen");
+    if (confirm("Change order sheet? Your current quantities stay saved.")) {
+      renderSupplierScreen();
+      showScreen("supplierScreen");
     }
   });
   $("#newOrderBtn").addEventListener("click", resetOrder);
   $("#clearAllBtn").addEventListener("click", clearAll);
   $("#searchInput").addEventListener("input", e => filterItems(e.target.value));
 
-  if (state.branch) {
-    renderOrderScreen();
-    showScreen("orderScreen");
-  } else {
-    showScreen("branchScreen");
+  const last = loadLastSelection();
+  if (last) {
+    const b = CONFIG.branches.find(x => x.id === last.branch);
+    const s = CONFIG.suppliers.find(x => x.id === last.supplier);
+    if (b && s) {
+      state.branch = b;
+      selectSupplier(s);
+      return;
+    }
   }
+  showScreen("branchScreen");
 }
 
 init();
