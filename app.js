@@ -83,6 +83,12 @@ function totalEstimatedCost() {
   return total;
 }
 
+const VAT_RATE = 0.07;
+
+function totalWithVat() {
+  return totalEstimatedCost() * (1 + VAT_RATE);
+}
+
 function formatMoney(n) {
   return "฿" + Math.round(n).toLocaleString();
 }
@@ -274,7 +280,7 @@ function renderOrderScreen() {
 function updateBottomBar() {
   const n = totalItemsSelected();
   $("#selectedCount").textContent = n;
-  $("#estTotal").textContent = formatMoney(totalEstimatedCost());
+  $("#estTotal").textContent = formatMoney(totalWithVat()) + " incl. VAT";
   $("#reviewBtn").disabled = n === 0 || moqShortfall() > 0;
   updateIncompleteWarning();
 }
@@ -357,9 +363,22 @@ function renderReviewScreen() {
     list.appendChild(catBlock);
   });
 
+  const subtotal = totalEstimatedCost();
+  const vat = subtotal * VAT_RATE;
+
+  const subtotalRow = document.createElement("div");
+  subtotalRow.className = "review-subtotal";
+  subtotalRow.innerHTML = `<span>Subtotal</span><span>${formatMoney(subtotal)}</span>`;
+  list.appendChild(subtotalRow);
+
+  const vatRow = document.createElement("div");
+  vatRow.className = "review-subtotal";
+  vatRow.innerHTML = `<span>VAT (7%)</span><span>${formatMoney(vat)}</span>`;
+  list.appendChild(vatRow);
+
   const totalRow = document.createElement("div");
   totalRow.className = "review-total";
-  totalRow.innerHTML = `<span>Estimated Total</span><span>${formatMoney(totalEstimatedCost())}</span>`;
+  totalRow.innerHTML = `<span>Estimated Total</span><span>${formatMoney(subtotal + vat)}</span>`;
   list.appendChild(totalRow);
 
   const total = state.data.categories.length;
@@ -397,8 +416,12 @@ function buildOrderText() {
     lines.push("");
   });
 
+  const subtotal = totalEstimatedCost();
+  const vat = subtotal * VAT_RATE;
   lines.push(`Total line items: ${totalItemsSelected()}`);
-  lines.push(`Estimated total cost: ${formatMoney(totalEstimatedCost())}`);
+  lines.push(`Subtotal: ${formatMoney(subtotal)}`);
+  lines.push(`VAT (7%): ${formatMoney(vat)}`);
+  lines.push(`Estimated total cost (incl. VAT): ${formatMoney(subtotal + vat)}`);
   return lines.join("\n");
 }
 
