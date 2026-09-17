@@ -9,6 +9,7 @@
   --border: #35312a;
   --success: #4caf68;
   --success-bg: #1c2b1e;
+  --danger: #d6564a;
   --radius: 14px;
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
@@ -64,13 +65,28 @@ body.has-warning {
   background: var(--card-alt);
   border: 1px solid var(--border);
   color: var(--text);
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
   font-size: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+}
+.icon-btn.danger {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+.icon-btn.armed {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #1a0d0a;
+}
+.icon-btn.armed.confirm-neutral {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #241206;
 }
 
 /* ---------- Branch select screen ---------- */
@@ -221,9 +237,16 @@ body.has-warning {
   font-weight: 600;
   color: var(--muted);
 }
-.field.order { flex: 1.3; }
+.field .par-value.par-unset {
+  color: #6b6255;
+  font-style: italic;
+  font-weight: 400;
+  border-style: dashed;
+}
+.field.order { flex: 1.5; }
 .stock-input {
   width: 100%;
+  height: 44px;
   padding: 8px 6px;
   text-align: center;
   border-radius: 10px;
@@ -245,11 +268,11 @@ body.has-warning {
   background: var(--card-alt);
 }
 .stepper button {
-  width: 30px;
-  height: 34px;
+  width: 44px;
+  height: 44px;
   border: none;
   background: transparent;
-  font-size: 17px;
+  font-size: 19px;
   color: var(--accent);
   font-weight: 700;
   flex-shrink: 0;
@@ -306,6 +329,21 @@ body.has-warning {
   color: #0d180f;
 }
 
+/* ---------- Action confirmation toast ---------- */
+.action-toast {
+  background: var(--danger);
+  color: #1a0d0a;
+  padding: 10px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.4;
+}
+.action-toast.neutral {
+  background: var(--accent);
+  color: #241206;
+}
+
 /* ---------- Incomplete categories warning ---------- */
 .incomplete-warning {
   position: fixed;
@@ -351,12 +389,13 @@ body.has-warning {
 }
 .btn {
   padding: 13px 20px;
+  min-height: 44px;
   border-radius: 12px;
   border: none;
   font-size: 15px;
   font-weight: 600;
   background: var(--accent);
-  color: #fff;
+  color: #241206;
   flex-shrink: 0;
 }
 .btn:active { background: var(--accent-dark); }
@@ -396,6 +435,16 @@ body.has-warning {
   font-size: 16px;
   font-weight: 700;
   color: var(--text);
+}
+.review-gate-warning {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #3d2a14;
+  color: #f2c98d;
+  border: 1px solid #6b4a1f;
+  font-size: 13px;
+  line-height: 1.5;
 }
 .review-empty {
   text-align: center;

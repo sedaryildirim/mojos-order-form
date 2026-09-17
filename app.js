@@ -174,7 +174,8 @@ function renderOrderScreen() {
 
     cat.items.forEach((item, ii) => {
       const key = itemKey(ci, ii);
-      const par = item.par || 0;
+      const parUnset = item.par === null || item.par === undefined;
+      const par = parUnset ? 0 : item.par;
       const row = document.createElement("div");
       row.className = "item-row";
       row.dataset.key = key;
@@ -185,7 +186,7 @@ function renderOrderScreen() {
         <div class="fields-row">
           <div class="field par">
             <label>Par</label>
-            <div class="par-value">${par}</div>
+            <div class="par-value${parUnset ? " par-unset" : ""}" title="${parUnset ? "Par not set yet" : ""}">${parUnset ? "—" : par}</div>
           </div>
           <div class="field stock">
             <label>Stock</label>
@@ -332,6 +333,7 @@ function renderReviewScreen() {
 
   if (n === 0) {
     list.innerHTML = `<div class="review-empty">No items selected yet.</div>`;
+    $("#sendBtn").disabled = true;
     return;
   }
 
@@ -359,6 +361,19 @@ function renderReviewScreen() {
   totalRow.className = "review-total";
   totalRow.innerHTML = `<span>Estimated Total</span><span>${formatMoney(totalEstimatedCost())}</span>`;
   list.appendChild(totalRow);
+
+  const total = state.data.categories.length;
+  const incomplete = state.data.categories.filter((_, ci) => !state.completed[ci]);
+  if (total > 0 && incomplete.length > 0) {
+    const names = incomplete.map(c => c.name).join(", ");
+    const gate = document.createElement("div");
+    gate.className = "review-gate-warning";
+    gate.innerHTML = `&#9888; ${incomplete.length} of ${total} categories not marked complete: ${names}. Go back and mark them complete before sending.`;
+    list.appendChild(gate);
+    $("#sendBtn").disabled = true;
+  } else {
+    $("#sendBtn").disabled = false;
+  }
 }
 
 function buildOrderText() {
@@ -376,7 +391,7 @@ function buildOrderText() {
     lines.push(`${cat.name.toUpperCase()}${state.completed[ci] ? " (COMPLETE)" : ""}`);
     rows.forEach(({ item, key }) => {
       const stock = state.stock[key] ?? "-";
-      const par = item.par || 0;
+      const par = (item.par === null || item.par === undefined) ? "-" : item.par;
       lines.push(`  - ${item.name} : Par ${par} | Stock ${stock} | Order ${state.toOrder[key]} ${item.unit}`);
     });
     lines.push("");
@@ -456,17 +471,45 @@ function resetOrder() {
   showScreen("branchScreen");
 }
 
-function clearAll() {
-  const n = totalItemsSelected();
-  const msg = n > 0
-    ? `Clear all stock counts and order quantities for ${state.branch.name} – ${state.supplier.name}? This cannot be undone.`
-    : "Clear all stock counts and category progress for this order sheet? This cannot be undone.";
-  if (!confirm(msg)) return;
+function clearAllNow() {
   state.stock = {};
   state.toOrder = {};
   state.completed = {};
   saveDraft();
   renderOrderScreen();
+}
+
+const armedTimers = new WeakMap();
+
+function armConfirm(btn, message, onConfirm, variant = "danger") {
+  if (btn.classList.contains("armed")) {
+    disarmConfirm(btn);
+    onConfirm();
+    return;
+  }
+  btn.classList.add("armed");
+  if (variant === "neutral") btn.classList.add("confirm-neutral");
+  showActionToast(message, variant);
+  const timer = setTimeout(() => disarmConfirm(btn), 3000);
+  armedTimers.set(btn, timer);
+}
+
+function disarmConfirm(btn) {
+  btn.classList.remove("armed", "confirm-neutral");
+  clearTimeout(armedTimers.get(btn));
+  armedTimers.delete(btn);
+  hideActionToast();
+}
+
+function showActionToast(message, variant = "danger") {
+  const toast = $("#actionToast");
+  toast.textContent = message;
+  toast.classList.toggle("neutral", variant === "neutral");
+  toast.classList.remove("hidden");
+}
+
+function hideActionToast() {
+  $("#actionToast").classList.add("hidden");
 }
 
 function init() {
@@ -481,14 +524,20 @@ function init() {
   });
   $("#sendBtn").addEventListener("click", sendOrder);
   $("#switchBranch").addEventListener("click", () => {
-    if (confirm("Change order sheet? Your current quantities stay saved.")) {
+    armConfirm($("#switchBranch"), "Tap ⇆ again to change order sheet — your progress stays saved.", () => {
       renderSupplierScreen();
       showScreen("supplierScreen");
-    }
+    }, "neutral");
   });
   $("#newOrderBtn").addEventListener("click", resetOrder);
   $("#copyOrderBtn").addEventListener("click", copyOrderText);
-  $("#clearAllBtn").addEventListener("click", clearAll);
+  $("#clearAllBtn").addEventListener("click", () => {
+    const n = totalItemsSelected();
+    const msg = n > 0
+      ? `Tap \u{1F5D1} again to clear all stock counts and order quantities for ${state.supplier.name}. This cannot be undone.`
+      : `Tap \u{1F5D1} again to clear category progress for ${state.supplier.name}. This cannot be undone.`;
+    armConfirm($("#clearAllBtn"), msg, clearAllNow);
+  });
   $("#searchInput").addEventListener("input", e => filterItems(e.target.value));
 
   const last = loadLastSelection();
