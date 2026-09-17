@@ -61,6 +61,16 @@ function totalItemsSelected() {
   return Object.values(state.toOrder).filter(v => v > 0).length;
 }
 
+function totalUnitsSelected() {
+  return Object.values(state.toOrder).reduce((sum, v) => sum + (v > 0 ? v : 0), 0);
+}
+
+function moqShortfall() {
+  const moq = state.data.moq;
+  if (!moq) return 0;
+  return Math.max(0, moq - totalUnitsSelected());
+}
+
 function totalEstimatedCost() {
   let total = 0;
   state.data.categories.forEach((cat, ci) => {
@@ -264,29 +274,38 @@ function updateBottomBar() {
   const n = totalItemsSelected();
   $("#selectedCount").textContent = n;
   $("#estTotal").textContent = formatMoney(totalEstimatedCost());
-  $("#reviewBtn").disabled = n === 0;
+  $("#reviewBtn").disabled = n === 0 || moqShortfall() > 0;
   updateIncompleteWarning();
 }
 
 function updateIncompleteWarning() {
-  const total = state.data.categories.length;
   const warning = $("#incompleteWarning");
-  if (total === 0) {
+  const lines = [];
+
+  const total = state.data.categories.length;
+  if (total > 0) {
+    const incomplete = state.data.categories.filter((_, ci) => !state.completed[ci]);
+    if (incomplete.length > 0) {
+      const names = incomplete.map(c => c.name).join(", ");
+      lines.push(
+        incomplete.length === total
+          ? `No categories marked complete yet (${total} remaining).`
+          : `${incomplete.length} of ${total} categories not marked complete: ${names}`
+      );
+    }
+  }
+
+  const shortfall = moqShortfall();
+  if (shortfall > 0) {
+    lines.push(`Minimum order is ${state.data.moq} ${state.data.moqLabel || "units"} — add ${shortfall} more to meet MOQ.`);
+  }
+
+  if (lines.length === 0) {
     warning.classList.add("hidden");
     document.body.classList.remove("has-warning");
     return;
   }
-  const incomplete = state.data.categories.filter((_, ci) => !state.completed[ci]);
-  if (incomplete.length === 0) {
-    warning.classList.add("hidden");
-    document.body.classList.remove("has-warning");
-    return;
-  }
-  const names = incomplete.map(c => c.name).join(", ");
-  $("#incompleteText").textContent =
-    incomplete.length === total
-      ? `No categories marked complete yet (${total} remaining).`
-      : `${incomplete.length} of ${total} categories not marked complete: ${names}`;
+  $("#incompleteText").innerHTML = lines.join("<br>");
   warning.classList.remove("hidden");
   document.body.classList.add("has-warning");
 }

@@ -1547,6 +1547,8 @@ const DATA = {
           }
         ]
       }
-    ]
+    ],
+    "moq": 6,
+    "moqLabel": "bottles"
   }
 };
