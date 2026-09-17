@@ -271,6 +271,24 @@ body.has-warning {
 .stock-input::-webkit-outer-spin-button,
 .stock-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
+.combo-box {
+  margin: 0 16px 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: var(--card-alt);
+  border: 1px dashed var(--accent);
+  color: var(--text);
+  font-size: 14px;
+  text-align: center;
+}
+.combo-box strong { color: var(--accent); font-size: 17px; }
+.combo-box .combo-sub {
+  display: block;
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
 .complete-btn {
   display: block;
   width: calc(100% - 32px);

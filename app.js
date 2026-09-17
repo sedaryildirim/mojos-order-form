@@ -151,6 +151,17 @@ function renderOrderScreen() {
     const body = document.createElement("div");
     body.className = "category-body";
 
+    const comboBox = cat.combo ? document.createElement("div") : null;
+    function updateComboBox() {
+      if (!comboBox) return;
+      const totalG = cat.combo.itemIndices.reduce(
+        (sum, idx) => sum + (state.toOrder[itemKey(ci, idx)] || 0), 0
+      ) * (cat.combo.unitGrams || 1000);
+      const patties = Math.floor(totalG / cat.combo.pattyWeightG);
+      comboBox.className = "combo-box";
+      comboBox.innerHTML = `<strong>${patties}</strong> ${cat.combo.label} <span class="combo-sub">${(totalG / 1000).toFixed(totalG % 1000 ? 1 : 0)}kg &divide; ${cat.combo.pattyWeightG}g each</span>`;
+    }
+
     cat.items.forEach((item, ii) => {
       const key = itemKey(ci, ii);
       const par = item.par || 0;
@@ -193,6 +204,7 @@ function renderOrderScreen() {
         else { delete state.toOrder[key]; row.classList.remove("has-qty"); }
         saveDraft();
         updateBottomBar();
+        if (cat.combo && cat.combo.itemIndices.includes(ii)) updateComboBox();
       }
 
       function setStock(v) {
@@ -212,6 +224,11 @@ function renderOrderScreen() {
 
       if (state.toOrder[key] > 0) row.classList.add("has-qty");
       body.appendChild(row);
+
+      if (cat.combo && ii === Math.max(...cat.combo.itemIndices)) {
+        updateComboBox();
+        body.appendChild(comboBox);
+      }
     });
 
     const completeBtn = document.createElement("button");

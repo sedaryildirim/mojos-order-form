@@ -1319,7 +1319,48 @@ const DATA = {
     ]
   },
   "foodproject": {
-    "categories": []
+    "categories": [
+      {
+        "name": "Beef (Burger Patties)",
+        "combo": {
+          "itemIndices": [
+            0,
+            1
+          ],
+          "unitGrams": 1000,
+          "pattyWeightG": 80,
+          "label": "Burger Patties"
+        },
+        "items": [
+          {
+            "id": "fp-navel-brisket",
+            "name": "Win A Grassfed Navel End Brisket 1 kg",
+            "unit": "Kilogram",
+            "price": 280,
+            "par": 0
+          },
+          {
+            "id": "fp-chuck-roll",
+            "name": "Win A Grassfed Chuck Roll AU 1 kg",
+            "unit": "Kilogram",
+            "price": 370,
+            "par": 0
+          }
+        ]
+      },
+      {
+        "name": "Pork",
+        "items": [
+          {
+            "id": "fp-smoked-bacon",
+            "name": "Smoked Bacon Premium Grade 3.00 mm 1 kg",
+            "unit": "Kilogram",
+            "price": 260,
+            "par": 0
+          }
+        ]
+      }
+    ]
   },
   "drinks": {
     "categories": []
