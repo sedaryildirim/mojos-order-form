@@ -425,4 +425,6 @@ body.has-warning {
   margin-bottom: 16px;
 }
 .confirm-screen p { color: var(--muted); }
+.confirm-screen .btn { margin-top: 10px; width: 100%; max-width: 320px; }
+.copy-btn.copied { background: var(--success); color: #0d180f; border-color: var(--success); }
 .hidden { display: none !important; }

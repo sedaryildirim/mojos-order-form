@@ -397,9 +397,12 @@ function supplierShortName() {
   return state.supplier.name.replace(/^Order\s+/i, "").toUpperCase();
 }
 
+let lastOrderText = "";
+
 function sendOrder() {
   const subject = `${supplierShortName()} ${state.branch.name.toUpperCase()} ORDER ${formatDateDDMMYYYY(new Date())}`;
   const body = buildOrderText();
+  lastOrderText = body;
   let mailto = `mailto:${encodeURIComponent(state.branch.email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   if (CONFIG.ccEmail) mailto += `&cc=${encodeURIComponent(CONFIG.ccEmail)}`;
   window.location.href = mailto;
@@ -409,6 +412,38 @@ function sendOrder() {
   persistAllDrafts();
 
   setTimeout(() => showScreen("confirmScreen"), 400);
+}
+
+function copyOrderText() {
+  const btn = $("#copyOrderBtn");
+  const done = () => {
+    const original = "\u{1F4CB} Copy Order Text";
+    btn.textContent = "✓ Copied to clipboard";
+    btn.classList.add("copied");
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.classList.remove("copied");
+    }, 2000);
+  };
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(lastOrderText).then(done).catch(() => fallbackCopy(lastOrderText, done));
+  } else {
+    fallbackCopy(lastOrderText, done);
+  }
+}
+
+function fallbackCopy(text, onDone) {
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.style.position = "fixed";
+  textarea.style.opacity = "0";
+  document.body.appendChild(textarea);
+  textarea.focus();
+  textarea.select();
+  try { document.execCommand("copy"); } catch (e) { /* ignore */ }
+  document.body.removeChild(textarea);
+  onDone();
 }
 
 function resetOrder() {
@@ -452,6 +487,7 @@ function init() {
     }
   });
   $("#newOrderBtn").addEventListener("click", resetOrder);
+  $("#copyOrderBtn").addEventListener("click", copyOrderText);
   $("#clearAllBtn").addEventListener("click", clearAll);
   $("#searchInput").addEventListener("input", e => filterItems(e.target.value));
 
