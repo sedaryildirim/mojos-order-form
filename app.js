@@ -57,12 +57,24 @@ function loadLastSelection() {
 
 function itemKey(catIdx, itemIdx) { return catIdx + "-" + itemIdx; }
 
+function setCategoryOpen(catEl, open) {
+  catEl.classList.toggle("open", open);
+  const header = $(".category-header", catEl);
+  if (header) header.setAttribute("aria-expanded", String(open));
+}
+
 function totalItemsSelected() {
   return Object.values(state.toOrder).filter(v => v > 0).length;
 }
 
 function totalUnitsSelected() {
   return Object.values(state.toOrder).reduce((sum, v) => sum + (v > 0 ? v : 0), 0);
+}
+
+function incompleteCategories() {
+  const total = state.data.categories.length;
+  const incomplete = state.data.categories.filter((_, ci) => !state.completed[ci]);
+  return { total, incomplete };
 }
 
 function moqShortfall() {
@@ -159,9 +171,10 @@ function renderOrderScreen() {
 
     const header = document.createElement("button");
     header.className = "category-header";
+    header.setAttribute("aria-expanded", "false");
     header.innerHTML = `<span><span class="check">&#10003;</span>${cat.name} <span class="meta">(${cat.items.length})</span></span><span class="chev">&#9662;</span>`;
     header.addEventListener("click", () => {
-      catEl.classList.toggle("open");
+      setCategoryOpen(catEl, !catEl.classList.contains("open"));
     });
 
     const body = document.createElement("div");
@@ -196,14 +209,14 @@ function renderOrderScreen() {
           </div>
           <div class="field stock">
             <label>Stock</label>
-            <input type="number" inputmode="numeric" min="0" class="stock-input" value="${state.stock[key] ?? ""}" placeholder="0">
+            <input type="number" inputmode="numeric" min="0" class="stock-input" value="${state.stock[key] ?? ""}" placeholder="0" aria-label="${item.name} current stock">
           </div>
           <div class="field order">
             <label>To Order</label>
             <div class="stepper">
-              <button type="button" class="dec" aria-label="decrease">&minus;</button>
-              <input type="number" inputmode="numeric" min="0" class="order-input" value="${state.toOrder[key] || 0}">
-              <button type="button" class="inc" aria-label="increase">&plus;</button>
+              <button type="button" class="dec" aria-label="Decrease ${item.name} to order">&minus;</button>
+              <input type="number" inputmode="numeric" min="0" class="order-input" value="${state.toOrder[key] || 0}" aria-label="${item.name} to order">
+              <button type="button" class="inc" aria-label="Increase ${item.name} to order">&plus;</button>
             </div>
           </div>
         </div>
@@ -272,10 +285,10 @@ function renderOrderScreen() {
       updateIncompleteWarning();
 
       if (state.completed[ci]) {
-        catEl.classList.remove("open");
+        setCategoryOpen(catEl, false);
         const next = content.children[ci + 1];
         if (next) {
-          next.classList.add("open");
+          setCategoryOpen(next, true);
           next.scrollIntoView({ behavior: "smooth", block: "start" });
         }
       }
@@ -303,9 +316,8 @@ function updateIncompleteWarning() {
   const warning = $("#incompleteWarning");
   const lines = [];
 
-  const total = state.data.categories.length;
+  const { total, incomplete } = incompleteCategories();
   if (total > 0) {
-    const incomplete = state.data.categories.filter((_, ci) => !state.completed[ci]);
     if (incomplete.length > 0) {
       const names = incomplete.map(c => c.name).join(", ");
       lines.push(
@@ -345,7 +357,7 @@ function applyFilters() {
       if (match) anyVisible = true;
     });
     catEl.style.display = anyVisible ? "" : "none";
-    if ((q || onlyTouched) && anyVisible) catEl.classList.add("open");
+    if ((q || onlyTouched) && anyVisible) setCategoryOpen(catEl, true);
   });
 }
 
@@ -398,8 +410,7 @@ function renderReviewScreen() {
   totalRow.innerHTML = `<span>Estimated Total</span><span>${formatMoney(subtotal + vat)}</span>`;
   list.appendChild(totalRow);
 
-  const total = state.data.categories.length;
-  const incomplete = state.data.categories.filter((_, ci) => !state.completed[ci]);
+  const { total, incomplete } = incompleteCategories();
   if (total > 0 && incomplete.length > 0) {
     const names = incomplete.map(c => c.name).join(", ");
     const gate = document.createElement("div");
