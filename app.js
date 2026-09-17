@@ -227,6 +227,7 @@ function renderOrderScreen() {
         saveDraft();
         updateBottomBar();
         if (cat.combo && cat.combo.itemIndices.includes(ii)) updateComboBox();
+        if ($("#onlyTouchedToggle").checked) applyFilters();
       }
 
       function setOrderManual(v) {
@@ -287,6 +288,7 @@ function renderOrderScreen() {
   });
 
   updateBottomBar();
+  applyFilters();
 }
 
 function updateBottomBar() {
@@ -329,18 +331,21 @@ function updateIncompleteWarning() {
   document.body.classList.add("has-warning");
 }
 
-function filterItems(query) {
-  const q = query.trim().toLowerCase();
+function applyFilters() {
+  const q = $("#searchInput").value.trim().toLowerCase();
+  const onlyTouched = $("#onlyTouchedToggle").checked;
   $all(".category").forEach(catEl => {
     let anyVisible = false;
     $all(".item-row", catEl).forEach(row => {
       const name = $(".item-name", row).textContent.toLowerCase();
-      const match = !q || name.includes(q);
+      const matchesSearch = !q || name.includes(q);
+      const matchesTouched = !onlyTouched || (state.toOrder[row.dataset.key] || 0) > 0;
+      const match = matchesSearch && matchesTouched;
       row.style.display = match ? "" : "none";
       if (match) anyVisible = true;
     });
     catEl.style.display = anyVisible ? "" : "none";
-    if (q && anyVisible) catEl.classList.add("open");
+    if ((q || onlyTouched) && anyVisible) catEl.classList.add("open");
   });
 }
 
@@ -573,7 +578,8 @@ function init() {
       : `Tap \u{1F5D1} again to clear category progress for ${state.supplier.name}. This cannot be undone.`;
     armConfirm($("#clearAllBtn"), msg, clearAllNow);
   });
-  $("#searchInput").addEventListener("input", e => filterItems(e.target.value));
+  $("#searchInput").addEventListener("input", applyFilters);
+  $("#onlyTouchedToggle").addEventListener("change", applyFilters);
 
   const last = loadLastSelection();
   if (last) {
