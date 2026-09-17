@@ -1,10 +1,12 @@
 const state = {
   branch: null,
   data: null,
-  qty: {} // "categoryIdx-itemIdx" -> number
+  stock: {},     // "catIdx-itemIdx" -> current stock count
+  toOrder: {},   // "catIdx-itemIdx" -> qty to order
+  completed: {}  // catIdx -> true
 };
 
-const STORAGE_KEY = "mojos_order_draft_v1";
+const STORAGE_KEY = "mojos_order_draft_v2";
 
 function $(sel, el = document) { return el.querySelector(sel); }
 function $all(sel, el = document) { return [...el.querySelectorAll(sel)]; }
@@ -18,7 +20,9 @@ function showScreen(id) {
 function saveDraft() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify({
     branch: state.branch ? state.branch.id : null,
-    qty: state.qty
+    stock: state.stock,
+    toOrder: state.toOrder,
+    completed: state.completed
   }));
 }
 
@@ -27,7 +31,9 @@ function loadDraft() {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return;
     const draft = JSON.parse(raw);
-    if (draft.qty) state.qty = draft.qty;
+    if (draft.stock) state.stock = draft.stock;
+    if (draft.toOrder) state.toOrder = draft.toOrder;
+    if (draft.completed) state.completed = draft.completed;
     if (draft.branch) {
       const b = CONFIG.branches.find(b => b.id === draft.branch);
       if (b) state.branch = b;
@@ -38,7 +44,23 @@ function loadDraft() {
 function itemKey(catIdx, itemIdx) { return catIdx + "-" + itemIdx; }
 
 function totalItemsSelected() {
-  return Object.values(state.qty).filter(v => v > 0).length;
+  return Object.values(state.toOrder).filter(v => v > 0).length;
+}
+
+function totalEstimatedCost() {
+  let total = 0;
+  state.data.categories.forEach((cat, ci) => {
+    cat.items.forEach((item, ii) => {
+      const key = itemKey(ci, ii);
+      const qty = state.toOrder[key] || 0;
+      total += qty * (item.price || 0);
+    });
+  });
+  return total;
+}
+
+function formatMoney(n) {
+  return "฿" + Math.round(n).toLocaleString();
 }
 
 function renderBranchScreen() {
@@ -67,10 +89,11 @@ function renderOrderScreen() {
     const catEl = document.createElement("div");
     catEl.className = "category";
     catEl.dataset.catIdx = ci;
+    if (state.completed[ci]) catEl.classList.add("completed");
 
     const header = document.createElement("button");
     header.className = "category-header";
-    header.innerHTML = `<span>${cat.name} <span class="meta">(${cat.items.length})</span></span><span class="chev">&#9662;</span>`;
+    header.innerHTML = `<span><span class="check">&#10003;</span>${cat.name} <span class="meta">(${cat.items.length})</span></span><span class="chev">&#9662;</span>`;
     header.addEventListener("click", () => {
       catEl.classList.toggle("open");
     });
@@ -80,42 +103,77 @@ function renderOrderScreen() {
 
     cat.items.forEach((item, ii) => {
       const key = itemKey(ci, ii);
+      const par = item.par || 0;
       const row = document.createElement("div");
       row.className = "item-row";
       row.dataset.key = key;
 
       row.innerHTML = `
-        <div class="item-info">
-          <div class="item-name">${item.name}</div>
-          <div class="item-sub">${item.unit} &middot; ${item.price ? "฿" + item.price : ""}</div>
-        </div>
-        <div class="stepper">
-          <button type="button" class="dec" aria-label="decrease">&minus;</button>
-          <input type="number" inputmode="numeric" min="0" value="${state.qty[key] || 0}">
-          <button type="button" class="inc" aria-label="increase">&plus;</button>
+        <div class="item-name">${item.name}</div>
+        <div class="item-sub">${item.unit} &middot; ${item.price ? "฿" + item.price : ""}</div>
+        <div class="fields-row">
+          <div class="field par">
+            <label>Par</label>
+            <div class="par-value">${par}</div>
+          </div>
+          <div class="field stock">
+            <label>Stock</label>
+            <input type="number" inputmode="numeric" min="0" class="stock-input" value="${state.stock[key] ?? ""}" placeholder="0">
+          </div>
+          <div class="field order">
+            <label>To Order</label>
+            <div class="stepper">
+              <button type="button" class="dec" aria-label="decrease">&minus;</button>
+              <input type="number" inputmode="numeric" min="0" class="order-input" value="${state.toOrder[key] || 0}">
+              <button type="button" class="inc" aria-label="increase">&plus;</button>
+            </div>
+          </div>
         </div>
       `;
 
-      const input = $("input", row);
+      const stockInput = $(".stock-input", row);
+      const orderInput = $(".order-input", row);
       const dec = $(".dec", row);
       const inc = $(".inc", row);
 
-      function setQty(v) {
+      function setOrder(v, { fromCalc = false } = {}) {
         v = Math.max(0, Math.floor(Number(v) || 0));
-        input.value = v;
-        if (v > 0) { state.qty[key] = v; row.classList.add("has-qty"); }
-        else { delete state.qty[key]; row.classList.remove("has-qty"); }
+        orderInput.value = v;
+        if (v > 0) { state.toOrder[key] = v; row.classList.add("has-qty"); }
+        else { delete state.toOrder[key]; row.classList.remove("has-qty"); }
         saveDraft();
         updateBottomBar();
       }
 
-      dec.addEventListener("click", () => setQty((Number(input.value) || 0) - 1));
-      inc.addEventListener("click", () => setQty((Number(input.value) || 0) + 1));
-      input.addEventListener("change", () => setQty(input.value));
+      function setStock(v) {
+        v = v === "" ? "" : Math.max(0, Math.floor(Number(v) || 0));
+        if (v === "") delete state.stock[key];
+        else state.stock[key] = v;
+        saveDraft();
+        // auto-suggest to-order from par minus stock
+        const suggested = Math.max(par - (v === "" ? 0 : v), 0);
+        setOrder(suggested, { fromCalc: true });
+      }
 
-      if (state.qty[key] > 0) row.classList.add("has-qty");
+      stockInput.addEventListener("change", () => setStock(stockInput.value));
+      dec.addEventListener("click", () => setOrder((Number(orderInput.value) || 0) - 1));
+      inc.addEventListener("click", () => setOrder((Number(orderInput.value) || 0) + 1));
+      orderInput.addEventListener("change", () => setOrder(orderInput.value));
+
+      if (state.toOrder[key] > 0) row.classList.add("has-qty");
       body.appendChild(row);
     });
+
+    const completeBtn = document.createElement("button");
+    completeBtn.className = "complete-btn";
+    completeBtn.textContent = state.completed[ci] ? "Category Completed ✓" : "Mark Category Complete";
+    completeBtn.addEventListener("click", () => {
+      state.completed[ci] = !state.completed[ci];
+      catEl.classList.toggle("completed", !!state.completed[ci]);
+      completeBtn.textContent = state.completed[ci] ? "Category Completed ✓" : "Mark Category Complete";
+      saveDraft();
+    });
+    body.appendChild(completeBtn);
 
     catEl.appendChild(header);
     catEl.appendChild(body);
@@ -128,6 +186,7 @@ function renderOrderScreen() {
 function updateBottomBar() {
   const n = totalItemsSelected();
   $("#selectedCount").textContent = n;
+  $("#estTotal").textContent = formatMoney(totalEstimatedCost());
   $("#reviewBtn").disabled = n === 0;
 }
 
@@ -159,20 +218,27 @@ function renderReviewScreen() {
   state.data.categories.forEach((cat, ci) => {
     const rows = cat.items
       .map((item, ii) => ({ item, key: itemKey(ci, ii) }))
-      .filter(({ key }) => state.qty[key] > 0);
+      .filter(({ key }) => state.toOrder[key] > 0);
     if (rows.length === 0) return;
 
     const catBlock = document.createElement("div");
     catBlock.className = "review-cat";
     catBlock.innerHTML = `<h3>${cat.name}</h3>`;
     rows.forEach(({ item, key }) => {
+      const qty = state.toOrder[key];
+      const lineTotal = qty * (item.price || 0);
       const row = document.createElement("div");
       row.className = "review-item";
-      row.innerHTML = `<span>${item.name}</span><span class="qty">x${state.qty[key]} ${item.unit}</span>`;
+      row.innerHTML = `<span>${item.name}</span><span class="qty">x${qty} ${item.unit}${item.price ? `<span class="price">${formatMoney(lineTotal)}</span>` : ""}</span>`;
       catBlock.appendChild(row);
     });
     list.appendChild(catBlock);
   });
+
+  const totalRow = document.createElement("div");
+  totalRow.className = "review-total";
+  totalRow.innerHTML = `<span>Estimated Total</span><span>${formatMoney(totalEstimatedCost())}</span>`;
+  list.appendChild(totalRow);
 }
 
 function buildOrderText() {
@@ -185,16 +251,19 @@ function buildOrderText() {
   state.data.categories.forEach((cat, ci) => {
     const rows = cat.items
       .map((item, ii) => ({ item, key: itemKey(ci, ii) }))
-      .filter(({ key }) => state.qty[key] > 0);
+      .filter(({ key }) => state.toOrder[key] > 0);
     if (rows.length === 0) return;
-    lines.push(`${cat.name.toUpperCase()}`);
+    lines.push(`${cat.name.toUpperCase()}${state.completed[ci] ? " (COMPLETE)" : ""}`);
     rows.forEach(({ item, key }) => {
-      lines.push(`  - ${item.name} : ${state.qty[key]} ${item.unit}`);
+      const stock = state.stock[key] ?? "-";
+      const par = item.par || 0;
+      lines.push(`  - ${item.name} : Par ${par} | Stock ${stock} | Order ${state.toOrder[key]} ${item.unit}`);
     });
     lines.push("");
   });
 
   lines.push(`Total line items: ${totalItemsSelected()}`);
+  lines.push(`Estimated total cost: ${formatMoney(totalEstimatedCost())}`);
   return lines.join("\n");
 }
 
@@ -210,7 +279,9 @@ function sendOrder() {
 }
 
 function resetOrder() {
-  state.qty = {};
+  state.stock = {};
+  state.toOrder = {};
+  state.completed = {};
   state.branch = null;
   localStorage.removeItem(STORAGE_KEY);
   showScreen("branchScreen");
