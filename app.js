@@ -214,6 +214,11 @@ function renderOrderScreen() {
       const dec = $(".dec", row);
       const inc = $(".inc", row);
 
+      // Once the user has directly set a To Order value, stop overwriting it
+      // when Stock changes again - "auto-calculates but stays manually
+      // overridable" means the override has to actually stick.
+      let orderManuallySet = (state.toOrder[key] || 0) > 0;
+
       function setOrder(v) {
         v = Math.max(0, Math.floor(Number(v) || 0));
         orderInput.value = v;
@@ -224,20 +229,27 @@ function renderOrderScreen() {
         if (cat.combo && cat.combo.itemIndices.includes(ii)) updateComboBox();
       }
 
+      function setOrderManual(v) {
+        orderManuallySet = true;
+        setOrder(v);
+      }
+
       function setStock(v) {
         v = v === "" ? "" : Math.max(0, Math.floor(Number(v) || 0));
         if (v === "") delete state.stock[key];
         else state.stock[key] = v;
         saveDraft();
-        // auto-suggest to-order from par minus stock
+        if (orderManuallySet) return;
+        // auto-suggest to-order from par minus stock, only while the user
+        // hasn't overridden it yet
         const suggested = Math.max(par - (v === "" ? 0 : v), 0);
         setOrder(suggested);
       }
 
       stockInput.addEventListener("change", () => setStock(stockInput.value));
-      dec.addEventListener("click", () => setOrder((Number(orderInput.value) || 0) - 1));
-      inc.addEventListener("click", () => setOrder((Number(orderInput.value) || 0) + 1));
-      orderInput.addEventListener("change", () => setOrder(orderInput.value));
+      dec.addEventListener("click", () => setOrderManual((Number(orderInput.value) || 0) - 1));
+      inc.addEventListener("click", () => setOrderManual((Number(orderInput.value) || 0) + 1));
+      orderInput.addEventListener("change", () => setOrderManual(orderInput.value));
 
       if (state.toOrder[key] > 0) row.classList.add("has-qty");
       body.appendChild(row);
