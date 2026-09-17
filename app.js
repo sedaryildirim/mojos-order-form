@@ -173,6 +173,15 @@ function renderOrderScreen() {
       completeBtn.textContent = state.completed[ci] ? "Category Completed ✓" : "Mark Category Complete";
       saveDraft();
       updateIncompleteWarning();
+
+      if (state.completed[ci]) {
+        catEl.classList.remove("open");
+        const next = content.children[ci + 1];
+        if (next) {
+          next.classList.add("open");
+          next.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
     });
     body.appendChild(completeBtn);
 
