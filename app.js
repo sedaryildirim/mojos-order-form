@@ -368,8 +368,18 @@ function buildOrderText() {
   return lines.join("\n");
 }
 
+function formatDateDDMMYYYY(d) {
+  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  return `${dd}/${mm}/${d.getFullYear()}`;
+}
+
+function supplierShortName() {
+  return state.supplier.name.replace(/^Order\s+/i, "").toUpperCase();
+}
+
 function sendOrder() {
-  const subject = `Mojo's Order - ${state.branch.name} - ${state.supplier.name} - ${new Date().toLocaleDateString()}`;
+  const subject = `${supplierShortName()} ${state.branch.name.toUpperCase()} ORDER ${formatDateDDMMYYYY(new Date())}`;
   const body = buildOrderText();
   let mailto = `mailto:${encodeURIComponent(state.branch.email)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   if (CONFIG.ccEmail) mailto += `&cc=${encodeURIComponent(CONFIG.ccEmail)}`;
