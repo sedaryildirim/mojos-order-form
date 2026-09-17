@@ -83,6 +83,22 @@ function moqShortfall() {
   return Math.max(0, moq - totalUnitsSelected());
 }
 
+function comboMismatches() {
+  const messages = [];
+  state.data.categories.forEach((cat, ci) => {
+    if (!cat.combo || !cat.combo.requireTogether) return;
+    const minEach = cat.combo.minEach || 1;
+    const qtys = cat.combo.itemIndices.map(idx => state.toOrder[itemKey(ci, idx)] || 0);
+    const anyTouched = qtys.some(q => q > 0);
+    const allMet = qtys.every(q => q >= minEach);
+    if (anyTouched && !allMet) {
+      const names = cat.combo.itemIndices.map(idx => cat.items[idx].name).join(" and ");
+      messages.push(`${names} must be ordered together (minimum ${minEach} kg each).`);
+    }
+  });
+  return messages;
+}
+
 function totalEstimatedCost() {
   let total = 0;
   state.data.categories.forEach((cat, ci) => {
@@ -183,12 +199,24 @@ function renderOrderScreen() {
     const comboBox = cat.combo ? document.createElement("div") : null;
     function updateComboBox() {
       if (!comboBox) return;
-      const totalG = cat.combo.itemIndices.reduce(
-        (sum, idx) => sum + (state.toOrder[itemKey(ci, idx)] || 0), 0
-      ) * (cat.combo.unitGrams || 1000);
+      const qtys = cat.combo.itemIndices.map(idx => state.toOrder[itemKey(ci, idx)] || 0);
+      const totalG = qtys.reduce((sum, q) => sum + q, 0) * (cat.combo.unitGrams || 1000);
       const patties = Math.floor(totalG / cat.combo.pattyWeightG);
-      comboBox.className = "combo-box";
-      comboBox.innerHTML = `<strong>${patties}</strong> ${cat.combo.label} <span class="combo-sub">${(totalG / 1000).toFixed(totalG % 1000 ? 1 : 0)}kg &divide; ${cat.combo.pattyWeightG}g each</span>`;
+      let html = `<strong>${patties}</strong> ${cat.combo.label} <span class="combo-sub">${(totalG / 1000).toFixed(totalG % 1000 ? 1 : 0)}kg &divide; ${cat.combo.pattyWeightG}g each</span>`;
+      let mismatched = false;
+
+      if (cat.combo.requireTogether) {
+        const minEach = cat.combo.minEach || 1;
+        const anyTouched = qtys.some(q => q > 0);
+        const allMet = qtys.every(q => q >= minEach);
+        mismatched = anyTouched && !allMet;
+        html += mismatched
+          ? `<span class="combo-warning">&#9888; Order both items together, minimum ${minEach} kg each</span>`
+          : `<span class="combo-note">Must be ordered together, minimum ${minEach} kg each</span>`;
+      }
+
+      comboBox.className = "combo-box" + (mismatched ? " combo-box-warning" : "");
+      comboBox.innerHTML = html;
     }
 
     cat.items.forEach((item, ii) => {
@@ -308,7 +336,7 @@ function updateBottomBar() {
   const n = totalItemsSelected();
   $("#selectedCount").textContent = n;
   $("#estTotal").textContent = formatMoney(totalWithVat()) + " incl. VAT";
-  $("#reviewBtn").disabled = n === 0 || moqShortfall() > 0;
+  $("#reviewBtn").disabled = n === 0 || moqShortfall() > 0 || comboMismatches().length > 0;
   updateIncompleteWarning();
 }
 
@@ -332,6 +360,8 @@ function updateIncompleteWarning() {
   if (shortfall > 0) {
     lines.push(`Minimum order is ${state.data.moq} ${state.data.moqLabel || "units"} — add ${shortfall} more to meet MOQ.`);
   }
+
+  lines.push(...comboMismatches());
 
   if (lines.length === 0) {
     warning.classList.add("hidden");
@@ -410,12 +440,22 @@ function renderReviewScreen() {
   totalRow.innerHTML = `<span>Estimated Total</span><span>${formatMoney(subtotal + vat)}</span>`;
   list.appendChild(totalRow);
 
+  const gateLines = [];
   const { total, incomplete } = incompleteCategories();
   if (total > 0 && incomplete.length > 0) {
     const names = incomplete.map(c => c.name).join(", ");
+    gateLines.push(`${incomplete.length} of ${total} categories not marked complete: ${names}.`);
+  }
+  const shortfall = moqShortfall();
+  if (shortfall > 0) {
+    gateLines.push(`Minimum order is ${state.data.moq} ${state.data.moqLabel || "units"} — add ${shortfall} more to meet MOQ.`);
+  }
+  gateLines.push(...comboMismatches());
+
+  if (gateLines.length > 0) {
     const gate = document.createElement("div");
     gate.className = "review-gate-warning";
-    gate.innerHTML = `&#9888; ${incomplete.length} of ${total} categories not marked complete: ${names}. Go back and mark them complete before sending.`;
+    gate.innerHTML = `&#9888; ${gateLines.join("<br>")} Go back and fix this before sending.`;
     list.appendChild(gate);
     setSubmitButtonsDisabled(true);
   } else {

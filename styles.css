@@ -342,6 +342,23 @@ body.has-warning {
   color: var(--muted);
   margin-top: 2px;
 }
+.combo-box .combo-note {
+  display: block;
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+.combo-box .combo-warning {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--warning);
+  margin-top: 8px;
+}
+.combo-box-warning {
+  border-color: var(--warning-border);
+  background: var(--warning-bg);
+}
 
 .complete-btn {
   display: block;
