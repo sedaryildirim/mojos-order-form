@@ -17,6 +17,23 @@ colors:
   caution-amber-bg: "#3d2a14"
   caution-amber-text: "#f2c98d"
   caution-amber-border: "#6b4a1f"
+colors-light:
+  charred-terracotta: "#e0673f"
+  charred-terracotta-pressed: "#c2532f"
+  charred-terracotta-ink: "#a53f1d"
+  worn-parchment-bg: "#ebe7e0"
+  paper-surface: "#f9f8f6"
+  paper-surface-raised: "#e2dfd9"
+  paper-surface-lifted: "#d3cec5"
+  ink-text: "#2f261e"
+  faded-ink: "#625947"
+  hairline-brown: "#8e8167"
+  verified-green: "#24603a"
+  verified-green-bg: "#ddeee3"
+  alert-red: "#a53327"
+  caution-amber-bg: "#f6e6cb"
+  caution-amber-text: "#864913"
+  caution-amber-border: "#9e662e"
 typography:
   body:
     fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif"
@@ -105,13 +122,16 @@ The palette is warm and dim rather than cold and dark: a near-black brown-black 
 
 ## 2. Colors
 
-The palette is a wider warm-neutral scale stepped by surface depth, plus one committed accent that still carries action and status. Every neutral is warmed toward the same brown-black hue rather than true gray, so the whole system reads as one material rather than a UI-kit default.
+The app now ships two themes, Dark (the original, default) and Light, switched by a toggle on the branch-selection screen and remembered per device. Both are the same warm-neutral material and the same one-accent system; only the direction of the tonal ramp flips. The scene that justifies offering both: dark suits the dim storage room this app was designed for, but a bright prep line at midday, or a phone screen catching direct light near a loading dock, makes a dark UI mostly glare. Staff pick whichever reads better where they're standing.
+
+The palette is a warm-neutral scale stepped by surface depth, plus one committed accent that still carries action and status. Every neutral is warmed toward the same brown-black hue rather than true gray (or true cream, in Light), so the whole system reads as one material rather than a UI-kit default.
 
 The neutral ramp was widened in a legibility pass: the original three surface tones sat only ~3% apart in lightness and the hairline border was barely visible (1.3:1 against its card), so card boundaries, item dividers, and field outlines relied on almost nothing under real kitchen lighting. Each step is now ~5.5% apart, and the border was pushed to a genuinely visible 3.1-3.4:1 against the surfaces it outlines. The hue and the anchor background didn't move: this is the same material, just legible at a glance instead of on close inspection.
 
 ### Primary
-- **Charred Terracotta** (`#e0673f`): the one accent. Carries primary buttons, the running order total, active stepper icons, and the dashed accent border on the burger-patty combo box. Used for action and current-value, never for decoration; if it appears, something is tappable or is a live number.
-- **Charred Terracotta Pressed** (`#c2532f`): the active/pressed state for primary buttons. Darker, not lighter, so a press reads as "sinking in," not "lighting up."
+- **Charred Terracotta** (`#e0673f`): the one accent, used only for button fills. Identical value in both themes: paired against the fixed dark button text (`#241206`), the contrast math doesn't change with the theme, so the primary button looks the same everywhere. Never used as a background outside of buttons and their armed/confirming states.
+- **Charred Terracotta Pressed** (`#c2532f`): the active/pressed state for primary buttons. Darker, not lighter, so a press reads as "sinking in," not "lighting up." Also unchanged between themes.
+- **Charred Terracotta Ink** (dark theme: same as Charred Terracotta, `#e0673f`; light theme: `#a53f1d`): the accent's value wherever it's used as literal text, an icon glyph, or a border directly on a surface, not as a button fill. The vivid `#e0673f` reads at 2.6-3.2:1 on the light theme's pale surfaces, well under AA; a plain hue swap of the whole accent would have either broken light-mode legibility or thrown off the button color in dark mode. Splitting "accent as fill" from "accent as ink" solved both without compromise. Drives: the focus ring, stepper +/- icons, the running total, the combo-box's dashed border and patty count, ghost/secondary button text and border, and review-line quantities.
 
 ### Neutral
 - **Seasoned Cast Iron** (`#14130f`): the base background. A warm near-black, not `#000`, evoking a worn tool rather than a screen. Unchanged; every other neutral is a step up from this anchor.
@@ -131,6 +151,17 @@ The neutral ramp was widened in a legibility pass: the original three surface to
 **The One Accent Rule.** Charred Terracotta appears only where something is actionable or is a live number (buttons, totals, active icons). It never fills a background or decorates a static element. If you're reaching for the accent color and nothing is happening or being acted on, reach for a neutral instead. This survived the legibility pass on purpose: a second saturated hue would compete with the accent for the "this is tappable" signal, which is a bigger usability cost than the surfaces being under-differentiated was. The fix for that was a wider *neutral* ramp, not a second color.
 
 **The Tonal Depth Rule.** Elevation is expressed by stepping through Seasoned Cast Iron, Ash Surface, Ash Surface Raised, and (for momentary pressed states only) Ash Surface Lifted, never by shadow. A more "raised" element is simply a lighter tonal step.
+
+### Light Theme
+Same hue family (warm brown, not blue-gray), same component structure, same one-accent rule; every named neutral just gets a Light counterpart rather than a different design:
+
+- **Worn Parchment** (`#ebe7e0`) replaces Seasoned Cast Iron as the base. A toned warm stone, not paper-white and deliberately not the near-white "SaaS cream" this product's own anti-references reject; it's meant to look like a well-used ledger page, not a marketing site.
+- **Paper Surface** (`#f9f8f6`), **Paper Surface Raised** (`#e2dfd9`), **Paper Surface Lifted** (`#d3cec5`) replace the three Ash tones.
+- **Ink Text** (`#2f261e`) and **Faded Ink** (`#625947`) replace Warm Parchment and Faded Soot.
+- **Hairline Brown** (`#8e8167`) replaces Hairline Ash, tuned to the same visible-boundary standard (2.9-3.6:1 against the surfaces it borders) as the dark theme's widened border.
+- **Verified Green** (`#24603a`), **Alert Red** (`#a53327`), and **Caution Amber** (bg `#f6e6cb`, text `#864913`, border `#9e662e`) are deepened versions of the dark theme's status colors. Unlike the accent, each status color works as both its own fill and its own ink in both themes, so no ink/fill split was needed there, only new values tuned for a light background.
+
+**The Elevation-Direction Rule (Light only).** In dark mode, "more elevated" means lighter (closer to the ceiling). In light mode, the base itself already sits close to white, so the same upward direction runs out of room fast. Light mode instead makes elevated content surfaces (cards, the topbar) brighter and closer to white than the page behind them, while the surface a finger actually types into (Stock field, stepper) is a step *duller*, like ink sunk into paper rather than a raised tile. Both themes still communicate depth with tone alone, zero shadows; they just don't run the same direction, and that's fine, each theme's internal logic is self-consistent even where the two diverge.
 
 ## 3. Typography
 
@@ -197,6 +228,7 @@ Once every item in a category has been reviewed (a stock count entered, an order
 - **Style:** a single sticky topbar (Ash Surface, 1px bottom border) per screen, carrying a title, optional subtitle, and up to three 44px icon buttons. No side nav, no tab bar; the app is a strict linear flow (branch, then supplier, then order, then review, then confirm) and never needs lateral navigation.
 - **Start Over:** a house-glyph icon button on the order and review topbars jumps straight back to branch selection, using the same armed/confirm pattern as Clear All and Change Supplier. It's non-destructive: every field autosaves per branch+supplier as it's typed, so this is a shortcut back to the start, not a wipe. That's also why it needs no stronger warning than the standard two-tap arm.
 - **Order Another Supplier:** the confirmation screen's primary action after a successful send, jumping directly to the supplier picker for the same branch rather than back to branch selection. Since a branch visit usually means placing all four supplier orders in one sitting, this is the expected next step, not "Start New Order" (which resets the branch too and is now the secondary action on that screen).
+- **Theme Toggle:** a sun/moon icon button in the top-right corner of the branch-selection screen only, the one screen every session passes through. Switching applies instantly across the whole app (it's a single `data-theme` attribute driving every CSS variable) and is remembered per device; the choice is read before the page paints, so there's no flash of the wrong theme on load.
 
 ### Status Banners (signature component)
 Three status banners share one visual language (rounded rect, colored text on a tinted background of the same hue, no border-radius exceeding 10px) but never share a color: Caution Amber for "not done yet" (incomplete categories, MOQ shortfall, the review-screen send gate), Alert Red only for the two-tap destructive confirmation toast, Verified Green reserved for the category-complete state itself. No banner ever uses the Charred Terracotta accent, keeping "you can act on this" (accent) visually distinct from "here's your status" (amber/red/green).

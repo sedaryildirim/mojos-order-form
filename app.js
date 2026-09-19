@@ -14,6 +14,24 @@ let allDrafts = {}; // { [branchId]: { [supplierId]: {stock, toOrder, completed,
 function $(sel, el = document) { return el.querySelector(sel); }
 function $all(sel, el = document) { return [...el.querySelectorAll(sel)]; }
 
+const THEME_KEY = "mojos_theme";
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  localStorage.setItem(THEME_KEY, theme);
+  const btn = $("#themeToggle");
+  if (!btn) return;
+  const switchTo = theme === "light" ? "dark" : "light";
+  btn.textContent = theme === "light" ? "☽" : "☀";
+  btn.title = `Switch to ${switchTo} mode`;
+  btn.setAttribute("aria-label", `Switch to ${switchTo} mode`);
+}
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
+  applyTheme(current === "light" ? "dark" : "light");
+}
+
 function showScreen(id) {
   $all(".screen").forEach(s => s.classList.remove("active"));
   $("#" + id).classList.add("active");
@@ -708,6 +726,8 @@ function hideActionToast() {
 function init() {
   allDrafts = loadAllDrafts();
   renderBranchScreen();
+  applyTheme(document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark");
+  $("#themeToggle").addEventListener("click", toggleTheme);
 
   $("#backToBranch").addEventListener("click", () => showScreen("branchScreen"));
   $("#backToOrder").addEventListener("click", () => showScreen("orderScreen"));

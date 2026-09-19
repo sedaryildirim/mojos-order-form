@@ -4,6 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>Mojo's Ordering</title>
+<script>
+(function () {
+  try {
+    var t = localStorage.getItem("mojos_theme");
+    if (t !== "light" && t !== "dark") {
+      t = (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) ? "light" : "dark";
+    }
+    document.documentElement.setAttribute("data-theme", t);
+  } catch (e) {}
+})();
+</script>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -11,6 +22,7 @@
 <!-- Branch select -->
 <section id="branchScreen" class="screen">
   <div class="branch-screen">
+    <button class="icon-btn theme-toggle" id="themeToggle" title="Switch theme" aria-label="Switch theme"></button>
     <div class="logo">Mojo's Ordering</div>
     <div class="tagline">Select your branch to start an order</div>
     <div class="branch-grid" id="branchGrid"></div>
