@@ -36,7 +36,7 @@ const DATA = {
             "id": "198368",
             "name": "ARO Chicken Egg no.2 with Cover 30 pcs",
             "unit": "EACH",
-            "price": 155.0,
+            "price": 152.0,
             "par": null
           },
           {
@@ -209,7 +209,7 @@ const DATA = {
             "id": "233616",
             "name": "Pork Hip Mince 1 kg",
             "unit": "Kilogram",
-            "price": 145.0,
+            "price": 149.0,
             "par": null
           },
           {
@@ -277,7 +277,7 @@ const DATA = {
             "id": "862439",
             "name": "Dill Coriander 150 g",
             "unit": "EACH",
-            "price": 32.0,
+            "price": 29.0,
             "par": null
           },
           {
@@ -403,7 +403,7 @@ const DATA = {
             "id": "104988",
             "name": "King Oyster Mushroom Size L 1 kg",
             "unit": "Kilogram",
-            "price": 59.0,
+            "price": 65.0,
             "par": null
           },
           {
@@ -424,7 +424,7 @@ const DATA = {
             "id": "243886",
             "name": "Long Eggplant 1 kg",
             "unit": "EACH",
-            "price": 55.0,
+            "price": 49.0,
             "par": null
           },
           {
@@ -452,7 +452,7 @@ const DATA = {
             "id": "310591",
             "name": "Plum Tomato 3 kg Pack",
             "unit": "EACH",
-            "price": 115.0,
+            "price": 105.0,
             "par": null
           },
           {
@@ -515,7 +515,7 @@ const DATA = {
             "id": "695657",
             "name": "Short Cucumber (Catering) Pack 3 kg",
             "unit": "EACH",
-            "price": 139.0,
+            "price": 99.0,
             "par": null
           },
           {
@@ -529,7 +529,7 @@ const DATA = {
             "id": "826819",
             "name": "Spring Onion 300 g",
             "unit": "EACH",
-            "price": 59.0,
+            "price": 55.0,
             "par": null
           },
           {
@@ -543,7 +543,7 @@ const DATA = {
             "id": "859613",
             "name": "Sugar Snap Pea 500 g",
             "unit": "EACH",
-            "price": 99.0,
+            "price": 95.0,
             "par": null
           },
           {
@@ -789,7 +789,7 @@ const DATA = {
             "id": "129559",
             "name": "HEINZ Apple Vinegar 946 ml",
             "unit": "EACH",
-            "price": 309.0,
+            "price": 354.0,
             "par": null
           },
           {
@@ -934,7 +934,7 @@ const DATA = {
             "id": "830864",
             "name": "MCGARRETT Baking Soda 1 kg",
             "unit": "EACH",
-            "price": 101.0,
+            "price": 110.0,
             "par": null
           },
           {
@@ -1213,7 +1213,7 @@ const DATA = {
             "id": "901191",
             "name": "ARO Kitchen Towel 6+2 rolls",
             "unit": "EACH",
-            "price": 135.0,
+            "price": 129.0,
             "par": null
           },
           {
@@ -1276,7 +1276,7 @@ const DATA = {
             "id": "807013",
             "name": "FEST Paper Lunch Box 600 ml x 50",
             "unit": "EACH",
-            "price": 79.0,
+            "price": 105.0,
             "par": null
           },
           {
