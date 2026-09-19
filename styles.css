@@ -2,11 +2,12 @@
   --accent: #e0673f;
   --accent-dark: #c2532f;
   --bg: #14130f;
-  --card: #1e1c17;
-  --card-alt: #262319;
+  --card: #25221b;
+  --card-alt: #363226;
+  --card-raised: #494434;
   --text: #f2ede4;
   --muted: #b3a99a;
-  --border: #35312a;
+  --border: #7a735c;
   --success: #4caf68;
   --success-bg: #1c2b1e;
   --danger: #d6564a;
@@ -101,7 +102,7 @@ body.has-warning {
   border-color: var(--accent);
   color: var(--on-accent);
 }
-.icon-btn:active { background: var(--border); }
+.icon-btn:active { background: var(--card-raised); }
 .icon-btn.danger:active { background: rgba(214,86,74,0.18); }
 
 /* ---------- Branch select screen ---------- */
@@ -228,7 +229,7 @@ body.has-warning {
 .category.completed .category-header .check { display: inline; }
 .category-header .chev { transition: transform 0.15s ease; color: var(--muted); }
 .category.open .chev { transform: rotate(180deg); }
-.category-header:active { background: var(--card-alt); }
+.category-header:active { background: var(--card-raised); }
 .category.completed .category-header:active { background: rgba(76,175,104,0.12); }
 
 .category-body { display: none; border-top: 1px solid var(--border); }

@@ -5,11 +5,12 @@ colors:
   charred-terracotta: "#e0673f"
   charred-terracotta-pressed: "#c2532f"
   seasoned-cast-iron: "#14130f"
-  ash-surface: "#1e1c17"
-  ash-surface-raised: "#262319"
+  ash-surface: "#25221b"
+  ash-surface-raised: "#363226"
+  ash-surface-lifted: "#494434"
   warm-parchment: "#f2ede4"
   faded-soot: "#b3a99a"
-  hairline-ash: "#35312a"
+  hairline-ash: "#7a735c"
   verified-green: "#4caf68"
   verified-green-bg: "#1c2b1e"
   alert-red: "#d6564a"
@@ -104,19 +105,22 @@ The palette is warm and dim rather than cold and dark: a near-black brown-black 
 
 ## 2. Colors
 
-The palette is Restrained: tinted near-black neutrals stepped by surface depth, plus one committed accent that carries action and status. Every neutral is warmed toward the same brown-black hue rather than true gray, so the whole system reads as one material rather than a UI-kit default.
+The palette is a wider warm-neutral scale stepped by surface depth, plus one committed accent that still carries action and status. Every neutral is warmed toward the same brown-black hue rather than true gray, so the whole system reads as one material rather than a UI-kit default.
+
+The neutral ramp was widened in a legibility pass: the original three surface tones sat only ~3% apart in lightness and the hairline border was barely visible (1.3:1 against its card), so card boundaries, item dividers, and field outlines relied on almost nothing under real kitchen lighting. Each step is now ~5.5% apart, and the border was pushed to a genuinely visible 3.1-3.4:1 against the surfaces it outlines. The hue and the anchor background didn't move: this is the same material, just legible at a glance instead of on close inspection.
 
 ### Primary
 - **Charred Terracotta** (`#e0673f`): the one accent. Carries primary buttons, the running order total, active stepper icons, and the dashed accent border on the burger-patty combo box. Used for action and current-value, never for decoration; if it appears, something is tappable or is a live number.
 - **Charred Terracotta Pressed** (`#c2532f`): the active/pressed state for primary buttons. Darker, not lighter, so a press reads as "sinking in," not "lighting up."
 
 ### Neutral
-- **Seasoned Cast Iron** (`#14130f`): the base background. A warm near-black, not `#000`, evoking a worn tool rather than a screen.
-- **Ash Surface** (`#1e1c17`): the first layer up from the background: category cards, the topbar, the bottom bar. One step warmer and lighter than the base.
-- **Ash Surface Raised** (`#262319`): the second layer: inputs, steppers, icon buttons. The surface a finger actually touches sits one step higher than the surface it rests on.
+- **Seasoned Cast Iron** (`#14130f`): the base background. A warm near-black, not `#000`, evoking a worn tool rather than a screen. Unchanged; every other neutral is a step up from this anchor.
+- **Ash Surface** (`#25221b`): the first layer up from the background: category cards, the topbar, the bottom bar, item-row dividers.
+- **Ash Surface Raised** (`#363226`): the second layer: inputs, steppers, icon buttons, the Par field. The surface a finger actually touches sits one step higher than the surface it rests on.
+- **Ash Surface Lifted** (`#494434`): the third layer, reserved for momentary `:active`/pressed states on category headers and icon buttons. Never a resting-state background; it's the tone something jumps to for the instant it's held down.
 - **Warm Parchment** (`#f2ede4`): primary text. An off-white, never pure `#fff`, so it never glares against the warm dark surfaces around it.
-- **Faded Soot** (`#b3a99a`): secondary text: labels, units, category counts, timestamps. Present but never competing with a number. Lightened from the original `#a49b8d` to clear 6.7:1+ contrast on every surface it sits on, including as the unset-par value's text color.
-- **Hairline Ash** (`#35312a`): all hairline borders and dividers. Barely there; separates without drawing a box around everything.
+- **Faded Soot** (`#b3a99a`): secondary text: labels, units, category counts, timestamps. Present but never competing with a number.
+- **Hairline Ash** (`#7a735c`): all hairline borders and dividers. Lightened from `#35312a` so card edges, item-row separators, and field outlines are actually visible (3.1-3.4:1 against the surfaces they sit on) rather than relying on the eye to fill in a boundary that wasn't really there.
 
 ### Status
 - **Verified Green** (`#4caf68`) / **Verified Green Background** (`#1c2b1e`): a category that's been checked off. The only place green appears; it means "confirmed," nowhere else.
@@ -124,9 +128,9 @@ The palette is Restrained: tinted near-black neutrals stepped by surface depth, 
 - **Caution Amber** (background `#3d2a14`, text `#f2c98d`, border `#6b4a1f`): incomplete-work warnings, the review-screen send-gate, and MOQ shortfalls. A distinct third status color so "not done yet" never gets confused with "confirmed" (green) or "destructive" (red).
 
 ### Named Rules
-**The One Accent Rule.** Charred Terracotta appears only where something is actionable or is a live number (buttons, totals, active icons). It never fills a background or decorates a static element. If you're reaching for the accent color and nothing is happening or being acted on, reach for a neutral instead.
+**The One Accent Rule.** Charred Terracotta appears only where something is actionable or is a live number (buttons, totals, active icons). It never fills a background or decorates a static element. If you're reaching for the accent color and nothing is happening or being acted on, reach for a neutral instead. This survived the legibility pass on purpose: a second saturated hue would compete with the accent for the "this is tappable" signal, which is a bigger usability cost than the surfaces being under-differentiated was. The fix for that was a wider *neutral* ramp, not a second color.
 
-**The Tonal Depth Rule.** Elevation is expressed by stepping through Seasoned Cast Iron to Ash Surface to Ash Surface Raised, never by shadow. A more "raised" element is simply a lighter tonal step.
+**The Tonal Depth Rule.** Elevation is expressed by stepping through Seasoned Cast Iron, Ash Surface, Ash Surface Raised, and (for momentary pressed states only) Ash Surface Lifted, never by shadow. A more "raised" element is simply a lighter tonal step.
 
 ## 3. Typography
 
@@ -146,7 +150,7 @@ The palette is Restrained: tinted near-black neutrals stepped by surface depth, 
 
 ## 4. Elevation
 
-This system has no shadows at all: zero `box-shadow` declarations anywhere in the stylesheet. Depth is conveyed entirely through tonal layering (Seasoned Cast Iron to Ash Surface to Ash Surface Raised) and 1px hairline borders. A flat surface on a dim, low-glare screen in a storage room reads faster than a drop shadow would; shadows are a decoration this product has no use for.
+This system has no shadows at all: zero `box-shadow` declarations anywhere in the stylesheet. Depth is conveyed entirely through tonal layering (Seasoned Cast Iron to Ash Surface to Ash Surface Raised to Ash Surface Lifted) and 1px hairline borders, both now spaced far enough apart to actually read as depth rather than as noise. A flat surface on a dim, low-glare screen in a storage room reads faster than a drop shadow would; shadows are a decoration this product has no use for.
 
 ### Named Rules
 **The No-Shadow Rule.** If an element needs to look "lifted," step it one tone lighter instead of adding a shadow. There is no exception in this system, including for the confirmation-screen's success icon, which is a flat filled circle, not a shadowed badge.
@@ -166,7 +170,7 @@ Every component is blunt and tappable: large flat surfaces, an obvious pressed s
 - **Background:** Ash Surface at rest; switches to Verified Green Background with a Verified Green border when a category is marked complete. That border-and-background pair is the only signal for "done," no shadow, no icon animation.
 - **Border:** 1px Hairline Ash by default; category cards get a full-strength status-colored border only when complete.
 - **Internal Padding:** 14px-16px horizontal, matching the global `lg` spacing step.
-- **Pressed state:** category headers and icon buttons step one tone toward Ash Surface Raised / Hairline Ash on `:active`, the same tonal-step language as elevation, so every tap registers visually before the state actually changes.
+- **Pressed state:** category headers and icon buttons jump to Ash Surface Lifted on `:active`, the same tonal-step language as elevation, so every tap registers visually before the state actually changes.
 
 ### Item Rows
 - **Answered state:** once an item has a nonzero To Order quantity, its row background tints with a 14% wash of Charred Terracotta and its name goes to weight 600. This is the row-level equivalent of the category-complete signal: a glance down a scrolled list shows what's been touched without reading every number.
