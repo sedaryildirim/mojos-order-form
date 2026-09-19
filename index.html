@@ -36,6 +36,7 @@
     </div>
     <button class="icon-btn danger" id="clearAllBtn" title="Clear all" aria-label="Clear all">&#128465;</button>
     <button class="icon-btn" id="switchBranch" title="Change supplier" aria-label="Change supplier">&#8646;</button>
+    <button class="icon-btn" id="startOverBtn" title="Start over" aria-label="Start over from branch selection">&#8962;</button>
   </header>
   <div class="action-toast hidden" id="actionToast"></div>
   <div class="search-wrap">
@@ -59,6 +60,7 @@
 <section id="reviewScreen" class="screen">
   <header class="topbar">
     <div>Review Order</div>
+    <button class="icon-btn" id="startOverReviewBtn" title="Start over" aria-label="Start over from branch selection">&#8962;</button>
   </header>
   <div class="review-list" id="reviewList"></div>
   <div class="bottombar stacked">
@@ -76,8 +78,9 @@
     <div class="confirm-icon">&#10003;</div>
     <h2 id="confirmHeading">Order sent</h2>
     <p id="confirmBody">Your mail app has opened with the order pre-filled. Tap send there to confirm.</p>
+    <button class="btn" id="nextSupplierBtn">Order From Another Supplier</button>
+    <button class="btn secondary" id="newOrderBtn">Start New Order</button>
     <button class="btn secondary copy-btn" id="copyOrderBtn">&#128203; Copy Order Text</button>
-    <button class="btn" id="newOrderBtn">Start New Order</button>
   </div>
 </section>
 

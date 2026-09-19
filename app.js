@@ -4,11 +4,12 @@ const state = {
   data: null,
   stock: {},     // "catIdx-itemIdx" -> current stock count
   toOrder: {},   // "catIdx-itemIdx" -> qty to order
-  completed: {}  // catIdx -> true
+  completed: {}, // catIdx -> true
+  skipped: {}    // "catIdx-itemIdx" -> true (deliberately not ordering this item)
 };
 
 const STORAGE_KEY = "mojos_order_drafts_v3";
-let allDrafts = {}; // { [branchId]: { [supplierId]: {stock, toOrder, completed} } }
+let allDrafts = {}; // { [branchId]: { [supplierId]: {stock, toOrder, completed, skipped} } }
 
 function $(sel, el = document) { return el.querySelector(sel); }
 function $all(sel, el = document) { return [...el.querySelectorAll(sel)]; }
@@ -19,7 +20,7 @@ function showScreen(id) {
   window.scrollTo(0, 0);
 }
 
-function emptySlice() { return { stock: {}, toOrder: {}, completed: {} }; }
+function emptySlice() { return { stock: {}, toOrder: {}, completed: {}, skipped: {} }; }
 
 function loadAllDrafts() {
   try {
@@ -42,7 +43,8 @@ function saveDraft() {
   allDrafts[state.branch.id][state.supplier.id] = {
     stock: state.stock,
     toOrder: state.toOrder,
-    completed: state.completed
+    completed: state.completed,
+    skipped: state.skipped
   };
   persistAllDrafts();
   localStorage.setItem("mojos_last_selection", JSON.stringify({ branch: state.branch.id, supplier: state.supplier.id }));
@@ -61,6 +63,43 @@ function setCategoryOpen(catEl, open) {
   catEl.classList.toggle("open", open);
   const header = $(".category-header", catEl);
   if (header) header.setAttribute("aria-expanded", String(open));
+}
+
+// An item counts as "reviewed" once staff have entered a stock count, set an
+// order quantity, or explicitly skipped it. Items with no par/stock tracking
+// (e.g. "Bottles to Return") don't need review to count as touched.
+function isItemTouched(item, key) {
+  if (item.noParStock) return true;
+  if (Object.prototype.hasOwnProperty.call(state.stock, key)) return true;
+  if (state.skipped[key]) return true;
+  if (state.toOrder[key] > 0) return true;
+  return false;
+}
+
+function setCategoryCompleted(ci, catEl, completed) {
+  state.completed[ci] = completed;
+  catEl.classList.toggle("completed", completed);
+  const btn = $(".complete-btn", catEl);
+  if (btn) btn.textContent = completed ? "Category Completed ✓" : "Mark Category Complete";
+  saveDraft();
+  updateIncompleteWarning();
+  if (completed) {
+    setCategoryOpen(catEl, false);
+    const next = catEl.nextElementSibling;
+    if (next && next.classList.contains("category")) {
+      setCategoryOpen(next, true);
+      next.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }
+}
+
+// Once every item in a category has been reviewed (stock entered, order set,
+// or skipped), mark it complete automatically so staff don't have to tap
+// "Mark Category Complete" by hand for every one of a dozen categories.
+function maybeAutoComplete(ci, catEl, cat) {
+  if (state.completed[ci]) return;
+  const allTouched = cat.items.every((item, ii) => isItemTouched(item, itemKey(ci, ii)));
+  if (allTouched) setCategoryCompleted(ci, catEl, true);
 }
 
 function totalItemsSelected() {
@@ -162,6 +201,7 @@ function selectSupplier(s) {
   state.stock = slice.stock;
   state.toOrder = slice.toOrder;
   state.completed = slice.completed;
+  state.skipped = slice.skipped || {};
   saveDraft();
   renderOrderScreen();
   showScreen("orderScreen");
@@ -224,8 +264,9 @@ function renderOrderScreen() {
       const parUnset = item.par === null || item.par === undefined;
       const par = parUnset ? 0 : item.par;
       const step = item.step || 1;
+      const isSkipped = !!state.skipped[key];
       const row = document.createElement("div");
-      row.className = "item-row";
+      row.className = "item-row" + (isSkipped ? " skipped" : "");
       row.dataset.key = key;
 
       row.innerHTML = item.noParStock ? `
@@ -239,6 +280,10 @@ function renderOrderScreen() {
       ` : `
         <div class="item-name">${item.name}</div>
         <div class="item-sub">${item.unit} &middot; ${item.price ? "฿" + item.price : ""}</div>
+        <label class="skip-toggle">
+          <input type="checkbox" class="skip-checkbox"${isSkipped ? " checked" : ""} aria-label="Skip ${item.name}, not ordering it this time">
+          Skip this item
+        </label>
         <div class="fields-row">
           <div class="field par">
             <label>Par</label>
@@ -263,6 +308,7 @@ function renderOrderScreen() {
       const orderInput = $(".order-input", row);
       const dec = $(".dec", row);
       const inc = $(".inc", row);
+      const skipCheckbox = $(".skip-checkbox", row);
 
       // Once the user has directly set a To Order value, stop overwriting it
       // when Stock changes again - "auto-calculates but stays manually
@@ -279,6 +325,7 @@ function renderOrderScreen() {
         updateBottomBar();
         if (cat.combo && cat.combo.itemIndices.includes(ii)) updateComboBox();
         if ($("#onlyTouchedToggle").checked) applyFilters();
+        maybeAutoComplete(ci, catEl, cat);
       }
 
       function setOrderManual(v) {
@@ -291,6 +338,7 @@ function renderOrderScreen() {
         if (v === "") delete state.stock[key];
         else state.stock[key] = v;
         saveDraft();
+        maybeAutoComplete(ci, catEl, cat);
         if (orderManuallySet) return;
         // auto-suggest to-order from par minus stock, only while the user
         // hasn't overridden it yet
@@ -302,6 +350,24 @@ function renderOrderScreen() {
       dec.addEventListener("click", () => setOrderManual((Number(orderInput.value) || 0) - step));
       inc.addEventListener("click", () => setOrderManual((Number(orderInput.value) || 0) + step));
       orderInput.addEventListener("change", () => setOrderManual(orderInput.value));
+
+      if (skipCheckbox) {
+        skipCheckbox.addEventListener("change", () => {
+          if (skipCheckbox.checked) {
+            state.skipped[key] = true;
+            row.classList.add("skipped");
+            if (stockInput) stockInput.value = "";
+            delete state.stock[key];
+            setOrder(0); // clears any qty, saves draft, and checks auto-complete
+            const nextRow = row.nextElementSibling;
+            if (nextRow) nextRow.scrollIntoView({ behavior: "smooth", block: "start" });
+          } else {
+            delete state.skipped[key];
+            row.classList.remove("skipped");
+            saveDraft();
+          }
+        });
+      }
 
       if (state.toOrder[key] > 0) row.classList.add("has-qty");
       body.appendChild(row);
@@ -316,20 +382,7 @@ function renderOrderScreen() {
     completeBtn.className = "complete-btn";
     completeBtn.textContent = state.completed[ci] ? "Category Completed ✓" : "Mark Category Complete";
     completeBtn.addEventListener("click", () => {
-      state.completed[ci] = !state.completed[ci];
-      catEl.classList.toggle("completed", !!state.completed[ci]);
-      completeBtn.textContent = state.completed[ci] ? "Category Completed ✓" : "Mark Category Complete";
-      saveDraft();
-      updateIncompleteWarning();
-
-      if (state.completed[ci]) {
-        setCategoryOpen(catEl, false);
-        const next = content.children[ci + 1];
-        if (next) {
-          setCategoryOpen(next, true);
-          next.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      }
+      setCategoryCompleted(ci, catEl, !state.completed[ci]);
     });
     body.appendChild(completeBtn);
 
@@ -600,6 +653,7 @@ function resetOrder() {
   state.stock = {};
   state.toOrder = {};
   state.completed = {};
+  state.skipped = {};
   localStorage.removeItem("mojos_last_selection");
   showScreen("branchScreen");
 }
@@ -608,8 +662,14 @@ function clearAllNow() {
   state.stock = {};
   state.toOrder = {};
   state.completed = {};
+  state.skipped = {};
   saveDraft();
   renderOrderScreen();
+}
+
+function nextSupplier() {
+  renderSupplierScreen();
+  showScreen("supplierScreen");
 }
 
 const armedTimers = new WeakMap();
@@ -664,7 +724,14 @@ function init() {
     }, "neutral");
   });
   $("#newOrderBtn").addEventListener("click", resetOrder);
+  $("#nextSupplierBtn").addEventListener("click", nextSupplier);
   $("#copyOrderBtn").addEventListener("click", copyOrderText);
+  $("#startOverBtn").addEventListener("click", () => {
+    armConfirm($("#startOverBtn"), "Tap ⌂ again to return to the start — your progress stays saved.", resetOrder, "neutral");
+  });
+  $("#startOverReviewBtn").addEventListener("click", () => {
+    armConfirm($("#startOverReviewBtn"), "Tap ⌂ again to return to the start — your progress stays saved.", resetOrder, "neutral");
+  });
   $("#clearAllBtn").addEventListener("click", () => {
     const n = totalItemsSelected();
     const msg = n > 0

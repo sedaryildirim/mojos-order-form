@@ -174,6 +174,10 @@ Every component is blunt and tappable: large flat surfaces, an obvious pressed s
 
 ### Item Rows
 - **Answered state:** once an item has a nonzero To Order quantity, its row background tints with a 14% wash of Charred Terracotta and its name goes to weight 600. This is the row-level equivalent of the category-complete signal: a glance down a scrolled list shows what's been touched without reading every number.
+- **Skipped state:** a "Skip this item" checkbox on every stocked item lets staff explicitly mark it as not being ordered this time, distinct from just leaving it blank. Checking it hides the Par/Stock/To Order fields, dims and italicizes the item name in Faded Soot, and clears any entered stock or quantity. It counts as "reviewed" the same as entering a real stock number, so an item can be dismissed without forcing a stock count on something that genuinely isn't needed this week.
+
+### Category Auto-Complete
+Once every item in a category has been reviewed (a stock count entered, an order quantity set, or explicitly skipped), the category marks itself complete automatically: same collapse-and-advance-to-next-category behavior as tapping "Mark Category Complete" by hand. The manual button still exists for forcing completion early or reopening a completed category, but staff working through a long category shouldn't have to remember an extra tap at the end of every one of a dozen sections.
 
 ### Inputs / Fields
 - **Style:** Ash Surface Raised background, 1px Hairline Ash border, 10px radius, center-aligned text, 44px height. The stock-count field and the numeric stepper both use this same visual language so they read as one input family, not two different controls.
@@ -190,7 +194,9 @@ Every component is blunt and tappable: large flat surfaces, an obvious pressed s
 - **Armed/confirming state:** tapping either icon button fills it solid (Alert Red for destructive actions, Charred Terracotta for neutral ones) and surfaces an inline toast below the topbar naming what a second tap will do. A second tap within 3 seconds confirms; otherwise it silently disarms. This replaces the browser's native `confirm()` dialog, keeping the confirmation inside the app's own visual language instead of breaking out to an unstyled system modal.
 
 ### Navigation
-- **Style:** a single sticky topbar (Ash Surface, 1px bottom border) per screen, carrying a title, optional subtitle, and up to two 44px icon buttons. No side nav, no tab bar; the app is a strict linear flow (branch, then supplier, then order, then review, then confirm) and never needs lateral navigation.
+- **Style:** a single sticky topbar (Ash Surface, 1px bottom border) per screen, carrying a title, optional subtitle, and up to three 44px icon buttons. No side nav, no tab bar; the app is a strict linear flow (branch, then supplier, then order, then review, then confirm) and never needs lateral navigation.
+- **Start Over:** a house-glyph icon button on the order and review topbars jumps straight back to branch selection, using the same armed/confirm pattern as Clear All and Change Supplier. It's non-destructive: every field autosaves per branch+supplier as it's typed, so this is a shortcut back to the start, not a wipe. That's also why it needs no stronger warning than the standard two-tap arm.
+- **Order Another Supplier:** the confirmation screen's primary action after a successful send, jumping directly to the supplier picker for the same branch rather than back to branch selection. Since a branch visit usually means placing all four supplier orders in one sitting, this is the expected next step, not "Start New Order" (which resets the branch too and is now the secondary action on that screen).
 
 ### Status Banners (signature component)
 Three status banners share one visual language (rounded rect, colored text on a tinted background of the same hue, no border-radius exceeding 10px) but never share a color: Caution Amber for "not done yet" (incomplete categories, MOQ shortfall, the review-screen send gate), Alert Red only for the two-tap destructive confirmation toast, Verified Green reserved for the category-complete state itself. No banner ever uses the Charred Terracotta accent, keeping "you can act on this" (accent) visually distinct from "here's your status" (amber/red/green).
