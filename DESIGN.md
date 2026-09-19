@@ -8,7 +8,7 @@ colors:
   ash-surface: "#1e1c17"
   ash-surface-raised: "#262319"
   warm-parchment: "#f2ede4"
-  faded-soot: "#a49b8d"
+  faded-soot: "#b3a99a"
   hairline-ash: "#35312a"
   verified-green: "#4caf68"
   verified-green-bg: "#1c2b1e"
@@ -115,7 +115,7 @@ The palette is Restrained: tinted near-black neutrals stepped by surface depth, 
 - **Ash Surface** (`#1e1c17`): the first layer up from the background: category cards, the topbar, the bottom bar. One step warmer and lighter than the base.
 - **Ash Surface Raised** (`#262319`): the second layer: inputs, steppers, icon buttons. The surface a finger actually touches sits one step higher than the surface it rests on.
 - **Warm Parchment** (`#f2ede4`): primary text. An off-white, never pure `#fff`, so it never glares against the warm dark surfaces around it.
-- **Faded Soot** (`#a49b8d`): secondary text: labels, units, category counts, timestamps. Present but never competing with a number.
+- **Faded Soot** (`#b3a99a`): secondary text: labels, units, category counts, timestamps. Present but never competing with a number. Lightened from the original `#a49b8d` to clear 6.7:1+ contrast on every surface it sits on, including as the unset-par value's text color.
 - **Hairline Ash** (`#35312a`): all hairline borders and dividers. Barely there; separates without drawing a box around everything.
 
 ### Status
@@ -166,11 +166,15 @@ Every component is blunt and tappable: large flat surfaces, an obvious pressed s
 - **Background:** Ash Surface at rest; switches to Verified Green Background with a Verified Green border when a category is marked complete. That border-and-background pair is the only signal for "done," no shadow, no icon animation.
 - **Border:** 1px Hairline Ash by default; category cards get a full-strength status-colored border only when complete.
 - **Internal Padding:** 14px-16px horizontal, matching the global `lg` spacing step.
+- **Pressed state:** category headers and icon buttons step one tone toward Ash Surface Raised / Hairline Ash on `:active`, the same tonal-step language as elevation, so every tap registers visually before the state actually changes.
+
+### Item Rows
+- **Answered state:** once an item has a nonzero To Order quantity, its row background tints with a 14% wash of Charred Terracotta and its name goes to weight 600. This is the row-level equivalent of the category-complete signal: a glance down a scrolled list shows what's been touched without reading every number.
 
 ### Inputs / Fields
 - **Style:** Ash Surface Raised background, 1px Hairline Ash border, 10px radius, center-aligned text, 44px height. The stock-count field and the numeric stepper both use this same visual language so they read as one input family, not two different controls.
 - **Unset state:** the Par field (read-only, sourced from data, not yet populated for any item) renders in Faded Soot at reduced weight, italic, with a dashed border instead of solid, and shows an em-dash instead of "0". This is the one deliberate exception to "numbers carry the hierarchy": an unset value must look visibly different from a real zero.
-- **Focus:** relies on the browser default outline; no custom focus-visible treatment defined yet (a known gap, not an intentional choice).
+- **Focus:** a 2px Charred Terracotta outline with 2px offset on `:focus-visible`, applied globally to buttons, inputs, and links.
 
 ### Steppers
 - **Style:** a pill-shaped 3-part control (minus / number / plus) sharing the Ash Surface Raised background as the stock/par fields. Minus and plus buttons are 44x44px Charred Terracotta glyphs on transparent backgrounds; the center number is bold Warm Parchment text.
