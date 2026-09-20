@@ -378,7 +378,7 @@ function renderOrderScreen() {
             delete state.stock[key];
             setOrder(0); // clears any qty, saves draft, and checks auto-complete
             const nextRow = row.nextElementSibling;
-            if (nextRow) nextRow.scrollIntoView({ behavior: "smooth", block: "start" });
+            if (nextRow) nextRow.scrollIntoView({ behavior: "smooth", block: "nearest" });
           } else {
             delete state.skipped[key];
             row.classList.remove("skipped");
