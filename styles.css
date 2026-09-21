@@ -455,6 +455,35 @@ body.has-warning {
   background: var(--warning-bg);
 }
 
+.cat-skip-btn {
+  display: block;
+  width: calc(100% - 32px);
+  margin: 12px 16px 4px;
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 600;
+}
+.cat-skip-btn:active { background: var(--card-raised); }
+.cat-skip-btn.armed {
+  background: var(--card-alt);
+  border-color: var(--accent-ink);
+  color: var(--accent-ink);
+}
+.category-header .skip-tag {
+  display: none;
+  font-size: 12px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--muted);
+  margin-left: 8px;
+}
+.category.cat-skipped .category-header .skip-tag { display: inline; }
+
 .complete-btn {
   display: block;
   width: calc(100% - 32px);

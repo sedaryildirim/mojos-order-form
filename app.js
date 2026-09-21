@@ -297,7 +297,7 @@ function renderOrderScreen() {
     const header = document.createElement("button");
     header.className = "category-header";
     header.setAttribute("aria-expanded", "false");
-    header.innerHTML = `<span><span class="check">&#10003;</span>${cat.name} <span class="meta">(${cat.items.length})</span></span><span class="chev">&#9662;</span>`;
+    header.innerHTML = `<span><span class="check">&#10003;</span>${cat.name} <span class="meta">(${cat.items.length})</span><span class="skip-tag">skipped</span></span><span class="chev">&#9662;</span>`;
     header.addEventListener("click", () => {
       setCategoryOpen(catEl, !catEl.classList.contains("open"));
     });
@@ -327,6 +327,55 @@ function renderOrderScreen() {
       comboBox.className = "combo-box" + (mismatched ? " combo-box-warning" : "");
       comboBox.innerHTML = html;
     }
+
+    // Per-item hooks so the "Skip whole category" button can drive every row
+    // through the same code path as the individual Skip checkbox.
+    const rowSkip = [];
+
+    const catSkipBtn = document.createElement("button");
+    catSkipBtn.type = "button";
+    catSkipBtn.className = "cat-skip-btn";
+    let catSkipArmTimer = null;
+
+    function categoryIsSkipped() {
+      const skippable = cat.items.map((item, ii) => ({ item, key: itemKey(ci, ii) })).filter(({ item }) => !item.noParStock);
+      return skippable.length > 0 && skippable.every(({ key }) => state.skipped[key]);
+    }
+
+    function enteredCount() {
+      return cat.items.filter((_, ii) => {
+        const key = itemKey(ci, ii);
+        return state.toOrder[key] > 0 || Object.prototype.hasOwnProperty.call(state.stock, key);
+      }).length;
+    }
+
+    function updateCatSkipBtn() {
+      const skipped = categoryIsSkipped();
+      catEl.classList.toggle("cat-skipped", skipped);
+      catSkipBtn.classList.remove("armed");
+      clearTimeout(catSkipArmTimer);
+      catSkipBtn.textContent = skipped ? "Category skipped \u2713 Tap to undo" : "Nothing needed \u2013 skip whole category";
+    }
+
+    catSkipBtn.addEventListener("click", () => {
+      if (categoryIsSkipped()) {
+        rowSkip.forEach(fn => fn && fn(false));
+        updateCatSkipBtn();
+        setCategoryCompleted(ci, catEl, false);
+        return;
+      }
+      const n = enteredCount();
+      if (n > 0 && !catSkipBtn.classList.contains("armed")) {
+        // entered numbers would be wiped: make staff tap twice
+        catSkipBtn.classList.add("armed");
+        catSkipBtn.textContent = `Tap again to clear ${n} entered item${n === 1 ? "" : "s"} and skip`;
+        catSkipArmTimer = setTimeout(updateCatSkipBtn, 4000);
+        return;
+      }
+      rowSkip.forEach(fn => fn && fn(true));
+      updateCatSkipBtn();
+      if (!state.completed[ci]) setCategoryCompleted(ci, catEl, true);
+    });
 
     cat.items.forEach((item, ii) => {
       const key = itemKey(ci, ii);
@@ -420,22 +469,36 @@ function renderOrderScreen() {
       inc.addEventListener("click", () => setOrderManual((Number(orderInput.value) || 0) + step));
       orderInput.addEventListener("change", () => setOrderManual(orderInput.value));
 
-      if (skipCheckbox) {
-        skipCheckbox.addEventListener("change", () => {
-          if (skipCheckbox.checked) {
-            state.skipped[key] = true;
-            row.classList.add("skipped");
-            if (stockInput) stockInput.value = "";
-            delete state.stock[key];
-            setOrder(0); // clears any qty, saves draft, and checks auto-complete
+      // Skips or un-skips this row. Also used by the category-level skip
+      // button, which passes scroll=false so the page doesn't jump per row.
+      function applySkip(on, scroll) {
+        if (!skipCheckbox) {
+          // no-par items (e.g. Bottles to Return) can't be "skipped", just zeroed
+          if (on) setOrder(0);
+          return;
+        }
+        skipCheckbox.checked = on;
+        if (on) {
+          state.skipped[key] = true;
+          row.classList.add("skipped");
+          if (stockInput) stockInput.value = "";
+          delete state.stock[key];
+          setOrder(0); // clears any qty, saves draft, and checks auto-complete
+          if (scroll) {
             const nextRow = row.nextElementSibling;
             if (nextRow) nextRow.scrollIntoView({ behavior: "smooth", block: "nearest" });
-          } else {
-            delete state.skipped[key];
-            row.classList.remove("skipped");
-            saveDraft();
           }
-        });
+        } else {
+          delete state.skipped[key];
+          row.classList.remove("skipped");
+          saveDraft();
+        }
+        updateCatSkipBtn();
+      }
+      rowSkip[ii] = (on) => applySkip(on, false);
+
+      if (skipCheckbox) {
+        skipCheckbox.addEventListener("change", () => applySkip(skipCheckbox.checked, true));
       }
 
       if (state.toOrder[key] > 0) row.classList.add("has-qty");
@@ -446,6 +509,12 @@ function renderOrderScreen() {
         body.appendChild(comboBox);
       }
     });
+
+    // categories made only of no-par items (e.g. Bottles to Return) have nothing to skip
+    if (cat.items.some(item => !item.noParStock)) {
+      updateCatSkipBtn();
+      body.insertBefore(catSkipBtn, body.firstChild);
+    }
 
     const completeBtn = document.createElement("button");
     completeBtn.className = "complete-btn";
