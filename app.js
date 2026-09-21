@@ -193,12 +193,32 @@ function formatMoney(n) {
 function renderBranchScreen() {
   const grid = $("#branchGrid");
   grid.innerHTML = "";
+
+  const regions = [];
   CONFIG.branches.forEach(b => {
-    const btn = document.createElement("button");
-    btn.className = "branch-btn";
-    btn.textContent = b.name;
-    btn.addEventListener("click", () => selectBranch(b));
-    grid.appendChild(btn);
+    const region = b.region || "";
+    let group = regions.find(r => r.name === region);
+    if (!group) { group = { name: region, branches: [] }; regions.push(group); }
+    group.branches.push(b);
+  });
+
+  regions.forEach(region => {
+    if (region.name) {
+      const heading = document.createElement("div");
+      heading.className = "region-heading";
+      heading.textContent = region.name.toUpperCase();
+      grid.appendChild(heading);
+    }
+    const regionGrid = document.createElement("div");
+    regionGrid.className = "branch-grid";
+    region.branches.forEach(b => {
+      const btn = document.createElement("button");
+      btn.className = "branch-btn";
+      btn.textContent = b.name;
+      btn.addEventListener("click", () => selectBranch(b));
+      regionGrid.appendChild(btn);
+    });
+    grid.appendChild(regionGrid);
   });
 }
 

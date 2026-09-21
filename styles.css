@@ -176,6 +176,15 @@ body.has-warning {
   width: 100%;
   max-width: 340px;
 }
+.region-heading {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  text-align: left;
+  margin: 6px 0 -4px;
+}
+#branchGrid > .region-heading:first-child { margin-top: 0; }
 .branch-btn {
   padding: 22px;
   font-size: 19px;
