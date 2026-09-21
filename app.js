@@ -618,32 +618,44 @@ function orderFileName() {
 }
 
 function buildOrderWorkbook() {
-  const rows = [];
-  rows.push([`${state.supplier.name} - ${state.branch.name} branch`]);
-  rows.push([`Order date: ${formatDateDDMMYYYY(new Date())}`]);
-  rows.push([]);
-  rows.push(["Category", "Article No.", "Description", "Unit", "Unit Price (THB)", "Qty", "Line Total (THB)"]);
+  const priceRows = [];
+  priceRows.push([`${state.supplier.name} - ${state.branch.name} branch`]);
+  priceRows.push([`Order date: ${formatDateDDMMYYYY(new Date())}`]);
+  priceRows.push([]);
+  priceRows.push(["Category", "Article No.", "Description", "Unit", "Unit Price (THB)", "Qty", "Line Total (THB)"]);
+
+  const plainRows = [];
+  plainRows.push([`${state.supplier.name} - ${state.branch.name} branch`]);
+  plainRows.push([`Order date: ${formatDateDDMMYYYY(new Date())}`]);
+  plainRows.push([]);
+  plainRows.push(["Category", "Article No.", "Description", "Unit", "Qty"]);
 
   state.data.categories.forEach((cat, ci) => {
     cat.items.forEach((item, ii) => {
       const key = itemKey(ci, ii);
       const qty = state.toOrder[key] || 0;
       if (qty <= 0) return;
-      rows.push([cat.name, item.id || "", item.name, item.unit, item.price || 0, qty, qty * (item.price || 0)]);
+      priceRows.push([cat.name, item.id || "", item.name, item.unit, item.price || 0, qty, qty * (item.price || 0)]);
+      plainRows.push([cat.name, item.id || "", item.name, item.unit, qty]);
     });
   });
 
   const subtotal = totalEstimatedCost();
   const vat = subtotal * VAT_RATE;
-  rows.push([]);
-  rows.push(["", "", "", "", "", "Subtotal", Math.round(subtotal)]);
-  rows.push(["", "", "", "", "", "VAT (7%)", Math.round(vat)]);
-  rows.push(["", "", "", "", "", "Total (incl. VAT)", Math.round(subtotal + vat)]);
+  priceRows.push([]);
+  priceRows.push(["", "", "", "", "", "Subtotal", Math.round(subtotal)]);
+  priceRows.push(["", "", "", "", "", "VAT (7%)", Math.round(vat)]);
+  priceRows.push(["", "", "", "", "", "Total (incl. VAT)", Math.round(subtotal + vat)]);
 
-  const ws = XLSX.utils.aoa_to_sheet(rows);
-  ws["!cols"] = [{ wch: 20 }, { wch: 12 }, { wch: 38 }, { wch: 12 }, { wch: 14 }, { wch: 8 }, { wch: 16 }];
+  const wsPrice = XLSX.utils.aoa_to_sheet(priceRows);
+  wsPrice["!cols"] = [{ wch: 20 }, { wch: 12 }, { wch: 38 }, { wch: 12 }, { wch: 14 }, { wch: 8 }, { wch: 16 }];
+
+  const wsPlain = XLSX.utils.aoa_to_sheet(plainRows);
+  wsPlain["!cols"] = [{ wch: 20 }, { wch: 12 }, { wch: 38 }, { wch: 12 }, { wch: 8 }];
+
   const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Order");
+  XLSX.utils.book_append_sheet(wb, wsPrice, "Order");
+  XLSX.utils.book_append_sheet(wb, wsPlain, "Order (No Prices)");
   return wb;
 }
 
