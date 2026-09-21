@@ -94,6 +94,16 @@ function isItemTouched(item, key) {
   return false;
 }
 
+// The topbar and search bar are both sticky, so a plain scrollIntoView puts the
+// target underneath them. Scroll so it lands just below the sticky stack.
+function scrollBelowStickyBars(el) {
+  const topbar = $("#orderScreen .topbar");
+  const search = $("#orderScreen .search-wrap");
+  const stuck = (topbar ? topbar.offsetHeight : 0) + (search ? search.offsetHeight : 0);
+  const y = el.getBoundingClientRect().top + window.scrollY - stuck - 8;
+  window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+}
+
 function setCategoryCompleted(ci, catEl, completed) {
   state.completed[ci] = completed;
   catEl.classList.toggle("completed", completed);
@@ -106,7 +116,7 @@ function setCategoryCompleted(ci, catEl, completed) {
     const next = catEl.nextElementSibling;
     if (next && next.classList.contains("category")) {
       setCategoryOpen(next, true);
-      next.scrollIntoView({ behavior: "smooth", block: "start" });
+      scrollBelowStickyBars(next);
     }
   }
 }
