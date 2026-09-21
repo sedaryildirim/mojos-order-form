@@ -124,6 +124,18 @@ function totalItemsSelected() {
   return Object.values(state.toOrder).filter(v => v > 0).length;
 }
 
+// Counts items with real entered data (stock, an order qty, or an explicit
+// skip) - unlike isItemTouched(), this doesn't treat noParStock items as
+// automatically touched, since this is reporting what was actually typed in.
+function totalItemsTouched() {
+  const keys = new Set([
+    ...Object.keys(state.stock),
+    ...Object.keys(state.toOrder).filter(k => state.toOrder[k] > 0),
+    ...Object.keys(state.skipped)
+  ]);
+  return keys.size;
+}
+
 function totalUnitsSelected() {
   return Object.values(state.toOrder).reduce((sum, v) => sum + (v > 0 ? v : 0), 0);
 }
@@ -212,6 +224,8 @@ function renderSupplierScreen() {
   });
 }
 
+let pendingResumeNotice = false;
+
 function selectSupplier(s) {
   state.supplier = s;
   state.data = DATA[s.id] || { categories: [] };
@@ -220,6 +234,9 @@ function selectSupplier(s) {
   state.toOrder = slice.toOrder;
   state.completed = slice.completed;
   state.skipped = slice.skipped || {};
+  pendingResumeNotice = Object.keys(slice.stock).length > 0
+    || Object.keys(slice.toOrder).length > 0
+    || Object.keys(slice.skipped).length > 0;
   saveDraft();
   renderOrderScreen();
   showScreen("orderScreen");
@@ -231,8 +248,22 @@ function renderOrderScreen() {
   const content = $("#orderContent");
   content.innerHTML = "";
 
+  const showResumeNotice = pendingResumeNotice;
+  pendingResumeNotice = false;
+  if (showResumeNotice) {
+    const n = totalItemsTouched();
+    const notice = document.createElement("div");
+    notice.className = "resume-notice";
+    notice.innerHTML = `
+      <span>Resuming ${state.branch.name} → ${state.supplier.name} — ${n} item${n === 1 ? "" : "s"} already entered. Not you? Tap &#8962; to start over.</span>
+      <button type="button" class="resume-notice-dismiss" aria-label="Dismiss">&times;</button>
+    `;
+    $(".resume-notice-dismiss", notice).addEventListener("click", () => notice.remove());
+    content.appendChild(notice);
+  }
+
   if (state.data.categories.length === 0) {
-    content.innerHTML = `<div class="review-empty">No items in this order sheet yet.<br>Add categories/items to data.js.</div>`;
+    content.insertAdjacentHTML("beforeend", `<div class="review-empty">No items in this order sheet yet.<br>Add categories/items to data.js.</div>`);
     updateBottomBar();
     return;
   }

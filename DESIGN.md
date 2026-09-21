@@ -233,6 +233,8 @@ Once every item in a category has been reviewed (a stock count entered, an order
 ### Status Banners (signature component)
 Three status banners share one visual language (rounded rect, colored text on a tinted background of the same hue, no border-radius exceeding 10px) but never share a color: Caution Amber for "not done yet" (incomplete categories, MOQ shortfall, the review-screen send gate), Alert Red only for the two-tap destructive confirmation toast, Verified Green reserved for the category-complete state itself. No banner ever uses the Charred Terracotta accent, keeping "you can act on this" (accent) visually distinct from "here's your status" (amber/red/green).
 
+A fourth banner, the **Resume Notice**, is deliberately neutral rather than colored: Ash Surface Raised background, Hairline Ash border, Warm Parchment text. It appears once, at the top of the order screen, whenever that screen loads with pre-existing data in it that the person didn't just enter themselves this sitting - covers both the app auto-resuming a device's last session and manually tapping back into a supplier someone else started. It exists because devices are shared in a kitchen and a silent resume risks someone typing into a colleague's in-progress order without realizing it. Neutral, not amber, because "you're picking up existing progress" isn't a warning; it's dismissible, one tap, gone until the next time the screen loads with real data in it.
+
 ## 6. Do's and Don'ts
 
 ### Do:

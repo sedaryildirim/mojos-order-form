@@ -224,6 +224,29 @@ body.has-warning {
 /* ---------- Categories / items ---------- */
 .content { padding: 4px 12px 24px; }
 
+.resume-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--card-alt);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--text);
+}
+.resume-notice-dismiss {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  font-size: 20px;
+  line-height: 1;
+  padding: 0 2px;
+  flex-shrink: 0;
+}
+
 .category {
   background: var(--card);
   border-radius: var(--radius);
