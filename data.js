@@ -19,6 +19,13 @@ const DATA = {
             "par": null
           },
           {
+            "id": "219501",
+            "name": "ALLOWRIE Value Unsalted Compound Butter 2 kg",
+            "unit": "EACH",
+            "price": 360.0,
+            "par": null
+          },
+          {
             "id": "820978",
             "name": "ARO Cheddar Cheese Block 1 kg",
             "unit": "EACH",
@@ -36,14 +43,14 @@ const DATA = {
             "id": "198368",
             "name": "ARO Chicken Egg no.2 with Cover 30 pcs",
             "unit": "EACH",
-            "price": 152.0,
+            "price": 153.0,
             "par": null
           },
           {
             "id": "805239",
             "name": "ARO Color Burger Processed Cheese Slice 980 g",
             "unit": "EACH",
-            "price": 359.0,
+            "price": 354.0,
             "par": null
           },
           {
@@ -92,7 +99,7 @@ const DATA = {
             "id": "847416",
             "name": "MAINLAND Vintage Cheese 470 g",
             "unit": "EACH",
-            "price": 259.0,
+            "price": 229.0,
             "par": null
           },
           {
@@ -139,7 +146,7 @@ const DATA = {
             "id": "235457",
             "name": "Chicken Boneless Breast Skin-On 1 kg",
             "unit": "Kilogram",
-            "price": 86.0,
+            "price": 85.0,
             "par": null
           },
           {
@@ -174,7 +181,7 @@ const DATA = {
             "id": "926863",
             "name": "Frozen Australian Picanha 100 Days Beef (1-1.5kg/pc)",
             "unit": "Kilogram",
-            "price": 550.0,
+            "price": 679.0,
             "par": null
           },
           {
@@ -202,14 +209,14 @@ const DATA = {
             "id": "111259",
             "name": "Frozen New Zealand Lamb Shoulder Boneless 1 pc (Approx. 1 kg/pc)",
             "unit": "Kilogram",
-            "price": 450.0,
+            "price": 555.0,
             "par": null
           },
           {
             "id": "233616",
             "name": "Pork Hip Mince 1 kg",
             "unit": "Kilogram",
-            "price": 149.0,
+            "price": 135.0,
             "par": null
           },
           {
@@ -223,7 +230,7 @@ const DATA = {
             "id": "233747",
             "name": "Pork Shoulder Mince 1 kg",
             "unit": "Kilogram",
-            "price": 149.0,
+            "price": 135.0,
             "par": null
           }
         ]
@@ -466,7 +473,7 @@ const DATA = {
             "id": "30082",
             "name": "ROYAL PROJECT Iceberg Lettuce",
             "unit": "Kilogram",
-            "price": 69.0,
+            "price": 109.0,
             "par": null
           },
           {
@@ -487,7 +494,7 @@ const DATA = {
             "id": "818001",
             "name": "Red Khi Noo Thai Chilli 100 g",
             "unit": "EACH",
-            "price": 20.0,
+            "price": 19.0,
             "par": null
           },
           {
@@ -604,7 +611,7 @@ const DATA = {
             "id": "26260",
             "name": "Thyme 100 g",
             "unit": "EACH",
-            "price": 99.0,
+            "price": 89.0,
             "par": null
           },
           {
@@ -656,7 +663,7 @@ const DATA = {
           },
           {
             "id": "863553",
-            "name": "LA VIDA Red Merlot 3 l",
+            "name": "LA VIDA Red Merlot 3 l COOKING WINE",
             "unit": "EACH",
             "price": 790.0,
             "par": null
@@ -941,7 +948,7 @@ const DATA = {
             "id": "184247",
             "name": "MCGARRETT Baking Soda 300 g",
             "unit": "EACH",
-            "price": 32.0,
+            "price": 30.0,
             "par": null
           },
           {
@@ -1049,14 +1056,14 @@ const DATA = {
             "id": "919857",
             "name": "ARO Sweet Potato Fries 1 kg",
             "unit": "EACH",
-            "price": 119.0,
+            "price": 129.0,
             "par": null
           },
           {
             "id": "910260",
             "name": "ARO Tater Tots 1 kg",
             "unit": "EACH",
-            "price": 99.0,
+            "price": 85.0,
             "par": null
           },
           {
