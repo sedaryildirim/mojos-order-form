@@ -745,6 +745,7 @@ function init() {
   });
   $("#newOrderBtn").addEventListener("click", resetOrder);
   $("#nextSupplierBtn").addEventListener("click", nextSupplier);
+  $("#emailConfirmBtn").addEventListener("click", emailOrder);
   $("#copyOrderBtn").addEventListener("click", copyOrderText);
   $("#startOverBtn").addEventListener("click", () => {
     armConfirm($("#startOverBtn"), "Tap ⌂ again to return to the start — your progress stays saved.", resetOrder, "neutral");
