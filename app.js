@@ -610,6 +610,80 @@ function buildOrderText() {
   return lines.join("\n");
 }
 
+function orderFileName() {
+  const supplier = supplierShortName().replace(/\s+/g, "_");
+  const branch = state.branch.name.replace(/\s+/g, "_");
+  const date = formatDateDDMMYYYY(new Date()).replace(/\//g, "-");
+  return `${supplier}_${branch}_${date}.xlsx`;
+}
+
+function buildOrderWorkbook() {
+  const rows = [];
+  rows.push([`${state.supplier.name} - ${state.branch.name} branch`]);
+  rows.push([`Order date: ${formatDateDDMMYYYY(new Date())}`]);
+  rows.push([]);
+  rows.push(["Category", "Article No.", "Description", "Unit", "Unit Price (THB)", "Qty", "Line Total (THB)"]);
+
+  state.data.categories.forEach((cat, ci) => {
+    cat.items.forEach((item, ii) => {
+      const key = itemKey(ci, ii);
+      const qty = state.toOrder[key] || 0;
+      if (qty <= 0) return;
+      rows.push([cat.name, item.id || "", item.name, item.unit, item.price || 0, qty, qty * (item.price || 0)]);
+    });
+  });
+
+  const subtotal = totalEstimatedCost();
+  const vat = subtotal * VAT_RATE;
+  rows.push([]);
+  rows.push(["", "", "", "", "", "Subtotal", Math.round(subtotal)]);
+  rows.push(["", "", "", "", "", "VAT (7%)", Math.round(vat)]);
+  rows.push(["", "", "", "", "", "Total (incl. VAT)", Math.round(subtotal + vat)]);
+
+  const ws = XLSX.utils.aoa_to_sheet(rows);
+  ws["!cols"] = [{ wch: 20 }, { wch: 12 }, { wch: 38 }, { wch: 12 }, { wch: 14 }, { wch: 8 }, { wch: 16 }];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Order");
+  return wb;
+}
+
+async function sendOrderAsExcel() {
+  const wb = buildOrderWorkbook();
+  const wbArray = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+  const blob = new Blob([wbArray], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+  const filename = orderFileName();
+
+  if (navigator.share && navigator.canShare) {
+    try {
+      const file = new File([blob], filename, { type: blob.type });
+      if (navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: `${state.supplier.name} order`,
+          text: `${state.supplier.name} order for ${state.branch.name} branch`
+        });
+        clearSentDraft();
+        showConfirmScreen("Order shared", "The Excel file has been shared.");
+        return;
+      }
+    } catch (e) {
+      if (e && e.name === "AbortError") return; // user cancelled the share sheet, do nothing
+      // any other failure: fall through to the plain download below
+    }
+  }
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  clearSentDraft();
+  showConfirmScreen("Order downloaded", "The Excel file has been saved to your device.");
+}
+
 function formatDateDDMMYYYY(d) {
   const dd = String(d.getDate()).padStart(2, "0");
   const mm = String(d.getMonth() + 1).padStart(2, "0");
@@ -768,6 +842,7 @@ function init() {
   });
   $("#emailOrderBtn").addEventListener("click", emailOrder);
   $("#copyReviewBtn").addEventListener("click", copyOrderFromReview);
+  $("#excelReviewBtn").addEventListener("click", sendOrderAsExcel);
   $("#switchBranch").addEventListener("click", () => {
     armConfirm($("#switchBranch"), "Tap ⇆ again to change order sheet — your progress stays saved.", () => {
       renderSupplierScreen();
@@ -778,6 +853,7 @@ function init() {
   $("#nextSupplierBtn").addEventListener("click", nextSupplier);
   $("#emailConfirmBtn").addEventListener("click", emailOrder);
   $("#copyOrderBtn").addEventListener("click", copyOrderText);
+  $("#excelConfirmBtn").addEventListener("click", sendOrderAsExcel);
   $("#startOverBtn").addEventListener("click", () => {
     armConfirm($("#startOverBtn"), "Tap ⌂ again to return to the start — your progress stays saved.", resetOrder, "neutral");
   });

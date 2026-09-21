@@ -10,7 +10,7 @@ Kitchen/back-of-house staff at Mojo's two branches (Nathon, Lamai), placing supp
 
 ## Product Purpose
 
-Replace a manual Excel order sheet with a mobile-first ordering form: pick branch and supplier, work through categorized items entering current stock (to-order auto-calculates from par level), mark categories complete, review a master list with an estimated total, then send the order by email (or copy/paste as a fallback). Success = fewer ordering errors, faster than the spreadsheet, and a clear record of what was sent.
+Replace a manual Excel order sheet with a mobile-first ordering form: pick branch and supplier, work through categorized items entering current stock (to-order auto-calculates from par level), mark categories complete, review a master list with an estimated total, then send the order by email, copy/paste, or as a generated Excel file (shared straight to Mail/WhatsApp on supported phones, downloaded otherwise). Success = fewer ordering errors, faster than the spreadsheet, and a clear record of what was sent.
 
 ## Brand Personality
 

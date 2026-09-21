@@ -193,7 +193,7 @@ Every component is blunt and tappable: large flat surfaces, an obvious pressed s
 ### Buttons
 - **Shape:** 12px radius (`--radius` variants use the sm/md/lg scale; buttons use md).
 - **Primary:** Charred Terracotta background, dark near-black text (`#241206`, not white, kept dark deliberately for contrast), 13px/20px padding, 44px minimum height. Darkens to Charred Terracotta Pressed on `:active`; no hover state exists (touch-only surface).
-- **Secondary / Ghost:** transparent background, Charred Terracotta text and 1px border. Used for "Edit" and the confirmation screen's copy-to-clipboard action.
+- **Secondary / Ghost:** transparent background, Charred Terracotta text and 1px border. Used for "Edit," the confirmation screen's copy-to-clipboard action, and "Send as Excel" on both the review and confirmation screens.
 - **Disabled:** 40% opacity, no color change. Used to gate "Review Order" (nothing selected) and "Send Order" (categories not yet marked complete or MOQ unmet).
 
 ### Cards / Containers
