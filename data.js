@@ -8,98 +8,98 @@ const DATA = {
             "id": "152675",
             "name": "ALLI Sour Cream 450 g",
             "unit": "EACH",
-            "price": 98.0,
+            "price": 98,
             "par": null
           },
           {
             "id": "144885",
             "name": "ALLOWRIE Value Unsalted Compound Butter 5 kg",
             "unit": "EACH",
-            "price": 765.0,
+            "price": 725,
             "par": null
           },
           {
             "id": "219501",
             "name": "ALLOWRIE Value Unsalted Compound Butter 2 kg",
             "unit": "EACH",
-            "price": 360.0,
+            "price": 360,
             "par": null
           },
           {
             "id": "820978",
             "name": "ARO Cheddar Cheese Block 1 kg",
             "unit": "EACH",
-            "price": 360.0,
+            "price": 360,
             "par": null
           },
           {
             "id": "901175",
             "name": "ARO Chicken Egg no.1 with Cover 30 pcs",
             "unit": "EACH",
-            "price": 159.0,
+            "price": 159,
             "par": null
           },
           {
             "id": "198368",
             "name": "ARO Chicken Egg no.2 with Cover 30 pcs",
             "unit": "EACH",
-            "price": 153.0,
+            "price": 153,
             "par": null
           },
           {
             "id": "805239",
             "name": "ARO Color Burger Processed Cheese Slice 980 g",
             "unit": "EACH",
-            "price": 354.0,
+            "price": 354,
             "par": null
           },
           {
             "id": "928407",
             "name": "ARO GOLD Vintage Block Cheese 470 g",
             "unit": "EACH",
-            "price": 198.0,
+            "price": 198,
             "par": null
           },
           {
             "id": "669090",
             "name": "ARO Parmesan Cheese Block 500 g",
             "unit": "EACH",
-            "price": 289.0,
+            "price": 289,
             "par": null
           },
           {
             "id": "761580",
             "name": "Allowrie Premium Pure Butter Salted 1.5 KGX1",
             "unit": "EACH",
-            "price": 650.0,
+            "price": 650,
             "par": null
           },
           {
             "id": "867024",
             "name": "Blue Veined Cheese",
             "unit": "Kilogram",
-            "price": 980.0,
+            "price": 980,
             "par": null
           },
           {
             "id": "818126",
             "name": "DAIRY RICH Full Cream Milk Powder 1 kg",
             "unit": "EACH",
-            "price": 235.0,
+            "price": 235,
             "par": null
           },
           {
             "id": "847422",
             "name": "MAINLAND Tasty Cheese 470 g",
             "unit": "EACH",
-            "price": 205.0,
+            "price": 205,
             "par": null
           },
           {
             "id": "847416",
             "name": "MAINLAND Vintage Cheese 470 g",
             "unit": "EACH",
-            "price": 229.0,
+            "price": 229,
             "par": null
           },
           {
@@ -113,21 +113,21 @@ const DATA = {
             "id": "123810",
             "name": "SCHREIBER American Cheese 2.2 kg",
             "unit": "EACH",
-            "price": 890.0,
+            "price": 890,
             "par": null
           },
           {
             "id": "183781",
             "name": "UFM SP Cream 1 kg",
             "unit": "EACH",
-            "price": 97.0,
+            "price": 97,
             "par": null
           },
           {
             "id": "152672",
             "name": "YOLIDA Yoghurt Low Fat Unsweetened 450 g",
             "unit": "EACH",
-            "price": 55.0,
+            "price": 55,
             "par": null
           }
         ]
@@ -139,98 +139,98 @@ const DATA = {
             "id": "32370",
             "name": "Chicken Bone 1 kg",
             "unit": "Kilogram",
-            "price": 23.0,
+            "price": 23,
             "par": null
           },
           {
             "id": "235457",
             "name": "Chicken Boneless Breast Skin-On 1 kg",
             "unit": "Kilogram",
-            "price": 85.0,
+            "price": 85,
             "par": null
           },
           {
             "id": "32825",
             "name": "Chicken Feet 1 kg",
             "unit": "Kilogram",
-            "price": 99.0,
+            "price": 99,
             "par": null
           },
           {
             "id": "233698",
             "name": "Chicken Fillet TENDERLOIN 1 kg",
             "unit": "Kilogram",
-            "price": 105.0,
+            "price": 105,
             "par": null
           },
           {
             "id": "178620",
             "name": "Chicken Middle Wing 1 kg",
             "unit": "Kilogram",
-            "price": 158.0,
+            "price": 158,
             "par": null
           },
           {
             "id": "32032",
             "name": "Chicken Wing Stick 1 kg",
             "unit": "Kilogram",
-            "price": 92.0,
+            "price": 92,
             "par": null
           },
           {
             "id": "926863",
             "name": "Frozen Australian Picanha 100 Days Beef (1-1.5kg/pc)",
             "unit": "Kilogram",
-            "price": 679.0,
+            "price": 550,
             "par": null
           },
           {
             "id": "201063",
             "name": "Frozen Beef Bone Leg 1 kg",
             "unit": "Kilogram",
-            "price": 75.0,
+            "price": 75,
             "par": null
           },
           {
             "id": "138874",
             "name": "Frozen Beef Fat 2 kg",
             "unit": "Kilogram",
-            "price": 79.0,
+            "price": 79,
             "par": null
           },
           {
             "id": "221215",
             "name": "Frozen New Zealand Boneless Lamb Leg 1.2-1.5 kg/pc",
             "unit": "Kilogram",
-            "price": 570.0,
+            "price": 570,
             "par": null
           },
           {
             "id": "111259",
             "name": "Frozen New Zealand Lamb Shoulder Boneless 1 pc (Approx. 1 kg/pc)",
             "unit": "Kilogram",
-            "price": 555.0,
+            "price": 450,
             "par": null
           },
           {
             "id": "233616",
             "name": "Pork Hip Mince 1 kg",
             "unit": "Kilogram",
-            "price": 135.0,
+            "price": 135,
             "par": null
           },
           {
             "id": "75608",
             "name": "Pork Shoulder 1 kg",
             "unit": "Kilogram",
-            "price": 125.0,
+            "price": 125,
             "par": null
           },
           {
             "id": "233747",
             "name": "Pork Shoulder Mince 1 kg",
             "unit": "Kilogram",
-            "price": 135.0,
+            "price": 135,
             "par": null
           }
         ]
@@ -242,336 +242,343 @@ const DATA = {
             "id": "615035",
             "name": "ARO Lemon 6 pcs",
             "unit": "EACH",
-            "price": 89.0,
+            "price": 89,
             "par": null
           },
           {
             "id": "841548",
             "name": "Australian Carrot Pack 1.5 kg",
             "unit": "EACH",
-            "price": 55.0,
+            "price": 55,
             "par": null
           },
           {
             "id": "507986",
             "name": "Cabbage pack 500-700 g",
             "unit": "EACH",
-            "price": 19.0,
+            "price": 19,
             "par": null
           },
           {
             "id": "135318",
             "name": "Cauliflower White 1 kg",
             "unit": "Kilogram",
-            "price": 85.0,
+            "price": 85,
             "par": null
           },
           {
             "id": "120208",
             "name": "Chinese Fuji Apple no.113 pack 10 pcs",
             "unit": "EACH",
-            "price": 99.0,
+            "price": 99,
             "par": null
           },
           {
             "id": "826835",
             "name": "Chinese Kale 500 g",
             "unit": "EACH",
-            "price": 23.0,
+            "price": 23,
             "par": null
           },
           {
             "id": "862439",
             "name": "Dill Coriander 150 g",
             "unit": "EACH",
-            "price": 29.0,
+            "price": 22,
             "par": null
           },
           {
             "id": "25727",
             "name": "Fresh Wild Rocket Pack 250 g",
             "unit": "EACH",
-            "price": 199.0,
+            "price": 199,
             "par": null
           },
           {
             "id": "859090",
             "name": "Garlic Bulb 500 g",
             "unit": "EACH",
-            "price": 45.0,
+            "price": 45,
             "par": null
           },
           {
             "id": "835123",
             "name": "Granny Smith Apples Size M pack 10 pcs",
             "unit": "EACH",
-            "price": 159.0,
+            "price": 159,
             "par": null
           },
           {
             "id": "862377",
             "name": "Green Chee-Fah Thai Chilli 300 g",
             "unit": "EACH",
-            "price": 39.0,
+            "price": 39,
             "par": null
           },
           {
             "id": "129515",
             "name": "Honey Pear Pack",
             "unit": "EACH",
-            "price": 99.0,
+            "price": 99,
             "par": null
           },
           {
             "id": "916339",
             "name": "Import Chinese/Vietnam Carrot 1 kg",
             "unit": "Kilogram",
-            "price": 20.0,
+            "price": 20,
             "par": null
           },
           {
             "id": "214259",
             "name": "Import Garlics 1 kg",
             "unit": "EACH",
-            "price": 69.0,
+            "price": 69,
             "par": null
           },
           {
             "id": "135600",
             "name": "Import Iceberg Lettuce",
             "unit": "Kilogram",
-            "price": 115.0,
+            "price": 115,
             "par": null
           },
           {
             "id": "259550",
             "name": "Import Lemon Seedless 4 Pcs (+2)",
             "unit": "EACH",
-            "price": 89.0,
+            "price": 89,
             "par": null
           },
           {
             "id": "924639",
             "name": "Import Potato - 10 KG Catering",
             "unit": "EACH",
-            "price": 39.0,
+            "price": 39,
             "par": null
           },
           {
             "id": "411671",
             "name": "Imported Broccoli 1 kg",
             "unit": "Kilogram",
-            "price": 79.0,
+            "price": 79,
             "par": null
           },
           {
             "id": "845506",
             "name": "Imported Onion 1 kg",
             "unit": "EACH",
-            "price": 45.0,
+            "price": 45,
             "par": null
           },
           {
             "id": "849128",
             "name": "Imported Onion 9-10.5 kg",
             "unit": "EACH",
-            "price": 329.0,
+            "price": 329,
             "par": null
           },
           {
             "id": "279994",
             "name": "Imported Potato 1 carton 10 kg",
             "unit": "Kilogram",
-            "price": 39.0,
+            "price": 39,
             "par": null
           },
           {
             "id": "429637",
             "name": "Imported Potato 1 kg",
             "unit": "Kilogram",
-            "price": 42.0,
+            "price": 42,
             "par": null
           },
           {
             "id": "800617",
             "name": "Indian Shallot 1 kg",
             "unit": "EACH",
-            "price": 45.0,
+            "price": 45,
             "par": null
           },
           {
             "id": "866853",
             "name": "Kale (Organic) Pack 150 g",
             "unit": "EACH",
-            "price": 59.0,
+            "price": 59,
             "par": null
           },
           {
             "id": "104988",
             "name": "King Oyster Mushroom Size L 1 kg",
             "unit": "Kilogram",
-            "price": 65.0,
+            "price": 65,
             "par": null
           },
           {
             "id": "157063",
             "name": "Lime 10 pcs",
             "unit": "EACH",
-            "price": 49.0,
+            "price": 49,
             "par": null
           },
           {
             "id": "157062",
             "name": "Lime 50 pcs",
             "unit": "EACH",
-            "price": 125.0,
+            "price": 125,
             "par": null
           },
           {
             "id": "243886",
             "name": "Long Eggplant 1 kg",
             "unit": "EACH",
-            "price": 49.0,
+            "price": 49,
             "par": null
           },
           {
             "id": "862433",
             "name": "Mint Leaf 100 g",
             "unit": "EACH",
-            "price": 32.0,
+            "price": 32,
             "par": null
           },
           {
             "id": "826827",
             "name": "Mint Leaf 300 g",
             "unit": "EACH",
-            "price": 89.0,
+            "price": 89,
             "par": null
           },
           {
             "id": "218822",
             "name": "Peeled Imported Garlic 500 g",
             "unit": "EACH",
-            "price": 59.0,
+            "price": 59,
             "par": null
           },
           {
             "id": "310591",
             "name": "Plum Tomato 3 kg Pack",
             "unit": "EACH",
-            "price": 105.0,
+            "price": 120,
             "par": null
           },
           {
             "id": "800616",
             "name": "Potatoes 1 kg",
             "unit": "EACH",
-            "price": 45.0,
+            "price": 45,
             "par": null
           },
           {
             "id": "30082",
             "name": "ROYAL PROJECT Iceberg Lettuce",
             "unit": "Kilogram",
-            "price": 109.0,
+            "price": 109,
             "par": null
           },
           {
             "id": "862383",
             "name": "Red Chili 300 g",
             "unit": "EACH",
-            "price": 29.0,
+            "price": 29,
             "par": null
           },
           {
             "id": "542165",
             "name": "Red Chili Pepper 1 kg",
             "unit": "Kilogram",
-            "price": 109.0,
+            "price": 109,
+            "par": null
+          },
+          {
+            "id": "923878",
+            "name": "ARO Long Green Cayenne 100 g",
+            "unit": "EACH",
+            "price": 19,
             "par": null
           },
           {
             "id": "818001",
             "name": "Red Khi Noo Thai Chilli 100 g",
             "unit": "EACH",
-            "price": 19.0,
+            "price": 19,
             "par": null
           },
           {
             "id": "1248",
             "name": "Red Pepper 1 kg",
             "unit": "Kilogram",
-            "price": 129.0,
+            "price": 129,
             "par": null
           },
           {
             "id": "9399",
             "name": "Seedless Lime for Juicing pack 25 pcs",
             "unit": "EACH",
-            "price": 109.0,
+            "price": 109,
             "par": null
           },
           {
             "id": "177655",
             "name": "Seedless Lime pack 10 pcs",
             "unit": "EACH",
-            "price": 59.0,
+            "price": 59,
             "par": null
           },
           {
             "id": "695657",
             "name": "Short Cucumber (Catering) Pack 3 kg",
             "unit": "EACH",
-            "price": 99.0,
+            "price": 85,
             "par": null
           },
           {
             "id": "830433",
             "name": "Short Cucumber 500 g",
             "unit": "EACH",
-            "price": 27.0,
+            "price": 27,
             "par": null
           },
           {
             "id": "826819",
             "name": "Spring Onion 300 g",
             "unit": "EACH",
-            "price": 55.0,
+            "price": 55,
             "par": null
           },
           {
             "id": "862381",
             "name": "Stem Off Red Ki Noo Thai Chili 300 g",
             "unit": "EACH",
-            "price": 45.0,
+            "price": 45,
             "par": null
           },
           {
             "id": "859613",
             "name": "Sugar Snap Pea 500 g",
             "unit": "EACH",
-            "price": 95.0,
+            "price": 95,
             "par": null
           },
           {
             "id": "391582",
             "name": "Thai Cauliflower Each",
             "unit": "EACH",
-            "price": 79.0,
+            "price": 79,
             "par": null
           },
           {
             "id": "826821",
             "name": "Thai Celery 300 g",
             "unit": "EACH",
-            "price": 55.0,
+            "price": 55,
             "par": null
           },
           {
             "id": "830435",
             "name": "Young Chinese Kale 300 g",
             "unit": "EACH",
-            "price": 25.0,
+            "price": 25,
             "par": null
           }
         ]
@@ -583,42 +590,42 @@ const DATA = {
             "id": "148557",
             "name": "ARO Black Pepper 500 g",
             "unit": "EACH",
-            "price": 170.0,
+            "price": 170,
             "par": null
           },
           {
             "id": "106728",
             "name": "NO.1 HAND BRAND Thyme Leaf 100 g",
             "unit": "EACH",
-            "price": 105.0,
+            "price": 105,
             "par": null
           },
           {
             "id": "828938",
             "name": "PHUENGLUANG Garlic Powder 500 g",
             "unit": "EACH",
-            "price": 190.0,
+            "price": 190,
             "par": null
           },
           {
             "id": "31538",
             "name": "Rosemary 100 g",
             "unit": "EACH",
-            "price": 99.0,
+            "price": 85,
             "par": null
           },
           {
             "id": "26260",
             "name": "Thyme 100 g",
             "unit": "EACH",
-            "price": 89.0,
+            "price": 89,
             "par": null
           },
           {
             "id": "821014",
             "name": "YUMMY Paprika Seasoning Powder 500 g",
             "unit": "EACH",
-            "price": 102.0,
+            "price": 102,
             "par": null
           }
         ]
@@ -630,112 +637,112 @@ const DATA = {
             "id": "933478",
             "name": "BACARDI Carta Blanca 75 cl",
             "unit": "EACH",
-            "price": 764.0,
+            "price": 769,
             "par": null
           },
           {
             "id": "330603",
             "name": "CHANG Beer Classic 320 ml x 24",
             "unit": "EACH",
-            "price": 789.0,
+            "price": 789,
             "par": null
           },
           {
             "id": "100511",
             "name": "COKE Soft Drink Can No Sugar 325 ml x 24",
             "unit": "EACH",
-            "price": 315.0,
+            "price": 315,
             "par": null
           },
           {
             "id": "358579",
             "name": "COKE Soft Drink Can Original 325 ml x 24",
             "unit": "EACH",
-            "price": 315.0,
+            "price": 315,
             "par": null
           },
           {
             "id": "358657",
             "name": "FANTA Soft Drink Orange Can 325 ml x 24",
             "unit": "EACH",
-            "price": 315.0,
+            "price": 315,
             "par": null
           },
           {
             "id": "863553",
             "name": "LA VIDA Red Merlot 3 l COOKING WINE",
             "unit": "EACH",
-            "price": 790.0,
+            "price": 790,
             "par": null
           },
           {
             "id": "101959",
             "name": "LEO Beer 320 ml x 24",
             "unit": "EACH",
-            "price": 792.0,
+            "price": 792,
             "par": null
           },
           {
             "id": "191837",
             "name": "NAMTHIP Drinking Water 550 ml x 12",
             "unit": "EACH",
-            "price": 46.0,
+            "price": 49,
             "par": null
           },
           {
             "id": "151202",
             "name": "SAN MIG LIGHT Beer 330 ml x 24",
             "unit": "EACH",
-            "price": 1019.0,
+            "price": 1019,
             "par": null
           },
           {
             "id": "166613",
             "name": "SIERRA Silver Tequila 70 cl",
             "unit": "EACH",
-            "price": 964.0,
+            "price": 964,
             "par": null
           },
           {
             "id": "166660",
             "name": "SIERRA Tequila Reposado 70 cl",
             "unit": "EACH",
-            "price": 990.0,
+            "price": 990,
             "par": null
           },
           {
             "id": "190333",
             "name": "SINGHA Beer 320 ml x 24",
             "unit": "EACH",
-            "price": 833.0,
+            "price": 833,
             "par": null
           },
           {
             "id": "160629",
             "name": "SINGHA Soda 325 ml x 24",
             "unit": "EACH",
-            "price": 190.0,
+            "price": 190,
             "par": null
           },
           {
             "id": "438113",
             "name": "TIPCO 100% Apple & Grape Fruit Juice 1 l x 3",
             "unit": "EACH",
-            "price": 235.0,
+            "price": 235,
             "par": null
           },
           {
             "id": "438100",
             "name": "TIPCO 100% Pineapple Juice 970 ml x 3",
             "unit": "EACH",
-            "price": 239.0,
+            "price": 239,
             "par": null
           },
           {
             "id": "150641",
             "name": "TIPCO 100% Sai Nam Phueng Orange Juice 1 l x 3",
             "unit": "EACH",
-            "price": 239.0,
+            "price": 239,
             "par": null
           }
         ]
@@ -747,126 +754,126 @@ const DATA = {
             "id": "929705",
             "name": "AJINOMOTO MSG 1 kg",
             "unit": "EACH",
-            "price": 111.0,
+            "price": 111,
             "par": null
           },
           {
             "id": "151091",
             "name": "AORSORROR 5% Distilled Vinegar 5 l",
             "unit": "EACH",
-            "price": 89.0,
+            "price": 89,
             "par": null
           },
           {
             "id": "134544",
             "name": "ARO Mayonnaise 1 kg",
             "unit": "EACH",
-            "price": 85.0,
+            "price": 85,
             "par": null
           },
           {
             "id": "140500",
             "name": "ARO Mustard 1 kg",
             "unit": "EACH",
-            "price": 89.0,
+            "price": 89,
             "par": null
           },
           {
             "id": "163404",
             "name": "BRUGGEMAN Yeast Blue 500 g",
             "unit": "EACH",
-            "price": 124.0,
+            "price": 124,
             "par": null
           },
           {
             "id": "830447",
             "name": "EL SABOR Nacho Sliced Jalapenos 2.9 kg",
             "unit": "EACH",
-            "price": 465.0,
+            "price": 465,
             "par": null
           },
           {
             "id": "117817",
             "name": "GOLDEN MOUNTAIN Vinegar 5 l",
             "unit": "EACH",
-            "price": 100.0,
+            "price": 100,
             "par": null
           },
           {
             "id": "129559",
             "name": "HEINZ Apple Vinegar 946 ml",
             "unit": "EACH",
-            "price": 354.0,
+            "price": 354,
             "par": null
           },
           {
             "id": "109777",
             "name": "HEINZ Tomato Sauce 5 kg",
             "unit": "EACH",
-            "price": 323.0,
+            "price": 323,
             "par": null
           },
           {
             "id": "156302",
             "name": "IMPERIAL Maple Syrup 730 ml",
             "unit": "EACH",
-            "price": 85.0,
+            "price": 85,
             "par": null
           },
           {
             "id": "122243",
             "name": "KEWPIE Mayonnaise No Sugar 1 kg",
             "unit": "EACH",
-            "price": 160.0,
+            "price": 160,
             "par": null
           },
           {
             "id": "119021",
             "name": "KNORR Broth Beef 1.5 kg",
             "unit": "EACH",
-            "price": 469.0,
+            "price": 469,
             "par": null
           },
           {
             "id": "181080",
             "name": "KNORR Demi Glace Gold Brown 1 kg",
             "unit": "EACH",
-            "price": 445.0,
+            "price": 445,
             "par": null
           },
           {
             "id": "226183",
             "name": "LEA & PERRINS Worcestershire 290 ml x 2",
             "unit": "EACH",
-            "price": 392.0,
+            "price": 363,
             "par": null
           },
           {
             "id": "153014",
             "name": "MAEPRANOM Chili Paste Tom Yum 3 kg",
             "unit": "EACH",
-            "price": 308.0,
+            "price": 308,
             "par": null
           },
           {
             "id": "155061",
             "name": "MAEPRANOM Chili Paste Tom Yum 900 g",
             "unit": "EACH",
-            "price": 110.0,
+            "price": 110,
             "par": null
           },
           {
             "id": "829281",
             "name": "MICA Tomato Paste 560g x 2",
             "unit": "EACH",
-            "price": 170.0,
+            "price": 170,
             "par": null
           },
           {
             "id": "237969",
             "name": "SRIRAJA PANICH Chili Sauce 900 g",
             "unit": "EACH",
-            "price": 53.0,
+            "price": 53,
             "par": null
           }
         ]
@@ -878,119 +885,119 @@ const DATA = {
             "id": "821136",
             "name": "ARO Brown Sugar 1 kg",
             "unit": "EACH",
-            "price": 49.0,
+            "price": 49,
             "par": null
           },
           {
             "id": "167630",
             "name": "ARO Cereal Muesli Fruity 1 kg",
             "unit": "EACH",
-            "price": 190.0,
+            "price": 190,
             "par": null
           },
           {
             "id": "821140",
             "name": "BABOO Chia Seeds 450 g",
             "unit": "EACH",
-            "price": 355.0,
+            "price": 355,
             "par": null
           },
           {
             "id": "142411",
             "name": "BEST FOODS Elbow Macaroni 2.5 kg",
             "unit": "EACH",
-            "price": 242.0,
+            "price": 242,
             "par": null
           },
           {
             "id": "152377",
             "name": "IMPERIAL Pancake Flour 1 kg",
             "unit": "EACH",
-            "price": 109.0,
+            "price": 109,
             "par": null
           },
           {
             "id": "184634",
             "name": "KITE Wheat Flour 1 kg",
             "unit": "EACH",
-            "price": 37.0,
+            "price": 37,
             "par": null
           },
           {
             "id": "895184",
             "name": "KSL Natural White Sugar 1 kg x 5",
             "unit": "EACH",
-            "price": 130.0,
+            "price": 130,
             "par": null
           },
           {
             "id": "202995",
             "name": "LIN Icing Sugar 900 g",
             "unit": "EACH",
-            "price": 42.0,
+            "price": 42,
             "par": null
           },
           {
             "id": "847975",
             "name": "MCGARRETT Baking Double Action 300 g",
             "unit": "EACH",
-            "price": 56.0,
+            "price": 56,
             "par": null
           },
           {
             "id": "830864",
             "name": "MCGARRETT Baking Soda 1 kg",
             "unit": "EACH",
-            "price": 110.0,
+            "price": 110,
             "par": null
           },
           {
             "id": "184247",
             "name": "MCGARRETT Baking Soda 300 g",
             "unit": "EACH",
-            "price": 30.0,
+            "price": 30,
             "par": null
           },
           {
             "id": "830862",
             "name": "MCGARRETT Gelatine Power 100 g",
             "unit": "EACH",
-            "price": 79.0,
+            "price": 79,
             "par": null
           },
           {
             "id": "106971",
             "name": "PRUNG THIP Iodized Table Salt 1 kg",
             "unit": "EACH",
-            "price": 15.0,
+            "price": 15,
             "par": null
           },
           {
             "id": "147447",
             "name": "SUPER-FINE Corn Flour 1 kg",
             "unit": "EACH",
-            "price": 42.0,
+            "price": 34,
             "par": null
           },
           {
             "id": "865903",
             "name": "TULIP White Compound Chocolate Coin 1 kg",
             "unit": "EACH",
-            "price": 235.0,
+            "price": 235,
             "par": null
           },
           {
             "id": "184658",
             "name": "WHITE SWAN Big Pack Wheat Flour 1 kg x 10",
             "unit": "EACH",
-            "price": 400.0,
+            "price": 400,
             "par": null
           },
           {
             "id": "184641",
             "name": "WHITE SWAN Wheat Flour 1 kg",
             "unit": "EACH",
-            "price": 41.0,
+            "price": 41,
             "par": null
           }
         ]
@@ -1002,42 +1009,42 @@ const DATA = {
             "id": "220839",
             "name": "BONUS Palm Oil 1 l x 3",
             "unit": "EACH",
-            "price": 153.0,
+            "price": 153,
             "par": null
           },
           {
             "id": "188165",
             "name": "BONUS Palm Oil 18 l",
             "unit": "EACH",
-            "price": 895.0,
+            "price": 920,
             "par": null
           },
           {
             "id": "422293",
             "name": "COOK Sunflower Oil 1 l",
             "unit": "EACH",
-            "price": 69.0,
+            "price": 69,
             "par": null
           },
           {
             "id": "400621",
             "name": "MORAKOT Palm Oil 1 l x 3",
             "unit": "EACH",
-            "price": 156.0,
+            "price": 156,
             "par": null
           },
           {
             "id": "312130",
             "name": "MORAKOT Palm Oil 18 l",
             "unit": "EACH",
-            "price": 940.0,
+            "price": 940,
             "par": null
           },
           {
             "id": "857939",
             "name": "MORAKOT Sunflower Oil 1 l",
             "unit": "EACH",
-            "price": 69.0,
+            "price": 69,
             "par": null
           }
         ]
@@ -1049,42 +1056,42 @@ const DATA = {
             "id": "138968",
             "name": "ARO Frozen Lime Juice 1 kg",
             "unit": "EACH",
-            "price": 129.0,
+            "price": 129,
             "par": null
           },
           {
             "id": "919857",
             "name": "ARO Sweet Potato Fries 1 kg",
             "unit": "EACH",
-            "price": 129.0,
+            "price": 129,
             "par": null
           },
           {
             "id": "910260",
             "name": "ARO Tater Tots 1 kg",
             "unit": "EACH",
-            "price": 85.0,
+            "price": 85,
             "par": null
           },
           {
             "id": "212275",
             "name": "NESTLE Ice Cream Vanilla Flavoured 3.6 kg",
             "unit": "EACH",
-            "price": 365.0,
+            "price": 365,
             "par": null
           },
           {
             "id": "142921",
             "name": "SAVEPAK French Fries 10mm 2 kg",
             "unit": "EACH",
-            "price": 79.0,
+            "price": 79,
             "par": null
           },
           {
             "id": "142922",
             "name": "SAVEPAK French Fries 10mm 2 kg x 6",
             "unit": "EACH",
-            "price": 590.0,
+            "price": 590,
             "par": null
           }
         ]
@@ -1096,70 +1103,70 @@ const DATA = {
             "id": "59826",
             "name": "ARO Window Cleaner 5.2 l",
             "unit": "EACH",
-            "price": 119.0,
+            "price": 119,
             "par": null
           },
           {
             "id": "763581",
             "name": "DUCK Bathroom Cleaning 3.5 l Purple",
             "unit": "EACH",
-            "price": 182.0,
+            "price": 182,
             "par": null
           },
           {
             "id": "202278",
             "name": "GLADE Clean Air & Fresh 280 ml x 3",
             "unit": "EACH",
-            "price": 375.0,
+            "price": 375,
             "par": null
           },
           {
             "id": "119756",
             "name": "HAITER Bleach Blue 2.5 l",
             "unit": "EACH",
-            "price": 77.0,
+            "price": 77,
             "par": null
           },
           {
             "id": "100867",
             "name": "MAGICLEAN Floor Cleaner Lily Bouquet 5 l",
             "unit": "EACH",
-            "price": 175.0,
+            "price": 175,
             "par": null
           },
           {
             "id": "211380",
             "name": "PRO Regular Powder Detergent Blue Plus Red 2.4 kg",
             "unit": "EACH",
-            "price": 109.0,
+            "price": 109,
             "par": null
           },
           {
             "id": "864241",
             "name": "SAVEPAK Dishwashing Lemon 3.6 l",
             "unit": "EACH",
-            "price": 94.0,
+            "price": 94,
             "par": null
           },
           {
             "id": "106570",
             "name": "SCOTCH-BRITE Scrub Pad with Sponge 3x4\" 12 pcs",
             "unit": "EACH",
-            "price": 155.0,
+            "price": 155,
             "par": null
           },
           {
             "id": "845969",
             "name": "SCOTCH-BRITE Scrub Sponge 3x4\" x 3+1",
             "unit": "EACH",
-            "price": 65.0,
+            "price": 65,
             "par": null
           },
           {
             "id": "853012",
             "name": "SCOTCH-BRITE Stainless Ball 20 g x 4",
             "unit": "EACH",
-            "price": 98.0,
+            "price": 98,
             "par": null
           }
         ]
@@ -1171,154 +1178,154 @@ const DATA = {
             "id": "847520",
             "name": "ADVANCE BIO Degradable PP Flexible Drinking Straw 6mmx21cm x 480",
             "unit": "EACH",
-            "price": 115.0,
+            "price": 115,
             "par": null
           },
           {
             "id": "893596",
             "name": "ARO Bag On Roll HD 12x18\" 500 pcs",
             "unit": "EACH",
-            "price": 219.0,
+            "price": 219,
             "par": null
           },
           {
             "id": "893595",
             "name": "ARO Bag on Roll HD 10x15\" 250 pcs",
             "unit": "EACH",
-            "price": 119.0,
+            "price": 119,
             "par": null
           },
           {
             "id": "931899",
             "name": "ARO Bio Food Box 600 ml White 50 pcs",
             "unit": "EACH",
-            "price": 119.0,
+            "price": 119,
             "par": null
           },
           {
             "id": "859068",
             "name": "ARO Extra Thick Handle Bag Size 12x20\" 1 kg",
             "unit": "EACH",
-            "price": 99.0,
+            "price": 99,
             "par": null
           },
           {
             "id": "845709",
             "name": "ARO Food Box Lite 1 l x 50",
             "unit": "EACH",
-            "price": 349.0,
+            "price": 349,
             "par": null
           },
           {
             "id": "845708",
             "name": "ARO Food Box Pulp Lite 600 ml x 50",
             "unit": "EACH",
-            "price": 159.0,
+            "price": 159,
             "par": null
           },
           {
             "id": "901191",
             "name": "ARO Kitchen Towel 6+2 rolls",
             "unit": "EACH",
-            "price": 129.0,
+            "price": 129,
             "par": null
           },
           {
             "id": "128751",
             "name": "ARO Napkin Tissue 40x40 cm 250 sheets",
             "unit": "EACH",
-            "price": 132.0,
+            "price": 132,
             "par": null
           },
           {
             "id": "878714",
             "name": "ARO Parchment Paper 45 cm 50 m",
             "unit": "EACH",
-            "price": 359.0,
+            "price": 359,
             "par": null
           },
           {
             "id": "743398",
             "name": "ARO Plastic Handle Bag PE 12x20\" 1 kg",
             "unit": "EACH",
-            "price": 99.0,
+            "price": 99,
             "par": null
           },
           {
             "id": "290906",
             "name": "ARO Plastic Handle Bag PE 8x16\" 1 kg",
             "unit": "EACH",
-            "price": 99.0,
+            "price": 99,
             "par": null
           },
           {
             "id": "680734",
             "name": "ARO Plastic Handle Bag PE 9x18\" 1 kg",
             "unit": "EACH",
-            "price": 149.0,
+            "price": 149,
             "par": null
           },
           {
             "id": "785833",
             "name": "ARO Sauce Cup+Lid PET 2 oz Square Clear 100 pcs",
             "unit": "EACH",
-            "price": 85.0,
+            "price": 85,
             "par": null
           },
           {
             "id": "125378",
             "name": "ARO Toilet Tissue 48 rolls",
             "unit": "EACH",
-            "price": 199.0,
+            "price": 199,
             "par": null
           },
           {
             "id": "857645",
             "name": "DIAMOND Aluminium Foil 18\"x37.5 ft",
             "unit": "EACH",
-            "price": 130.0,
+            "price": 130,
             "par": null
           },
           {
             "id": "807013",
             "name": "FEST Paper Lunch Box 600 ml x 50",
             "unit": "EACH",
-            "price": 105.0,
+            "price": 105,
             "par": null
           },
           {
             "id": "226718",
             "name": "GRACZ SIMPLE Bagasse Food Model B001 Box 600 ml 50 pcs",
             "unit": "EACH",
-            "price": 129.0,
+            "price": 129,
             "par": null
           },
           {
             "id": "846823",
             "name": "HERO Eco Garbage Bag 30x40\" x 25",
             "unit": "EACH",
-            "price": 89.0,
+            "price": 89,
             "par": null
           },
           {
             "id": "130338",
             "name": "MAXMO Kitchen And Multi-Purpose Roll Towel Big Roll 6+2 rolls",
             "unit": "EACH",
-            "price": 137.0,
+            "price": 139,
             "par": null
           },
           {
             "id": "933314",
             "name": "SAVEPAK x EICI Clamshell PP Clear Food Box 650 ml 25 pcs",
             "unit": "EACH",
-            "price": 69.0,
+            "price": 69,
             "par": null
           },
           {
             "id": "107724",
             "name": "SCOTT Kitchen Towel 6 rolls",
             "unit": "EACH",
-            "price": 139.0,
+            "price": 139,
             "par": null
           }
         ]
@@ -1541,8 +1548,7 @@ const DATA = {
             "name": "Bottles to Return",
             "unit": "Case (24 Bottles)",
             "price": 0,
-            "step": 24,
-            "noParStock": true
+            "par": null
           }
         ]
       }
