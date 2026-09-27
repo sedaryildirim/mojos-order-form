@@ -207,7 +207,7 @@ const DATA = {
           },
           {
             "id": "111259",
-            "name": "Frozen New Zealand Lamb Shoulder Boneless 1 pc (Approx. 1 kg/pc)",
+            "name": "Frozen Australian Lamb Shoulder Boneless 1 pc (Approx. 1 kg/pc)",
             "unit": "Kilogram",
             "price": 450,
             "par": null
@@ -223,14 +223,14 @@ const DATA = {
             "id": "75608",
             "name": "Pork Shoulder 1 kg",
             "unit": "Kilogram",
-            "price": 125,
+            "price": 111,
             "par": null
           },
           {
             "id": "233747",
             "name": "Pork Shoulder Mince 1 kg",
             "unit": "Kilogram",
-            "price": 135,
+            "price": 127,
             "par": null
           }
         ]
@@ -256,7 +256,7 @@ const DATA = {
             "id": "507986",
             "name": "Cabbage pack 500-700 g",
             "unit": "EACH",
-            "price": 19,
+            "price": 25,
             "par": null
           },
           {
@@ -277,7 +277,7 @@ const DATA = {
             "id": "826835",
             "name": "Chinese Kale 500 g",
             "unit": "EACH",
-            "price": 23,
+            "price": 35,
             "par": null
           },
           {
@@ -326,7 +326,7 @@ const DATA = {
             "id": "916339",
             "name": "Import Chinese/Vietnam Carrot 1 kg",
             "unit": "Kilogram",
-            "price": 20,
+            "price": 18,
             "par": null
           },
           {
@@ -340,7 +340,7 @@ const DATA = {
             "id": "135600",
             "name": "Import Iceberg Lettuce",
             "unit": "Kilogram",
-            "price": 115,
+            "price": 79,
             "par": null
           },
           {
@@ -368,7 +368,7 @@ const DATA = {
             "id": "845506",
             "name": "Imported Onion 1 kg",
             "unit": "EACH",
-            "price": 45,
+            "price": 40,
             "par": null
           },
           {
@@ -414,6 +414,13 @@ const DATA = {
             "par": null
           },
           {
+            "id": "923317",
+            "name": "Lemon Pack 4 pcs",
+            "unit": "EACH",
+            "price": 79,
+            "par": null
+          },
+          {
             "id": "157063",
             "name": "Lime 10 pcs",
             "unit": "EACH",
@@ -431,7 +438,7 @@ const DATA = {
             "id": "243886",
             "name": "Long Eggplant 1 kg",
             "unit": "EACH",
-            "price": 49,
+            "price": 45,
             "par": null
           },
           {
@@ -459,7 +466,7 @@ const DATA = {
             "id": "310591",
             "name": "Plum Tomato 3 kg Pack",
             "unit": "EACH",
-            "price": 120,
+            "price": 109,
             "par": null
           },
           {
@@ -488,6 +495,13 @@ const DATA = {
             "name": "Red Chili Pepper 1 kg",
             "unit": "Kilogram",
             "price": 109,
+            "par": null
+          },
+          {
+            "id": "862389",
+            "name": "Red Goat Pepper 300 g",
+            "unit": "EACH",
+            "price": 45,
             "par": null
           },
           {
@@ -754,7 +768,7 @@ const DATA = {
             "id": "929705",
             "name": "AJINOMOTO MSG 1 kg",
             "unit": "EACH",
-            "price": 111,
+            "price": 120,
             "par": null
           },
           {
@@ -810,7 +824,7 @@ const DATA = {
             "id": "109777",
             "name": "HEINZ Tomato Sauce 5 kg",
             "unit": "EACH",
-            "price": 323,
+            "price": 305,
             "par": null
           },
           {
@@ -824,7 +838,7 @@ const DATA = {
             "id": "122243",
             "name": "KEWPIE Mayonnaise No Sugar 1 kg",
             "unit": "EACH",
-            "price": 160,
+            "price": 143,
             "par": null
           },
           {
@@ -859,7 +873,7 @@ const DATA = {
             "id": "155061",
             "name": "MAEPRANOM Chili Paste Tom Yum 900 g",
             "unit": "EACH",
-            "price": 110,
+            "price": 106,
             "par": null
           },
           {
@@ -1023,7 +1037,7 @@ const DATA = {
             "id": "422293",
             "name": "COOK Sunflower Oil 1 l",
             "unit": "EACH",
-            "price": 69,
+            "price": 70,
             "par": null
           },
           {
@@ -1044,7 +1058,7 @@ const DATA = {
             "id": "857939",
             "name": "MORAKOT Sunflower Oil 1 l",
             "unit": "EACH",
-            "price": 69,
+            "price": 70,
             "par": null
           }
         ]
@@ -1124,7 +1138,7 @@ const DATA = {
             "id": "119756",
             "name": "HAITER Bleach Blue 2.5 l",
             "unit": "EACH",
-            "price": 77,
+            "price": 79,
             "par": null
           },
           {
@@ -1145,7 +1159,7 @@ const DATA = {
             "id": "864241",
             "name": "SAVEPAK Dishwashing Lemon 3.6 l",
             "unit": "EACH",
-            "price": 94,
+            "price": 82,
             "par": null
           },
           {
