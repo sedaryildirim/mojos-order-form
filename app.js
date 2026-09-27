@@ -124,10 +124,28 @@ function setCategoryCompleted(ci, catEl, completed) {
 // Once every item in a category has been reviewed (stock entered, order set,
 // or skipped), mark it complete automatically so staff don't have to tap
 // "Mark Category Complete" by hand for every one of a dozen categories.
+//
+// Collapsing the instant the last item is touched doesn't leave a window to
+// bump a quantity right after typing it, so the actual collapse is delayed -
+// any further edit in the category (including the one that just finished it)
+// pushes the collapse back instead of firing immediately.
+const AUTO_COMPLETE_DELAY_MS = 1500;
+const autoCompleteTimers = {}; // catIdx -> timeout id
+
 function maybeAutoComplete(ci, catEl, cat) {
+  if (autoCompleteTimers[ci]) {
+    clearTimeout(autoCompleteTimers[ci]);
+    delete autoCompleteTimers[ci];
+  }
   if (state.completed[ci]) return;
   const allTouched = cat.items.every((item, ii) => isItemTouched(item, itemKey(ci, ii)));
-  if (allTouched) setCategoryCompleted(ci, catEl, true);
+  if (!allTouched) return;
+  autoCompleteTimers[ci] = setTimeout(() => {
+    delete autoCompleteTimers[ci];
+    if (state.completed[ci]) return;
+    const stillAllTouched = cat.items.every((item, ii) => isItemTouched(item, itemKey(ci, ii)));
+    if (stillAllTouched) setCategoryCompleted(ci, catEl, true);
+  }, AUTO_COMPLETE_DELAY_MS);
 }
 
 function totalItemsSelected() {
