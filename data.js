@@ -1,4 +1,7 @@
 const DATA = {
+  "phangangreenveg": {
+    "categories": []
+  },
   "makro-phangan": {
     "categories": [
       {
