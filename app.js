@@ -260,7 +260,9 @@ function renderSupplierScreen() {
   $("#supplierBranchTag").textContent = state.branch.name + " branch — choose an order sheet";
   const grid = $("#supplierGrid");
   grid.innerHTML = "";
-  CONFIG.suppliers.forEach(s => {
+  const allowedIds = state.branch.suppliers || CONFIG.suppliers.map(s => s.id);
+  const suppliers = CONFIG.suppliers.filter(s => allowedIds.includes(s.id));
+  suppliers.forEach(s => {
     const count = (DATA[s.id] && DATA[s.id].categories.length) || 0;
     const btn = document.createElement("button");
     btn.className = "branch-btn";
