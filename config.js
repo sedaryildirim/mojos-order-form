@@ -3,10 +3,11 @@
 
 const CONFIG = {
   branches: [
-    { id: "nathon", name: "Nathon", email: "mojos.nathon@gmail.com", region: "Koh Samui" },
-    { id: "lamai", name: "Lamai", email: "mojos.lamai@gmail.com", region: "Koh Samui" },
-    { id: "chaloklum", name: "Chaloklum", email: "mojos.chaloklum@gmail.com", region: "Koh Phangan" },
-    { id: "thongsala", name: "Thong Sala", email: "mojos.thongsala@gmail.com", region: "Koh Phangan" }
+    { id: "nathon", name: "Mojo's Nathon", email: "mojos.nathon@gmail.com", region: "Koh Samui" },
+    { id: "lamai", name: "Mojo's Lamai", email: "mojos.lamai@gmail.com", region: "Koh Samui" },
+    { id: "chaloklum", name: "Mojo's Chaloklum", email: "mojos.chaloklum@gmail.com", region: "Koh Phangan" },
+    { id: "thongsala", name: "Mojo's Thongsala", email: "mojos.thongsala@gmail.com", region: "Koh Phangan" },
+    { id: "kaifchaloklum", name: "Kaif Chaloklum", email: "amazingphangan.kaif@gmail.com", region: "Koh Phangan" }
   ],
   // Each id must match a key in the DATA object in data.js
   suppliers: [
