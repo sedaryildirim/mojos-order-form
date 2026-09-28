@@ -926,7 +926,10 @@ const DATA = {
       }
     ]
   },
-  "makro": {
+  "makro-kaif": {
+    "categories": []
+  },
+  "makro-samui": {
     "categories": [
       {
         "name": "Dairy & Eggs",
