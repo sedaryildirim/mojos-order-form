@@ -1,6 +1,353 @@
 const DATA = {
   "phangangreenveg": {
-    "categories": []
+    "categories": [
+      {
+        "name": "Produce",
+        "items": [
+          {
+            "id": "2026",
+            "name": "Beetroot",
+            "unit": "Kilogram",
+            "price": 65,
+            "par": null
+          },
+          {
+            "id": "1090",
+            "name": "Red Bell Pepper",
+            "unit": "Kilogram",
+            "price": 125,
+            "par": null
+          },
+          {
+            "id": "1002",
+            "name": "Cabbage",
+            "unit": "Kilogram",
+            "price": 90,
+            "par": null
+          },
+          {
+            "id": "2115010098508",
+            "name": "Celery",
+            "unit": "Kilogram",
+            "price": 100,
+            "par": null
+          },
+          {
+            "id": "1070",
+            "name": "Cherry Tomato",
+            "unit": "Kilogram",
+            "price": 120,
+            "par": null
+          },
+          {
+            "id": "1319",
+            "name": "Green Cos Lettuce",
+            "unit": "Kilogram",
+            "price": 100,
+            "par": null
+          },
+          {
+            "id": "1223",
+            "name": "Cucumber Big (10kg)",
+            "unit": "Bag",
+            "price": 320,
+            "par": null
+          },
+          {
+            "id": "2116320305751",
+            "name": "Purple Eggplant (green stem)",
+            "unit": "Kilogram",
+            "price": 108,
+            "par": null
+          },
+          {
+            "id": "1081",
+            "name": "Chilli Spur Pepper (green)",
+            "unit": "Kilogram",
+            "price": 85,
+            "par": null
+          },
+          {
+            "id": "100000000259",
+            "name": "Lemon",
+            "unit": "Kilogram",
+            "price": 100,
+            "par": null
+          },
+          {
+            "id": "1007",
+            "name": "Lettuce",
+            "unit": "Kilogram",
+            "price": 85,
+            "par": null
+          },
+          {
+            "id": "1221",
+            "name": "Lime",
+            "unit": "Kilogram",
+            "price": 100,
+            "par": null
+          },
+          {
+            "id": "1218",
+            "name": "Potato (10 kg box)",
+            "unit": "Box",
+            "price": 350,
+            "par": null
+          },
+          {
+            "id": "1068",
+            "name": "Tomatoes",
+            "unit": "Kilogram",
+            "price": 45,
+            "par": null
+          },
+          {
+            "id": "1073",
+            "name": "Purple Eggplant",
+            "unit": "Kilogram",
+            "price": 55,
+            "par": null
+          },
+          {
+            "id": "1318",
+            "name": "Red Oak Lettuce",
+            "unit": "Kilogram",
+            "price": 170,
+            "par": null
+          },
+          {
+            "id": "1006",
+            "name": "Daikon",
+            "unit": "Kilogram",
+            "price": 45,
+            "par": null
+          },
+          {
+            "id": "1329",
+            "name": "Red Radish",
+            "unit": "Kilogram",
+            "price": 119,
+            "par": null
+          },
+          {
+            "id": "257271",
+            "name": "Wild Rocket Salad (box)",
+            "unit": "Box",
+            "price": 320,
+            "par": null
+          },
+          {
+            "id": "1153",
+            "name": "Shiitake Mushroom",
+            "unit": "Kilogram",
+            "price": 189,
+            "par": null
+          },
+          {
+            "id": "1152",
+            "name": "Royal Oyster Mushroom",
+            "unit": "Kilogram",
+            "price": 80,
+            "par": null
+          },
+          {
+            "id": "100000000256",
+            "name": "Zucchini",
+            "unit": "Kilogram",
+            "price": 99,
+            "par": null
+          },
+          {
+            "id": "7120",
+            "name": "Pumpkin",
+            "unit": "Kilogram",
+            "price": 40,
+            "par": null
+          },
+          {
+            "id": "1023",
+            "name": "Cucumber",
+            "unit": "Kilogram",
+            "price": 38,
+            "par": null
+          },
+          {
+            "id": "1162",
+            "name": "Orinji Mushroom",
+            "unit": "Kilogram",
+            "price": 85,
+            "par": null
+          },
+          {
+            "id": "1316",
+            "name": "Carrot (10 kg box)",
+            "unit": "Box",
+            "price": 250,
+            "par": null
+          },
+          {
+            "id": "100000000288",
+            "name": "Onions (10kg bag)",
+            "unit": "Bag",
+            "price": 350,
+            "par": null
+          },
+          {
+            "id": "257271_2",
+            "name": "Wild Rocket Salad (per kg)",
+            "unit": "Kilogram",
+            "price": 500,
+            "par": null
+          },
+          {
+            "id": "2107",
+            "name": "Young Coconut (8 pcs)",
+            "unit": "Bag",
+            "price": 260,
+            "par": null
+          },
+          {
+            "id": "1003",
+            "name": "Purple Cabbage",
+            "unit": "Kilogram",
+            "price": 50,
+            "par": null
+          },
+          {
+            "id": "1013",
+            "name": "Cauliflower",
+            "unit": "Kilogram",
+            "price": 75,
+            "par": null
+          },
+          {
+            "id": "1009",
+            "name": "Broccoli",
+            "unit": "Kilogram",
+            "price": 95,
+            "par": null
+          },
+          {
+            "id": "1010",
+            "name": "Kale",
+            "unit": "Kilogram",
+            "price": 45,
+            "par": null
+          },
+          {
+            "id": "1016",
+            "name": "Carrots",
+            "unit": "Kilogram",
+            "price": 30,
+            "par": null
+          },
+          {
+            "id": "1008",
+            "name": "Iceberg Lettuce",
+            "unit": "Kilogram",
+            "price": 95,
+            "par": null
+          },
+          {
+            "id": "3332",
+            "name": "Red Onions",
+            "unit": "Kilogram",
+            "price": 55,
+            "par": null
+          },
+          {
+            "id": "1072",
+            "name": "Green Eggplant",
+            "unit": "Kilogram",
+            "price": 55,
+            "par": null
+          },
+          {
+            "id": "5013",
+            "name": "Big Tofu",
+            "unit": "Sheet",
+            "price": 15,
+            "par": null
+          },
+          {
+            "id": "1082",
+            "name": "Red Chilli Spur Pepper",
+            "unit": "Kilogram",
+            "price": 110,
+            "par": null
+          }
+        ]
+      },
+      {
+        "name": "Herbs & Spices",
+        "items": [
+          {
+            "id": "1036",
+            "name": "Dill",
+            "unit": "Kilogram",
+            "price": 100,
+            "par": null
+          },
+          {
+            "id": "1027",
+            "name": "Peppermint",
+            "unit": "Kilogram",
+            "price": 200,
+            "par": null
+          },
+          {
+            "id": "1034",
+            "name": "Coriander",
+            "unit": "Kilogram",
+            "price": 180,
+            "par": null
+          },
+          {
+            "id": "2111800057502",
+            "name": "Parsley",
+            "unit": "Kilogram",
+            "price": 180,
+            "par": null
+          },
+          {
+            "id": "1358",
+            "name": "Ginger of China",
+            "unit": "Kilogram",
+            "price": 80,
+            "par": null
+          },
+          {
+            "id": "1120",
+            "name": "Turmeric",
+            "unit": "Kilogram",
+            "price": 70,
+            "par": null
+          },
+          {
+            "id": "1032",
+            "name": "Spring Onion",
+            "unit": "Kilogram",
+            "price": 140,
+            "par": null
+          },
+          {
+            "id": "1029_1",
+            "name": "Italian Basil",
+            "unit": "Kilogram",
+            "price": 550,
+            "par": null
+          },
+          {
+            "id": "1287",
+            "name": "Chinese Garlic",
+            "unit": "Kilogram",
+            "price": 85,
+            "par": null
+          }
+        ]
+      }
+    ]
   },
   "makro-phangan": {
     "categories": [
