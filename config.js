@@ -7,13 +7,14 @@ const CONFIG = {
     { id: "lamai", name: "Mojo's Lamai", email: "mojos.lamai@gmail.com", region: "Koh Samui", suppliers: ["makro-samui", "foodproject", "drinks", "winepro"] },
     { id: "chaloklum", name: "Mojo's Chaloklum", email: "mojos.chaloklum@gmail.com", region: "Koh Phangan", suppliers: ["makro-phangan", "winepro", "phangangreenveg"] },
     { id: "thongsala", name: "Mojo's Thongsala", email: "mojos.thongsala@gmail.com", region: "Koh Phangan", suppliers: ["makro-phangan", "winepro", "phangangreenveg"] },
-    { id: "kaifchaloklum", name: "Kaif Chaloklum", email: "amazingphangan.kaif@gmail.com", region: "Koh Phangan", suppliers: ["makro-kaif", "winepro", "phangangreenveg"] }
+    { id: "kaifchaloklum", name: "Kaif Chaloklum", email: "amazingphangan.kaif@gmail.com", region: "Koh Phangan", suppliers: ["makro-kaif", "winepro", "phangangreenveg", "labottega", "fruitshop"] }
   ],
   // Each id must match a key in the DATA object in data.js.
   // Full list shown to a branch unless that branch has its own `suppliers` array (list of ids) above.
   // Three separate Makro lists, same chain, different item selection & pricing per branch:
   // makro-samui (Nathon/Lamai), makro-phangan (Chaloklum/Thongsala), makro-kaif (Kaif Chaloklum).
   // phangangreenveg = Koh Phangan-only produce supplier (Chaloklum/Thongsala/Kaif), not offered on Samui.
+  // labottega, fruitshop = Kaif Chaloklum-only suppliers (item lists pending).
   suppliers: [
     { id: "makro-samui", name: "Order Makro" },
     { id: "makro-phangan", name: "Order Makro" },
@@ -21,7 +22,9 @@ const CONFIG = {
     { id: "foodproject", name: "Order Food Project" },
     { id: "drinks", name: "Order Drinks" },
     { id: "winepro", name: "Order Wine Pro" },
-    { id: "phangangreenveg", name: "Order Phangan Green Vegetables" }
+    { id: "phangangreenveg", name: "Order Phangan Green Vegetables" },
+    { id: "labottega", name: "Order La Bottega" },
+    { id: "fruitshop", name: "Order Fruit Shop" }
   ],
   // CC'd on every order email (leave "" to disable)
   ccEmail: ""

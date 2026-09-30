@@ -1,4 +1,392 @@
 const DATA = {
+  "labottega": {
+    "categories": [
+      {
+        "name": "Cured Meats & Fish",
+        "items": [
+          {
+            "id": "766617",
+            "name": "Smoked Salmon Big",
+            "unit": "Kilogram",
+            "price": 890,
+            "par": null
+          },
+          {
+            "id": "466533",
+            "name": "Paris Ham",
+            "unit": "Kilogram",
+            "price": 650,
+            "par": null
+          },
+          {
+            "id": "673579",
+            "name": "Parma Ham Wholesale",
+            "unit": "Kilogram",
+            "price": 1090,
+            "par": null
+          },
+          {
+            "id": "199015",
+            "name": "Salame Milano Wholesale",
+            "unit": "Kilogram",
+            "price": 780,
+            "par": null
+          },
+          {
+            "id": "633223",
+            "name": "Thueringer Bratwurst",
+            "unit": "Kilogram",
+            "price": 430,
+            "par": null
+          },
+          {
+            "id": "236095",
+            "name": "Smoked Bacon Homemade",
+            "unit": "EACH",
+            "price": 390,
+            "par": null
+          },
+          {
+            "id": "914526",
+            "name": "Smoked Bacon Breakfast",
+            "unit": "EACH",
+            "price": 295,
+            "par": null
+          },
+          {
+            "id": "8056515240587",
+            "name": "Anchovies Ristoris 700gr",
+            "unit": "EACH",
+            "price": 990,
+            "par": null
+          }
+        ]
+      },
+      {
+        "name": "Cheese & Dairy",
+        "items": [
+          {
+            "id": "559954",
+            "name": "Emmental Wholesale",
+            "unit": "Kilogram",
+            "price": 490,
+            "par": null
+          },
+          {
+            "id": "677790",
+            "name": "Grana Padano DOP 16 Months",
+            "unit": "Kilogram",
+            "price": 860,
+            "par": null
+          },
+          {
+            "id": "335565",
+            "name": "Comte Cheese 'Rivoire' 12 Months",
+            "unit": "Kilogram",
+            "price": 1600,
+            "par": null
+          },
+          {
+            "id": "595212",
+            "name": "Blue Cheese Wholesale",
+            "unit": "Kilogram",
+            "price": 790,
+            "par": null
+          },
+          {
+            "id": "370342",
+            "name": "Goat Cheese Vacuum 1kg",
+            "unit": "EACH",
+            "price": 1040,
+            "par": null
+          },
+          {
+            "id": "174431",
+            "name": "Feta Cheese New 500gr",
+            "unit": "EACH",
+            "price": 360,
+            "par": null
+          },
+          {
+            "id": "9414997006432",
+            "name": "Mascarpone Tatua 1kg",
+            "unit": "EACH",
+            "price": 420,
+            "par": null
+          }
+        ]
+      },
+      {
+        "name": "Pantry",
+        "items": [
+          {
+            "id": "8420701502061",
+            "name": "EVO Oil Sabroso 5L",
+            "unit": "EACH",
+            "price": 1590,
+            "par": null
+          },
+          {
+            "id": "8411342001334",
+            "name": "EVO Oil Mueloliva 5L",
+            "unit": "EACH",
+            "price": 1690,
+            "par": null
+          },
+          {
+            "id": "491925",
+            "name": "White Truffle Oil 250ml",
+            "unit": "EACH",
+            "price": 728.97,
+            "par": null
+          },
+          {
+            "id": "753321",
+            "name": "Tahini 5kg Tub",
+            "unit": "EACH",
+            "price": 1290,
+            "par": null
+          },
+          {
+            "id": "3077310513107",
+            "name": "Dijon Mustard 1kg",
+            "unit": "EACH",
+            "price": 450,
+            "par": null
+          },
+          {
+            "id": "8433260705019",
+            "name": "Capers in Vinegar 900gr",
+            "unit": "EACH",
+            "price": 490,
+            "par": null
+          },
+          {
+            "id": "078883760328",
+            "name": "Chipotles Peppers",
+            "unit": "EACH",
+            "price": 990,
+            "par": null
+          },
+          {
+            "id": "665940",
+            "name": "Whole Jalapeno Peppers",
+            "unit": "EACH",
+            "price": 520,
+            "par": null
+          },
+          {
+            "id": "309359",
+            "name": "Acai Berry Pulp 800gr",
+            "unit": "EACH",
+            "price": 490,
+            "par": null
+          },
+          {
+            "id": "974923",
+            "name": "Dry Chickpeas",
+            "unit": "EACH",
+            "price": 130,
+            "par": null
+          },
+          {
+            "id": "054492",
+            "name": "Brown Lentils 1kg",
+            "unit": "EACH",
+            "price": 120,
+            "par": null
+          }
+        ]
+      }
+    ]
+  },
+  "fruitshop": {
+    "categories": [
+      {
+        "name": "Fruit",
+        "items": [
+          {
+            "id": "avocado",
+            "name": "Avocado",
+            "unit": "Kilogram",
+            "price": 130,
+            "par": null
+          },
+          {
+            "id": "banana",
+            "name": "Banana",
+            "unit": "Kilogram",
+            "price": 40,
+            "par": null
+          },
+          {
+            "id": "mango",
+            "name": "Mango",
+            "unit": "Kilogram",
+            "price": 80,
+            "par": null
+          },
+          {
+            "id": "pineapple",
+            "name": "Pineapple (Sweet)",
+            "unit": "Kilogram",
+            "price": 35,
+            "par": null
+          },
+          {
+            "id": "watermelon",
+            "name": "Watermelon",
+            "unit": "Kilogram",
+            "price": 30,
+            "par": null
+          },
+          {
+            "id": "white-dragon",
+            "name": "Dragon Fruit White",
+            "unit": "Kilogram",
+            "price": 60,
+            "par": null
+          },
+          {
+            "id": "red-dragon",
+            "name": "Dragon Fruit Red",
+            "unit": "Kilogram",
+            "price": 75,
+            "par": null
+          },
+          {
+            "id": "navel-orange",
+            "name": "Navel Orange",
+            "unit": "Kilogram",
+            "price": 80,
+            "par": null
+          },
+          {
+            "id": "lime",
+            "name": "Lime",
+            "unit": "Kilogram",
+            "price": 90,
+            "par": null
+          },
+          {
+            "id": "lemon",
+            "name": "Lemon",
+            "unit": "EACH",
+            "price": 20,
+            "par": null
+          },
+          {
+            "id": "coconut",
+            "name": "Coconut",
+            "unit": "EACH",
+            "price": 30,
+            "par": null
+          },
+          {
+            "id": "green-apple",
+            "name": "Green Apple",
+            "unit": "EACH",
+            "price": 20,
+            "par": null
+          },
+          {
+            "id": "red-apple",
+            "name": "Red Apple",
+            "unit": "EACH",
+            "price": 10,
+            "par": null
+          }
+        ]
+      },
+      {
+        "name": "Vegetables & Herbs",
+        "items": [
+          {
+            "id": "cherry-tomato",
+            "name": "Cherry Tomato",
+            "unit": "Kilogram",
+            "price": 120,
+            "par": null
+          },
+          {
+            "id": "carrot",
+            "name": "Carrot",
+            "unit": "Kilogram",
+            "price": 30,
+            "par": null
+          },
+          {
+            "id": "cucumber",
+            "name": "Cucumber",
+            "unit": "Kilogram",
+            "price": 25,
+            "par": null
+          },
+          {
+            "id": "lettuce",
+            "name": "Lettuce",
+            "unit": "Kilogram",
+            "price": 90,
+            "par": null
+          },
+          {
+            "id": "celery",
+            "name": "Celery",
+            "unit": "Kilogram",
+            "price": 80,
+            "par": null
+          },
+          {
+            "id": "coriander",
+            "name": "Coriander",
+            "unit": "Kilogram",
+            "price": 180,
+            "par": null
+          },
+          {
+            "id": "parsley",
+            "name": "Parsley",
+            "unit": "Kilogram",
+            "price": 180,
+            "par": null
+          },
+          {
+            "id": "white-onion",
+            "name": "White Onion",
+            "unit": "Kilogram",
+            "price": 45,
+            "par": null
+          },
+          {
+            "id": "ginger",
+            "name": "Ginger",
+            "unit": "Kilogram",
+            "price": 70,
+            "par": null
+          },
+          {
+            "id": "turmeric",
+            "name": "Turmeric",
+            "unit": "Kilogram",
+            "price": 60,
+            "par": null
+          }
+        ]
+      },
+      {
+        "name": "Other",
+        "items": [
+          {
+            "id": "tofu",
+            "name": "Tofu",
+            "unit": "EACH",
+            "price": 10,
+            "par": null
+          }
+        ]
+      }
+    ]
+  },
   "phangangreenveg": {
     "categories": [
       {
