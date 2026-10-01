@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>Mojo's Ordering</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mojos + Kaif GP Calculator and Ordering System</title>
 <script>
 (function () {
   try {
@@ -15,16 +15,53 @@
   } catch (e) {}
 })();
 </script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Calistoga&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<main>
+
+<!-- Launcher -->
+<section id="launcherScreen" class="screen">
+  <div class="branch-screen">
+    <div class="hero">
+      <button class="icon-btn theme-toggle" id="launcherThemeToggle" title="Switch theme" aria-label="Switch theme"></button>
+      <div class="section-label"><span class="dot"></span>Kitchen tools</div>
+      <h1 class="logo">Mojos + Kaif <span class="gradient-text">GP Calculator and Ordering System</span></h1>
+      <div class="hero-field" aria-hidden="true"></div>
+    </div>
+    <div class="branch-grid" id="launcherGrid">
+      <button class="launch-card is-wip" type="button" disabled>
+        <span class="launch-kicker">Calculator</span>
+        <span class="launch-title">Kaif GP Calculator</span>
+        <span class="launch-badge">Work in progress</span>
+      </button>
+      <button class="launch-card is-wip" type="button" disabled>
+        <span class="launch-kicker">Calculator</span>
+        <span class="launch-title">Mojos GP Calculator</span>
+        <span class="launch-badge">Work in progress</span>
+      </button>
+      <button class="launch-card" type="button" id="openOrdering">
+        <span class="launch-kicker">Suppliers</span>
+        <span class="launch-title">Ordering</span>
+        <span class="launch-desc">Place supplier orders for your branch</span>
+      </button>
+    </div>
+  </div>
+</section>
 
 <!-- Branch select -->
 <section id="branchScreen" class="screen">
   <div class="branch-screen">
-    <button class="icon-btn theme-toggle" id="themeToggle" title="Switch theme" aria-label="Switch theme"></button>
-    <div class="logo">Mojo's Ordering</div>
-    <div class="tagline">Select your branch to start an order</div>
+    <div class="hero">
+      <button class="back-link" id="backToLauncher">&#8592; Menu</button>
+      <button class="icon-btn theme-toggle" id="themeToggle" title="Switch theme" aria-label="Switch theme"></button>
+      <div class="section-label"><span class="dot"></span>Supplier orders</div>
+      <h1 class="logo">Mojo's &amp; Kaif <span class="gradient-text">Select a store location</span></h1>
+      <div class="hero-field" aria-hidden="true"></div>
+    </div>
     <div class="branch-grid" id="branchGrid"></div>
   </div>
 </section>
@@ -32,25 +69,30 @@
 <!-- Supplier select -->
 <section id="supplierScreen" class="screen">
   <div class="branch-screen">
-    <button class="back-link" id="backToBranch">&#8592; Change branch</button>
-    <div class="logo">Mojo's Ordering</div>
-    <div class="tagline" id="supplierBranchTag"></div>
+    <div class="hero">
+      <button class="back-link" id="backToBranch">&#8592; Change branch</button>
+      <div class="section-label"><span class="dot"></span>Order sheet</div>
+      <h1 class="logo">Select a <span class="gradient-text">supplier</span></h1>
+      <div class="tagline" id="supplierBranchTag" hidden></div>
+      <div class="hero-field" aria-hidden="true"></div>
+    </div>
     <div class="branch-grid" id="supplierGrid"></div>
   </div>
 </section>
 
 <!-- Order form -->
 <section id="orderScreen" class="screen">
+  <div class="sticky-head">
   <header class="topbar">
     <div>
-      <span id="supplierTitle">Order Sheet</span>
+      <span class="topbar-title" id="supplierTitle">Order Sheet</span>
       <span class="branch-tag" id="branchTag"></span>
     </div>
-    <button class="icon-btn danger" id="clearAllBtn" title="Clear all" aria-label="Clear all">&#128465;</button>
-    <button class="icon-btn" id="switchBranch" title="Change supplier" aria-label="Change supplier">&#8646;</button>
-    <button class="icon-btn" id="startOverBtn" title="Start over" aria-label="Start over from branch selection">&#8962;</button>
+    <button class="icon-btn danger" id="clearAllBtn" title="Clear all" aria-label="Clear all"><svg class="icon-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg><span class="icon-label">Clear</span></button>
+    <button class="icon-btn" id="switchBranch" title="Change supplier" aria-label="Change supplier"><svg class="icon-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h13l-3-3M20 16H7l3 3"/></svg><span class="icon-label">Sheet</span></button>
+    <button class="icon-btn" id="startOverBtn" title="Start over" aria-label="Start over from branch selection"><svg class="icon-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7M6 10v10h12V10"/></svg><span class="icon-label">Home</span></button>
   </header>
-  <div class="action-toast hidden" id="actionToast"></div>
+  <div class="action-toast hidden" id="actionToast" role="status"></div>
   <div class="search-wrap">
     <input type="text" id="searchInput" placeholder="Search items...">
     <label class="filter-toggle">
@@ -58,9 +100,11 @@
       Show only items with a quantity
     </label>
   </div>
+  </div>
+  <p class="how-to">Par is your target stock. To Order fills in as par minus stock; adjust it with &minus; and +.</p>
   <div class="content" id="orderContent"></div>
-  <div class="incomplete-warning hidden" id="incompleteWarning">
-    &#9888; <span id="incompleteText"></span>
+  <div class="incomplete-warning hidden" id="incompleteWarning" role="status">
+    <span class="warn-icon" aria-hidden="true">&#9888;</span> <span id="incompleteText"></span>
   </div>
   <div class="bottombar">
     <div class="count"><strong id="selectedCount">0</strong> items selected<span class="total" id="estTotal">฿0</span></div>
@@ -71,8 +115,8 @@
 <!-- Review -->
 <section id="reviewScreen" class="screen">
   <header class="topbar">
-    <div>Review Order</div>
-    <button class="icon-btn" id="startOverReviewBtn" title="Start over" aria-label="Start over from branch selection">&#8962;</button>
+    <div><span class="topbar-title">Review Order</span></div>
+    <button class="icon-btn" id="startOverReviewBtn" title="Start over" aria-label="Start over from branch selection"><svg class="icon-svg" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7M6 10v10h12V10"/></svg><span class="icon-label">Home</span></button>
   </header>
   <div class="review-list" id="reviewList"></div>
   <div class="bottombar stacked">
@@ -88,20 +132,25 @@
 <!-- Confirmation -->
 <section id="confirmScreen" class="screen">
   <div class="confirm-screen">
-    <div class="confirm-icon">&#10003;</div>
+    <div class="confirm-icon" aria-hidden="true"><svg viewBox="0 0 52 52" width="40" height="40" fill="none"><path class="tick" d="M14 27l9 9 17-19" pathLength="1"/></svg></div>
     <h2 id="confirmHeading">Order sent</h2>
     <p id="confirmBody">Your mail app has opened with the order pre-filled. Tap send there to confirm.</p>
     <button class="btn" id="nextSupplierBtn">Order From Another Supplier</button>
     <button class="btn secondary" id="newOrderBtn">Start New Order</button>
-    <button class="btn block" id="excelConfirmBtn">&#128202; Send as Excel</button>
+    <button class="btn secondary block" id="excelConfirmBtn">&#128202; Send as Excel</button>
     <button class="btn secondary" id="emailConfirmBtn">&#9993; Email Order</button>
     <button class="btn secondary copy-btn" id="copyOrderBtn">&#128203; Copy Order Text</button>
   </div>
 </section>
 
+</main>
+
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="config.js"></script>
 <script src="data.js"></script>
 <script src="app.js"></script>
+<script src="hero-fx.js"></script>
+<script src="a11y.js"></script>
+<script src="launcher.js"></script>
 </body>
 </html>
