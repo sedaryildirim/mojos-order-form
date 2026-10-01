@@ -1,6 +1,6 @@
 ---
-name: Mojos + Kaif Suppliers Ordering System
-description: Mobile-first stock-order form for Mojos and Kaif back-of-house staff
+name: Mojo's + Kaif Suppliers Ordering System
+description: Mobile-first stock-order form for Mojo's and Kaif back-of-house staff
 colors:
   electric-blue: "#0052FF"
   sky-blue: "#4D7CFF"
@@ -83,7 +83,7 @@ components:
     height: "48px"
 ---
 
-# Design System: Mojos + Kaif Suppliers Ordering System
+# Design System: Mojo's + Kaif Suppliers Ordering System
 
 ## 1. Overview
 
@@ -91,7 +91,7 @@ components:
 
 The system follows the Minimalist Modern brief: Calistoga for headlines, Inter for UI, JetBrains Mono for numbers and labels; a signature blue gradient; inverted slate sections for rhythm; texture instead of flatness (dot grid, corner glow); layered soft shadows.
 
-**Where expression is allowed.** Menu, branch and supplier screens (hero) and the confirmation screen. **Where it is not.** The order sheet and review screen: no entrance choreography, no decorative motion; only state changes animate.
+**Where expression is allowed.** The launcher (hero) and the confirmation screen. **Where it is not.** The store and supplier pickers, the order screen and the review screen: no entrance choreography, no decorative motion; only state changes animate.
 
 **Dark is the default theme.** `[data-theme="light"]` remaps the same tokens; the choice is saved per device and set before first paint (inline script in `index.html`). Toggles live on the menu and branch screens. The browser scrollbar and form controls follow the theme (`scrollbar-color`, `color-scheme`).
 
@@ -117,6 +117,10 @@ The system follows the Minimalist Modern brief: Calistoga for headlines, Inter f
 - **Mono (JetBrains Mono):** every figure (par, stock, to order, prices, totals), field labels, region pills, section labels.
 - Fixed scale; the hero headline is the only fluid size. Smallest text is 12px.
 
+## Spacing and layers
+
+Spacing comes from one scale, used for every padding, margin and gap: `--space-1..8` = 4, 8, 12, 16, 24, 32, 48, 64px. Page layers use named values: `--z-sticky`, `--z-bar`, `--z-toast` (web); `--z-menu`, `--z-nav`, `--z-skip`, `--z-overlay` (GP). Do not add raw pixel spacing or numeric z-index values.
+
 ## 4. Elevation
 
 Soft layered shadows (`0 1px 3px` up to `0 20px 25px`, plus blue-tinted accent shadows on hover) lift cards and primary buttons. Open category cards step up one shadow level. The bottom bar uses a light blur so content slides under it.
@@ -124,21 +128,26 @@ Soft layered shadows (`0 1px 3px` up to `0 20px 25px`, plus blue-tinted accent s
 ## 5. Components
 
 - **Buttons:** 48px, 12px radius. Primary gradient; secondary outlined; disabled is a muted fill with no shadow. Hover lifts 2px (hover-capable devices only); press scales to 0.98.
-- **Topbar actions:** 56px wide, icon over a visible label (Clear, Sheet, Home). The destructive one sits apart, with a red outline. Inline SVG icons, one stroke style.
+- **Topbar actions:** 56px wide, icon over a visible label (Clear and Supplier on the order screen). The destructive one sits apart, with a red outline. Inline SVG icons, one stroke style.
 - **Category card:** white card, 16px radius. Open: blue-tinted border. Complete: green border and tint with a ticked circle.
 - **Item row:** name and "Skip this item" share the first line; unit and price in mono; Par (read-only, no border), Stock (bordered input) and To Order (stepper, gradient `+`) below. A row with a quantity gets a light blue tint, no side stripe.
 - **Combo box:** dashed blue border, Calistoga patty count; mismatched state uses a solid blue border and warning ink.
-- **Status bars:** the incomplete-categories bar (fixed above the bottom bar, scrolls if long) and the review gate notice use the solid warning blue.
-- **Confirm screen:** one primary action (gradient edge that slowly circulates), secondary actions below. The tick draws once.
+- **Status bars:** the incomplete-categories bar (fixed above the bottom bar, scrolls if long) and the review gate notice use the solid warning blue. Messages that are not blocking use the single toast.
+- **Confirm screen:** one primary action (gradient edge that slowly circulates), the rest tucked away. The tick draws once.
 - **Launcher cards:** 16px radius, mono kicker, 22px title; the live card gets a blue-tinted border and arrow badge, work-in-progress cards use the muted surface with muted ink.
-- **Hero field:** dot grid that lights up under a finger or cursor, drifting when idle (`js/shell/hero-fx.js`).
-- **Focus:** 2px ring, light blue on slate surfaces, electric blue elsewhere. Screen changes move focus to the new heading (`js/shell/a11y.js`). `js/shell/launcher.js` wires the menu and always opens the app on the menu.
+- **Hero field (launcher only):** dot grid that lights up under a finger or cursor, drifting when idle (`apps/web/js/shell/hero-fx.js`).
+- **Focus:** 2px ring, light blue on slate surfaces, electric blue elsewhere. Screen changes move focus to the new heading (`apps/web/js/shell/a11y.js`). `apps/web/js/shell/launcher.js` wires the menu and always opens the app on the menu.
 
 ### Screens and titles
-- **Menu (first screen, every load):** hero title "Mojos + Kaif / GP Calculator and Ordering System", then three cards in order: Kaif GP Calculator, Mojos GP Calculator, Ordering. Calculator cards are greyed, flat, disabled, with a "Work in progress" tag; Ordering has the arrow badge and opens the branch picker.
-- **Branch picker:** "Mojo's & Kaif / Select a store location", no sub-line. Region pills group the branches; Kaif Chaloklum sits under a second "Koh Phangan" pill. A "Menu" back button returns to the menu.
-- **Supplier picker:** "Select a / supplier". The branch sub-line is kept in the DOM but hidden.
-- **Hero titles:** the white text and the gradient text are always on separate lines. The hero has square corners (no rounded corner).
+- **Launcher (first screen, every load, the only screen with a hero):** title "Mojo's + Kaif / GP Calculator and Ordering System", two cards (Ordering large and primary; Kaif GP Calculator smaller and quieter, tagged "Beta: still being tested", opens the GP app; Ordering) and a quiet line "Mojo's GP Calculator: not available yet." Live cards carry the arrow badge.
+- **Store picker:** compact top bar ("← All tools", "Choose your store"), then region pills grouping the stores; Kaif Chaloklum sits under a second "Koh Phangan" pill. No hero, because it is a working screen.
+- **Supplier picker:** compact top bar ("← Change store", "Select a supplier" with the chosen store underneath).
+- **Launcher title:** the white text and the gradient text are on separate lines; the hero has square corners.
+- **Order screen layout:** only the top bar stays pinned; the search bar slides away on scroll down and returns on scroll up (`js/shell/scroll-search.js`). An open category's header sticks under the top bar. Each item shows its par as text in the unit line ("Kilogram · ฿280 · Par 12"), with just Stock and To order as inputs. The warning bar shows its first line, with "+N more" to open the rest.
+- **Review screen:** "← Edit" in the top bar; the bottom bar is Excel plus Email and Copy.
+- **Store picker:** on wider screens the islands sit side by side.
+- **Order screen:** top bar with only "Clear" (two-tap, the one destructive action) and "Supplier" (leaves straight away, progress is saved). One toast for all messages. The par/stock legend shows once per device. Categories complete themselves when every item is reviewed; there is no manual complete button.
+- **Confirm screen:** "Order from another supplier" (primary) and "Done" (back to the launcher). Excel, Email and Copy sit under "Send again".
 - **Order screen header:** topbar, toast and search sit in one sticky block (`.sticky-head`), so no height is hard-coded.
 
 ## 6. Do's and Don'ts
@@ -146,7 +155,7 @@ Soft layered shadows (`0 1px 3px` up to `0 20px 25px`, plus blue-tinted accent s
 ### Do
 - Keep every tappable control at 44px or larger.
 - Pair every state colour with an icon or text.
-- Put new colours in the tokens at the top of `css/styles.css`.
+- Put new colours in the tokens at the top of `apps/web/css/styles.css`.
 - Respect `prefers-reduced-motion` (it switches all animation off).
 
 ### Don't
@@ -156,4 +165,4 @@ Soft layered shadows (`0 1px 3px` up to `0 20px 25px`, plus blue-tinted accent s
 - Don't disable pinch-zoom.
 
 ### GP Calculator
-The Kaif GP Calculator in `gp-calculator/` uses this same system (dark default, slate and electric blue, Calistoga / Inter / JetBrains Mono). It is all working screens, so it uses none of the hero, glow or entrance motion. See `gp-calculator/DESIGN.md`.
+The Kaif GP Calculator in `apps/gp-calculator/` uses this same system (dark default, slate and electric blue, Calistoga / Inter / JetBrains Mono). It is all working screens, so it uses none of the hero, glow or entrance motion. See `apps/gp-calculator/DESIGN.md`.

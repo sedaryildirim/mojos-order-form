@@ -1,2 +1,6 @@
+# macOS / editor / tool state
 .DS_Store
 .claude/
+
+# Source price spreadsheets kept locally, not published
+/data/

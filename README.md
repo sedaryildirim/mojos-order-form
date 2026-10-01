@@ -1,39 +1,51 @@
-# Mojos + Kaif Suppliers Ordering System
+# Mojo's + Kaif
 
-Static site (GitHub Pages) with a launcher menu and the supplier ordering form, plus the Kaif GP Calculator as a separate server app.
+Two linked tools for the Mojos and Kaif kitchens:
 
-## Folder structure
+| App | What it is | Where it lives | Runs as |
+|---|---|---|---|
+| **Web** (launcher + ordering form) | The menu you land on, and the supplier ordering form for each branch | `apps/web` | Static site (GitHub Pages) |
+| **Kaif GP Calculator** | Dish costing, supplier prices and gross profit (work in progress) | `apps/gp-calculator` | Next.js server + Postgres |
+
+The launcher menu has a card for each tool. The GP Calculator has a "All tools" link back. See [docs/architecture.md](docs/architecture.md) for how they connect.
+
+## Repository map
 
 ```
-index.html            Page markup: launcher, branch, supplier, order, review, confirm screens
-css/styles.css        All styles (design tokens at the top)
-js/
-  ordering/app.js     The ordering form logic (drafts, totals, Excel/email/copy)
-  shell/              Site-wide enhancements that never touch ordering logic
-    launcher.js         Menu cards, back to menu, theme toggle on the menu
-    hero-fx.js          Pointer-reactive dot field on hero panels
-    a11y.js             Moves focus to the new screen's heading
-config/               The files you edit to run the business (no code needed)
-  config.js           Branches, emails, which suppliers each branch sees, launcher tool links
-  data.js             Every supplier's categories, items, prices and par levels
-data/                 Source spreadsheets (not loaded by the site)
-gp-calculator/        Kaif GP Calculator (Next.js + Postgres), work in progress; see its README
-PRODUCT.md, DESIGN.md Product intent and design system
+apps/
+  web/                    Static site: launcher menu + ordering form      (see apps/web/README.md)
+  gp-calculator/          Next.js app: costing and GP                     (see apps/gp-calculator/README.md)
+docs/
+  architecture.md         How the two apps fit together and link to each other
+  deployment.md           Hosting each app, and the settings that link them
+  gp-calculator/          Original GP spec and implementation plans
+scripts/
+  dev.sh                  Start both apps locally
+data/                     Source price spreadsheets (kept locally, git-ignored)
+.github/workflows/        Publishes apps/web to GitHub Pages
+PRODUCT.md, DESIGN.md     Product intent and the design system shared by both apps
 ```
-
-Script order in `index.html` matters: config, data, ordering app, then the shell scripts.
-
-## Everyday edits
-
-1. **Branch emails / who sees which supplier:** `config/config.js`.
-2. **Items, prices, pars:** `config/data.js` (one array per category, one object per item: `id`, `name`, `unit`, `par`, `price`).
-3. **Make the Kaif GP Calculator card selectable:** set `tools.kaifGp.url` in `config/config.js` (leave `""` to grey it out). It currently points at `http://localhost:3000`; replace it with the hosted address once the GP app is deployed.
-4. **Colours, type, spacing:** tokens at the top of `css/styles.css`.
 
 ## Run locally
 
-Open `index.html` in a browser (no build step). To use the GP card locally, start the GP app too (see `gp-calculator/README.md`).
+```bash
+./scripts/dev.sh          # web on :8080, GP Calculator on :3000
+```
 
-## Data stays on the device
+The GP Calculator needs a Postgres database: copy `apps/gp-calculator/.env.example` to `.env` and set `DATABASE_URL`. To run only the static site, open `apps/web/index.html` in a browser.
 
-Order drafts are saved in the browser (localStorage) per branch and supplier. The theme choice is saved too; dark is the default.
+## Common jobs
+
+| I want to... | Edit |
+|---|---|
+| Change a branch email or which suppliers a branch sees | `apps/web/config/config.js` |
+| Change items, prices or par levels on the order sheets | `apps/web/config/data.js` |
+| Change where the two apps link to each other | see [docs/architecture.md](docs/architecture.md#how-they-link) |
+| Change colours, fonts or spacing | `apps/web/css/styles.css` and `apps/gp-calculator/src/app/globals.css` (tokens at the top) |
+| Change the GP password | `GP_PASSWORD` (and `GP_SESSION_SECRET`) in `apps/gp-calculator/.env` |
+
+## Conventions
+
+- **Design:** both apps follow [DESIGN.md](DESIGN.md); each app's own `DESIGN.md` says how it applies that system.
+- **Config before code:** anything the owner edits lives in a `config/` folder or an `.env` file, not in the app logic.
+- **One folder per concern:** web code is split into `ordering/` (form logic) and `shell/` (menu, effects); GP code is grouped by feature (`components/dishes`, `lib/costing`, ...).
