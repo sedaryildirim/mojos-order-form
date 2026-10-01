@@ -32,3 +32,5 @@ Not a generic SaaS dashboard: no hero-metric cards, no corporate-cream B2B look.
 ## Accessibility & Inclusion
 
 Dark theme is the default on first load (a choice made with the toggle is remembered per device). Standard WCAG AA: sufficient contrast in both light and dark themes, pinch-zoom never disabled, tap targets at least 44px, legible under poor kitchen/storage-room lighting, no reliance on color alone to convey state (completion, warnings, has-qty rows already pair color with icons/text).
+
+The Kaif GP Calculator (costing and gross profit) lives in `gp-calculator/` and is still a work in progress. It is a separate server app (Next.js + Postgres) and shows on the menu as a greyed-out card until it is ready and hosted.

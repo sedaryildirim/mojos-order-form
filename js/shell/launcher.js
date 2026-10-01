@@ -1,5 +1,5 @@
 // Landing menu: shown first on every load; "Ordering" opens the existing
-// branch picker. app.js is not modified.
+// branch picker. js/ordering/app.js is not modified.
 (function () {
   document.getElementById("openOrdering").addEventListener("click", function () {
     showScreen("branchScreen");
@@ -7,6 +7,22 @@
   document.getElementById("backToLauncher").addEventListener("click", function () {
     showScreen("launcherScreen");
   });
+
+  // Kaif GP Calculator: selectable once config.tools.kaifGp.url is set (otherwise stays greyed out)
+  var gp = CONFIG.tools && CONFIG.tools.kaifGp && CONFIG.tools.kaifGp.url;
+  var gpCard = document.getElementById("openKaifGp");
+  if (gp && gpCard) {
+    var link = document.createElement("a");
+    link.className = "launch-card";
+    link.id = "openKaifGp";
+    link.href = gp;
+    link.innerHTML =
+      '<span class="launch-kicker">Calculator</span>' +
+      '<span class="launch-title">Kaif GP Calculator</span>' +
+      '<span class="launch-desc">Dish costs and gross profit</span>' +
+      '<span class="launch-badge">Work in progress</span>';
+    gpCard.replaceWith(link);
+  }
 
   // Theme toggle on the landing screen (app.js owns the one on the branch screen)
   var btn = document.getElementById("launcherThemeToggle");

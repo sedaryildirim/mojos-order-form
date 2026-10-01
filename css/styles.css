@@ -614,6 +614,7 @@ body.has-warning #orderScreen { padding-bottom: calc(28vh + 96px + var(--safe-bo
   letter-spacing: 0.06em;
   color: var(--muted-foreground);
 }
+a.launch-card { text-decoration: none; }
 .launch-card:active:not(:disabled) { transform: scale(0.98); }
 @media (hover: hover) {
   .launch-card:not(:disabled):hover { transform: translateY(-2px); box-shadow: var(--shadow-xl); }

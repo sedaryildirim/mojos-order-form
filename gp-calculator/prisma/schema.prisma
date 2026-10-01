@@ -1,0 +1,172 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PurchaseUnit {
+  G
+  ML
+  EACH
+}
+
+model Supplier {
+  id          String   @id @default(cuid())
+  name        String
+  contactInfo String?
+  logoUrl     String?
+  archived    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  createdBy   String
+  updatedAt   DateTime @updatedAt
+  updatedBy   String
+  ingredients Ingredient[]
+}
+
+model Ingredient {
+  id            String       @id @default(cuid())
+  name          String
+  category      String
+  supplierId    String
+  supplier      Supplier     @relation(fields: [supplierId], references: [id])
+  purchaseUnit  PurchaseUnit
+  packQuantity  Decimal      @db.Decimal(10, 2)
+  packPrice     Decimal      @db.Decimal(10, 2)
+  yieldPct      Decimal      @db.Decimal(5, 2) @default(100)
+  photoUrl      String?
+  archived      Boolean      @default(false)
+  priceEstimated Boolean     @default(false)
+  createdAt     DateTime     @default(now())
+  createdBy     String
+  updatedAt     DateTime     @updatedAt
+  updatedBy     String
+  versionLines  VersionIngredient[]
+  batchLines    BatchRecipeLine[]
+  batchOutput   BatchRecipe?
+  priceHistory  IngredientPriceHistory[]
+  wasteEntries  WasteEntry[]
+
+  @@index([supplierId])
+}
+
+enum RecipeUnit {
+  G
+  KG
+  ML
+  L
+  EACH
+}
+
+enum VersionStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum VersionSource {
+  MANUAL
+  AUTO_PRICE_REFRESH
+}
+
+model Dish {
+  id        String        @id @default(cuid())
+  name      String
+  category  String
+  createdAt DateTime      @default(now())
+  createdBy String
+  versions  DishVersion[]
+}
+
+model DishVersion {
+  id            String              @id @default(cuid())
+  dishId        String
+  dish          Dish                @relation(fields: [dishId], references: [id])
+  versionNumber Int
+  notes         String?
+  sellingPrice  Decimal?            @db.Decimal(10, 2)
+  targetGpPct   Decimal?            @db.Decimal(5, 2)
+  costSnapshot  Decimal             @db.Decimal(10, 2)
+  photoUrl      String?
+  status        VersionStatus       @default(DRAFT)
+  source        VersionSource       @default(MANUAL)
+  shareToken    String              @unique @default(cuid())
+  createdAt     DateTime            @default(now())
+  createdBy     String
+  lines         VersionIngredient[]
+
+  @@unique([dishId, versionNumber])
+}
+
+model VersionIngredient {
+  id                     String      @id @default(cuid())
+  dishVersionId          String
+  dishVersion            DishVersion @relation(fields: [dishVersionId], references: [id], onDelete: Cascade)
+  ingredientId           String
+  ingredient             Ingredient  @relation(fields: [ingredientId], references: [id])
+  ingredientNameSnapshot String
+  quantity               Decimal     @db.Decimal(10, 3)
+  unit                   RecipeUnit
+  lineCostSnapshot       Decimal     @db.Decimal(10, 2)
+}
+
+model BatchRecipe {
+  id                 String            @id @default(cuid())
+  name               String
+  category           String
+  yieldQuantity      Decimal           @db.Decimal(10, 2)
+  yieldUnit          PurchaseUnit
+  portionSize        Decimal?          @db.Decimal(10, 2)
+  sellingPrice       Decimal?          @db.Decimal(10, 2)
+  notes              String?
+  outputIngredientId String?           @unique
+  outputIngredient   Ingredient?       @relation(fields: [outputIngredientId], references: [id])
+  createdAt          DateTime          @default(now())
+  createdBy          String
+  updatedAt          DateTime          @updatedAt
+  updatedBy          String
+  lines              BatchRecipeLine[]
+}
+
+model BatchRecipeLine {
+  id            String      @id @default(cuid())
+  batchRecipeId String
+  batchRecipe   BatchRecipe @relation(fields: [batchRecipeId], references: [id], onDelete: Cascade)
+  ingredientId  String
+  ingredient    Ingredient  @relation(fields: [ingredientId], references: [id])
+  quantity      Decimal     @db.Decimal(10, 3)
+  unit          RecipeUnit
+}
+
+// One row each time an ingredient's price, pack, yield or supplier changes (plus a baseline row).
+model IngredientPriceHistory {
+  id           String       @id @default(cuid())
+  ingredientId String
+  ingredient   Ingredient   @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
+  supplierName String
+  purchaseUnit PurchaseUnit
+  packQuantity Decimal      @db.Decimal(10, 2)
+  packPrice    Decimal      @db.Decimal(10, 2)
+  yieldPct     Decimal      @db.Decimal(5, 2)
+  recordedAt   DateTime     @default(now())
+  recordedBy   String
+
+  @@index([ingredientId, recordedAt])
+}
+
+// Food thrown away or given away, costed at the ingredient's price when it was logged.
+model WasteEntry {
+  id           String      @id @default(cuid())
+  ingredientId String
+  ingredient   Ingredient  @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
+  quantity     Decimal     @db.Decimal(10, 3)
+  unit         RecipeUnit
+  reason       String
+  note         String?
+  costSnapshot Decimal     @db.Decimal(10, 2)
+  createdAt    DateTime    @default(now())
+  createdBy    String
+
+  @@index([createdAt])
+}

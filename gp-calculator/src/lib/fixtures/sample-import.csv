@@ -1,0 +1,4 @@
+name,category,supplier,purchaseUnit,packQuantity,packPrice,yieldPct
+Onions,Veg,Fresh Farms Co,G,5000,200,100
+Milk,Dairy,Fresh Farms Co,ML,1000,45,100
+Broken Row,Veg,Fresh Farms Co,G,5000,,100
