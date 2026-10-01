@@ -131,8 +131,8 @@ Soft layered shadows (`0 1px 3px` up to `0 20px 25px`, plus blue-tinted accent s
 - **Status bars:** the incomplete-categories bar (fixed above the bottom bar, scrolls if long) and the review gate notice use the solid warning blue.
 - **Confirm screen:** one primary action (gradient edge that slowly circulates), secondary actions below. The tick draws once.
 - **Launcher cards:** 16px radius, mono kicker, 22px title; the live card gets a blue-tinted border and arrow badge, work-in-progress cards use the muted surface with muted ink.
-- **Hero field:** dot grid that lights up under a finger or cursor, drifting when idle (`hero-fx.js`).
-- **Focus:** 2px ring, light blue on slate surfaces, electric blue elsewhere. Screen changes move focus to the new heading (`a11y.js`). `launcher.js` wires the menu and always opens the app on the menu.
+- **Hero field:** dot grid that lights up under a finger or cursor, drifting when idle (`js/shell/hero-fx.js`).
+- **Focus:** 2px ring, light blue on slate surfaces, electric blue elsewhere. Screen changes move focus to the new heading (`js/shell/a11y.js`). `js/shell/launcher.js` wires the menu and always opens the app on the menu.
 
 ### Screens and titles
 - **Menu (first screen, every load):** hero title "Mojos + Kaif / GP Calculator and Ordering System", then three cards in order: Kaif GP Calculator, Mojos GP Calculator, Ordering. Calculator cards are greyed, flat, disabled, with a "Work in progress" tag; Ordering has the arrow badge and opens the branch picker.
@@ -146,7 +146,7 @@ Soft layered shadows (`0 1px 3px` up to `0 20px 25px`, plus blue-tinted accent s
 ### Do
 - Keep every tappable control at 44px or larger.
 - Pair every state colour with an icon or text.
-- Put new colours in the tokens at the top of `styles.css`.
+- Put new colours in the tokens at the top of `css/styles.css`.
 - Respect `prefers-reduced-motion` (it switches all animation off).
 
 ### Don't
@@ -154,3 +154,6 @@ Soft layered shadows (`0 1px 3px` up to `0 20px 25px`, plus blue-tinted accent s
 - Don't use the warning blue for ordinary info, or the soft tint for blocking problems.
 - Don't put light-theme tokens on slate surfaces.
 - Don't disable pinch-zoom.
+
+### GP Calculator
+The Kaif GP Calculator in `gp-calculator/` uses this same system (dark default, slate and electric blue, Calistoga / Inter / JetBrains Mono). It is all working screens, so it uses none of the hero, glow or entrance motion. See `gp-calculator/DESIGN.md`.

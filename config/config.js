@@ -1,5 +1,5 @@
 // ---- Edit this file to update branches / email addresses ----
-// No coding needed elsewhere: item list/prices/pars live in data.js.
+// No coding needed elsewhere: item list/prices/pars live in config/data.js.
 
 const CONFIG = {
   // Branches are grouped by exact `region` text. Kaif's region has a trailing space so it
@@ -11,7 +11,7 @@ const CONFIG = {
     { id: "thongsala", name: "Mojo's Thongsala", email: "mojos.thongsala@gmail.com", region: "Koh Phangan", suppliers: ["makro-phangan", "winepro", "phangangreenveg"] },
     { id: "kaifchaloklum", name: "Kaif Chaloklum", email: "amazingphangan.kaif@gmail.com", region: "Koh Phangan ", suppliers: ["makro-kaif", "winepro", "phangangreenveg", "labottega", "fruitshop"] }
   ],
-  // Each id must match a key in the DATA object in data.js.
+  // Each id must match a key in the DATA object in config/data.js.
   // Full list shown to a branch unless that branch has its own `suppliers` array (list of ids) above.
   // Three separate Makro lists, same chain, different item selection & pricing per branch:
   // makro-samui (Nathon/Lamai), makro-phangan (Chaloklum/Thongsala), makro-kaif (Kaif Chaloklum).
@@ -28,6 +28,11 @@ const CONFIG = {
     { id: "labottega", name: "Order La Bottega" },
     { id: "fruitshop", name: "Order Fruit Shop" }
   ],
+  // Tools on the launcher menu. Set a url to make that card selectable; leave "" to keep it greyed out.
+  // The Kaif GP Calculator is a server app (gp-calculator/): this is its local address until it is hosted.
+  tools: {
+    kaifGp: { url: "http://localhost:3000" }
+  },
   // CC'd on every order email (leave "" to disable)
   ccEmail: ""
 };

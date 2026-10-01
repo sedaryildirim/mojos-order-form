@@ -1,23 +1,39 @@
-# Mojo's Ordering
+# Mojos + Kaif Suppliers Ordering System
 
-Mobile-first online ordering form built from `mojos_order_sheet-v2.xlsx`. Static site, no build step, no backend.
+Static site (GitHub Pages) with a launcher menu and the supplier ordering form, plus the Kaif GP Calculator as a separate server app.
 
-## Setup
+## Folder structure
 
-1. Edit `config.js` — set the real email address for each branch (Nathon / Lamai) and optional CC.
-2. Host the folder anywhere static (GitHub Pages, Netlify, Vercel, or an internal server) or just double-click `index.html` to test.
+```
+index.html            Page markup: launcher, branch, supplier, order, review, confirm screens
+css/styles.css        All styles (design tokens at the top)
+js/
+  ordering/app.js     The ordering form logic (drafts, totals, Excel/email/copy)
+  shell/              Site-wide enhancements that never touch ordering logic
+    launcher.js         Menu cards, back to menu, theme toggle on the menu
+    hero-fx.js          Pointer-reactive dot field on hero panels
+    a11y.js             Moves focus to the new screen's heading
+config/               The files you edit to run the business (no code needed)
+  config.js           Branches, emails, which suppliers each branch sees, launcher tool links
+  data.js             Every supplier's categories, items, prices and par levels
+data/                 Source spreadsheets (not loaded by the site)
+gp-calculator/        Kaif GP Calculator (Next.js + Postgres), work in progress; see its README
+PRODUCT.md, DESIGN.md Product intent and design system
+```
 
-## Updating items / prices / par levels
+Script order in `index.html` matters: config, data, ordering app, then the shell scripts.
 
-Edit `data.js` — one array per category, one object per item (`id`, `name`, `unit`, `price`, `par`). No code changes needed elsewhere. Set each item's `par` to its target stock level; that's what drives the auto-calculated order quantity. Re-export the excel to this format whenever prices or pars change.
+## Everyday edits
 
-## How it works
+1. **Branch emails / who sees which supplier:** `config/config.js`.
+2. **Items, prices, pars:** `config/data.js` (one array per category, one object per item: `id`, `name`, `unit`, `par`, `price`).
+3. **Make the Kaif GP Calculator card selectable:** set `tools.kaifGp.url` in `config/config.js` (leave `""` to grey it out). It currently points at `http://localhost:3000`; replace it with the hosted address once the GP app is deployed.
+4. **Colours, type, spacing:** tokens at the top of `css/styles.css`.
 
-1. Staff picks branch (Nathon/Lamai).
-2. Order form grouped by category (Dairy & Eggs, Meat & Poultry, Produce, etc.). Each item shows its Par level (read-only, from `data.js`), a Current Stock field, and a To Order field. Entering Current Stock auto-fills To Order as `max(par - stock, 0)`; To Order can still be typed over manually at any time. Search box filters items.
-3. Each category has a "Mark Category Complete" button — completed categories turn green so staff can see progress at a glance.
-4. Running estimated total cost (based on To Order × unit price) shows in the bottom bar next to "Review Order".
-5. "Review Order" shows a master list of everything selected with line totals and the overall estimated total.
-6. "Send Order" opens the phone's mail app with the order (including par/stock/to-order per item) pre-filled, addressed to that branch's configured email — staff taps send to confirm.
+## Run locally
 
-Dark mode UI throughout. Draft (stock counts, to-order quantities, completed categories) autosaves to the browser (localStorage) so an accidental refresh doesn't lose progress.
+Open `index.html` in a browser (no build step). To use the GP card locally, start the GP app too (see `gp-calculator/README.md`).
+
+## Data stays on the device
+
+Order drafts are saved in the browser (localStorage) per branch and supplier. The theme choice is saved too; dark is the default.
