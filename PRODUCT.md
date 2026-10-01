@@ -10,6 +10,8 @@ Kitchen/back-of-house staff at the Mojos and Kaif branches (Nathon, Lamai, Chalo
 
 ## Product Purpose
 
+The app opens on a menu of kitchen tools: Kaif GP Calculator and Mojos GP Calculator (both work in progress, shown greyed out and not tappable) and Ordering, which is the live tool. Ordering opens the branch picker (Koh Samui, then Koh Phangan, with Kaif Chaloklum as its own row), then the supplier picker.
+
 Replace a manual Excel order sheet with a mobile-first ordering form: pick branch and supplier, work through categorized items entering current stock (to-order auto-calculates from par level), mark categories complete, review a master list with an estimated total, then send the order by email, copy/paste, or as a generated Excel file (shared straight to Mail/WhatsApp on supported phones, downloaded otherwise). Success = fewer ordering errors, faster than the spreadsheet, and a clear record of what was sent.
 
 ## Brand Personality
@@ -29,4 +31,4 @@ Not a generic SaaS dashboard: no hero-metric cards, no corporate-cream B2B look.
 
 ## Accessibility & Inclusion
 
-Standard WCAG AA: sufficient contrast in both light and dark themes, pinch-zoom never disabled, tap targets at least 44px, legible under poor kitchen/storage-room lighting, no reliance on color alone to convey state (completion, warnings, has-qty rows already pair color with icons/text).
+Dark theme is the default on first load (a choice made with the toggle is remembered per device). Standard WCAG AA: sufficient contrast in both light and dark themes, pinch-zoom never disabled, tap targets at least 44px, legible under poor kitchen/storage-room lighting, no reliance on color alone to convey state (completion, warnings, has-qty rows already pair color with icons/text).

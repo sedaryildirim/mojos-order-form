@@ -91,9 +91,9 @@ components:
 
 The system follows the Minimalist Modern brief: Calistoga for headlines, Inter for UI, JetBrains Mono for numbers and labels; a signature blue gradient; inverted slate sections for rhythm; texture instead of flatness (dot grid, corner glow); layered soft shadows.
 
-**Where expression is allowed.** Branch and supplier screens (hero) and the confirmation screen. **Where it is not.** The order sheet and review screen: no entrance choreography, no decorative motion; only state changes animate.
+**Where expression is allowed.** Menu, branch and supplier screens (hero) and the confirmation screen. **Where it is not.** The order sheet and review screen: no entrance choreography, no decorative motion; only state changes animate.
 
-Light is the default; `[data-theme="dark"]` remaps the same tokens and is chosen from the device preference or the toggle on the branch screen.
+**Dark is the default theme.** `[data-theme="light"]` remaps the same tokens; the choice is saved per device and set before first paint (inline script in `index.html`). Toggles live on the menu and branch screens. The browser scrollbar and form controls follow the theme (`scrollbar-color`, `color-scheme`).
 
 ## 2. Colors
 
@@ -130,8 +130,16 @@ Soft layered shadows (`0 1px 3px` up to `0 20px 25px`, plus blue-tinted accent s
 - **Combo box:** dashed blue border, Calistoga patty count; mismatched state uses a solid blue border and warning ink.
 - **Status bars:** the incomplete-categories bar (fixed above the bottom bar, scrolls if long) and the review gate notice use the solid warning blue.
 - **Confirm screen:** one primary action (gradient edge that slowly circulates), secondary actions below. The tick draws once.
+- **Launcher cards:** 16px radius, mono kicker, 22px title; the live card gets a blue-tinted border and arrow badge, work-in-progress cards use the muted surface with muted ink.
 - **Hero field:** dot grid that lights up under a finger or cursor, drifting when idle (`hero-fx.js`).
-- **Focus:** 2px ring, light blue on slate surfaces, electric blue elsewhere. Screen changes move focus to the new heading (`a11y.js`).
+- **Focus:** 2px ring, light blue on slate surfaces, electric blue elsewhere. Screen changes move focus to the new heading (`a11y.js`). `launcher.js` wires the menu and always opens the app on the menu.
+
+### Screens and titles
+- **Menu (first screen, every load):** hero title "Mojos + Kaif / GP Calculator and Ordering System", then three cards in order: Kaif GP Calculator, Mojos GP Calculator, Ordering. Calculator cards are greyed, flat, disabled, with a "Work in progress" tag; Ordering has the arrow badge and opens the branch picker.
+- **Branch picker:** "Mojo's & Kaif / Select a store location", no sub-line. Region pills group the branches; Kaif Chaloklum sits under a second "Koh Phangan" pill. A "Menu" back button returns to the menu.
+- **Supplier picker:** "Select a / supplier". The branch sub-line is kept in the DOM but hidden.
+- **Hero titles:** the white text and the gradient text are always on separate lines. The hero has square corners (no rounded corner).
+- **Order screen header:** topbar, toast and search sit in one sticky block (`.sticky-head`), so no height is hard-coded.
 
 ## 6. Do's and Don'ts
 

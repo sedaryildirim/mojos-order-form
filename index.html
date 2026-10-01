@@ -9,7 +9,7 @@
   try {
     var t = localStorage.getItem("mojos_theme");
     if (t !== "light" && t !== "dark") {
-      t = (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) ? "light" : "dark";
+      t = "dark"; // dark is the default; a saved choice from the toggle still wins
     }
     document.documentElement.setAttribute("data-theme", t);
   } catch (e) {}

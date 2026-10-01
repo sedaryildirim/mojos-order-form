@@ -53,6 +53,9 @@
   --shadow-accent-lg: 0 8px 24px rgba(0, 82, 255, 0.35);
 
   --bar-bg: rgba(255, 255, 255, 0.88);
+  --scroll-thumb: #4D7CFF;
+  --scroll-track: #F1F5F9;
+  color-scheme: light;
 
   --font-display: "Calistoga", Georgia, serif;
   --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -97,9 +100,28 @@
   --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.45);
 
   --bar-bg: rgba(18, 26, 44, 0.9);
+  --scroll-thumb: #3B5FC4;
+  --scroll-track: #0B1120;
+  color-scheme: dark;
 }
 
 /* ============ Base ============ */
+
+/* Scrollbars follow the theme: blue thumb on a slate-tinted track */
+html, .incomplete-warning {
+  scrollbar-color: var(--scroll-thumb) var(--scroll-track);
+  scrollbar-width: thin;
+}
+@supports not (scrollbar-color: auto) {
+  ::-webkit-scrollbar { width: 12px; height: 12px; }
+  ::-webkit-scrollbar-track { background: var(--scroll-track); }
+  ::-webkit-scrollbar-thumb {
+    background: var(--scroll-thumb);
+    border: 3px solid var(--scroll-track);
+    border-radius: 999px;
+  }
+}
+
 * { box-sizing: border-box; }
 
 html, body {
