@@ -39,6 +39,7 @@ model Ingredient {
   photoUrl      String?
   archived      Boolean      @default(false)
   priceEstimated Boolean     @default(false)
+  sourceKey     String?      @unique
   createdAt     DateTime     @default(now())
   createdBy     String
   updatedAt     DateTime     @updatedAt
