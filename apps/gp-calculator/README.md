@@ -9,6 +9,7 @@ This is a server app (database, API routes, PDF and email). It cannot run on Git
 ```
 src/
   app/                  Next.js routes: pages and api/ (colocated route tests)
+    styles/             The CSS, nine numbered files imported in order by layout.tsx (the cascade depends on the order)
   components/
     layout/               Top bar, theme toggle, flash message, password gate, page title, skeletons
     ui/                   Small shared controls (confirm button, view toggle, field error, photo upload...)
@@ -19,9 +20,8 @@ src/
     charts/               GpHistoryChart: the GP history chart on dish and batch recipe pages
   lib/
     costing/              Costing maths: units, prices, batches, recalculation, estimates, switch/preview,
-                          gp-history (points for the chart) and gp-chart (its scales and line paths)
-    sync/                 Order-sheet sync: pack-size reader, sheet loader and row builder, the sync itself, cleanup
-    import/               One-time Food Bible import: parser, ingredient map reader, importer
+                          gp-history (points for the chart), gp-chart (its scales and line paths) and cheaper-elsewhere
+    sync/                 Order-sheet sync: pack-size reader, sheet loader and row builder, the sync itself
     reports/              Derived views: dashboard summary, order list, version diff
     io/                   Import, export (xlsx, pdf), email, templates (fixtures/ for tests)
     client/               Browser-side helpers: actor, flash, api (safeFetch), site links, view mode
@@ -36,7 +36,7 @@ Tests sit next to the code they cover (`*.test.ts(x)`). Import across folders wi
 
 ## Order-sheet sync
 
-The Kaif ingredient list is not typed in by hand: **Ingredients -> Sync from order sheet** (or `npm run sync:order-sheet`) reads the order form's `config/data.js` and creates or updates ingredients, scaling each price into the ingredient's own pack, and recosting every batch recipe and dish that uses a changed price (new "Updated" versions, cost and GP recalculated). It always previews first. Each synced ingredient carries a `sourceKey` (`<sheet supplier>:<item id>`) so renames update in place. See the root README's "Weekly price update" for the routine and [../../docs/architecture.md](../../docs/architecture.md#how-the-order-sheet-feeds-the-gp-calculator) for how it works.
+The Kaif ingredient list is not typed in by hand: **Ingredients -> Sync from order sheet** (or `npm run sync:order-sheet`) reads the order form's `config/data.js` and creates or updates ingredients, scaling each price into the ingredient's own pack, and recosting every batch recipe and dish that uses a changed price (new "Updated" versions, cost and GP recalculated). It always previews first. If a dish or batch uses a changed price but a recipe line no longer fits its ingredient's unit, it cannot be recosted: the report lists it under "Not recalculated" and it keeps its old cost until you fix the line. Each synced ingredient carries a `sourceKey` (`<sheet supplier>:<item id>`) so renames update in place. See the root README's "Weekly price update" for the routine and [../../docs/architecture.md](../../docs/architecture.md#how-the-order-sheet-feeds-the-gp-calculator) for how it works.
 
 - **Flagged estimates:** items the order sheet does not list (house-made sauces, baking basics) are ingredients under the supplier "Placeholder / Estimated". Dishes using them show "guessed prices" until you set a real supplier and price.
 - **Batch recipes** publish themselves as ingredients (supplier "House-Made") priced at their cost, so dishes can use them. They are never synced or deleted by the sync.
