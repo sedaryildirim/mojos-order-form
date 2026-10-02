@@ -1,1 +1,14 @@
-{}
+{
+  "makro-kaif:125378": {
+    "purchaseUnit": "EACH",
+    "packQuantity": 48
+  },
+  "makro-kaif:818624": {
+    "purchaseUnit": "EACH",
+    "packQuantity": 6
+  },
+  "makro-kaif:898934": {
+    "purchaseUnit": "EACH",
+    "packQuantity": 4
+  }
+}
