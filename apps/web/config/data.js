@@ -2955,7 +2955,7 @@ const DATA = {
             "id": "111259",
             "name": "Frozen Australian Lamb Shoulder Boneless 1 pc (Approx. 1 kg/pc)",
             "unit": "Kilogram",
-            "price": 450,
+            "price": 555,
             "par": null
           },
           {
@@ -3830,7 +3830,7 @@ const DATA = {
             "id": "910260",
             "name": "ARO Tater Tots 1 kg",
             "unit": "EACH",
-            "price": 85,
+            "price": 99,
             "par": null
           },
           {
@@ -4133,7 +4133,7 @@ const DATA = {
             "id": "fp-smoked-bacon",
             "name": "Smoked Bacon Premium Grade 3.00 mm 1 kg",
             "unit": "Kilogram",
-            "price": 260,
+            "price": 385,
             "par": null
           }
         ]
