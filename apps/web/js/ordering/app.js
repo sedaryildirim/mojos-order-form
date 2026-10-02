@@ -191,17 +191,6 @@ function setCategoryOpen(catEl, open) {
   if (header) header.setAttribute("aria-expanded", String(open));
 }
 
-// An item counts as "reviewed" once staff have entered a stock count, set an
-// order quantity, or explicitly skipped it. Items with no par/stock tracking
-// (e.g. "Bottles to Return") don't need review to count as touched.
-function isItemTouched(item, key) {
-  if (item.noParStock) return true;
-  if (Object.prototype.hasOwnProperty.call(state.stock, key)) return true;
-  if (state.skipped[key]) return true;
-  if (state.toOrder[key] > 0) return true;
-  return false;
-}
-
 // The top bar is pinned, so a plain scrollIntoView puts the target underneath it.
 // Scroll so it lands just below the bar.
 function scrollBelowStickyBars(el) {
@@ -211,12 +200,17 @@ function scrollBelowStickyBars(el) {
   window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
 }
 
-function setCategoryCompleted(ci, catEl, completed, collapse = true) {
+function setCategoryCompleted(ci, catEl, completed) {
   state.completed[ci] = completed;
   catEl.classList.toggle("completed", completed);
+  const doneBtn = $(".cat-complete-btn", catEl);
+  if (doneBtn) {
+    doneBtn.textContent = completed ? "Category complete \u2713 Tap to reopen" : "Mark category complete";
+    doneBtn.classList.toggle("is-done", completed);
+  }
   saveDraft();
   updateIncompleteWarning();
-  if (completed && collapse) {
+  if (completed) {
     setCategoryOpen(catEl, false);
     const next = catEl.nextElementSibling;
     if (next && next.classList.contains("category")) {
@@ -226,43 +220,12 @@ function setCategoryCompleted(ci, catEl, completed, collapse = true) {
   }
 }
 
-// Once every item in a category has been reviewed (stock entered, order set,
-// or skipped), the category completes itself. There is no manual "complete"
-// button: the review step needs every category finished, so every item is looked at.
-//
-// Collapsing the instant the last item is touched doesn't leave a window to
-// bump a quantity right after typing it, so the actual collapse is delayed -
-// any further edit in the category (including the one that just finished it)
-// pushes the collapse back instead of firing immediately.
-const AUTO_COMPLETE_DELAY_MS = 1500;
-const autoCompleteTimers = {}; // catIdx -> timeout id
-
-function maybeAutoComplete(ci, catEl, cat) {
-  if (autoCompleteTimers[ci]) {
-    clearTimeout(autoCompleteTimers[ci]);
-    delete autoCompleteTimers[ci];
-  }
-  if (state.completed[ci]) return;
-  const allTouched = cat.items.every((item, ii) => isItemTouched(item, itemKey(ci, ii)));
-  if (!allTouched) return;
-  autoCompleteTimers[ci] = setTimeout(() => {
-    delete autoCompleteTimers[ci];
-    if (state.completed[ci]) return;
-    const stillAllTouched = cat.items.every((item, ii) => isItemTouched(item, itemKey(ci, ii)));
-    // Where the quantity is typed by hand (a supplier minimum, or no par to suggest from), staff may
-    // keep adding after the first number, so the category is marked finished but left open.
-    const stayOpen = !!currentMoq() || cat.items.some(item => !item.noParStock && (item.par === null || item.par === undefined));
-    if (stillAllTouched) setCategoryCompleted(ci, catEl, true, !stayOpen);
-  }, AUTO_COMPLETE_DELAY_MS);
-}
-
 function totalItemsSelected() {
   return Object.values(state.toOrder).filter(v => v > 0).length;
 }
 
 // Counts items with real entered data (stock, an order qty, or an explicit
-// skip) - unlike isItemTouched(), this doesn't treat noParStock items as
-// automatically touched, since this is reporting what was actually typed in.
+// skip) - this reports what was actually typed in.
 function totalItemsTouched() {
   const keys = new Set([
     ...Object.keys(state.stock),
@@ -609,8 +572,7 @@ function renderOrderScreen() {
         updateBottomBar();
         if (cat.combo && cat.combo.itemIndices.includes(ii)) updateComboBox();
         if ($("#onlyTouchedToggle").checked) applyFilters();
-        maybeAutoComplete(ci, catEl, cat);
-      }
+            }
 
       function setOrderManual(v) {
         orderManuallySet = true;
@@ -622,8 +584,7 @@ function renderOrderScreen() {
         if (v === "") delete state.stock[key];
         else state.stock[key] = v;
         saveDraft();
-        maybeAutoComplete(ci, catEl, cat);
-        if (orderManuallySet) return;
+              if (orderManuallySet) return;
         // auto-suggest to-order from par minus stock, only while the user
         // hasn't overridden it yet
         const suggested = Math.max(par - (v === "" ? 0 : v), 0);
@@ -683,6 +644,14 @@ function renderOrderScreen() {
     }
 
 
+    // Staff finish each category themselves: it is their confirmation that the counts and quantities are right.
+    const doneBtn = document.createElement("button");
+    doneBtn.type = "button";
+    doneBtn.className = "btn cat-complete-btn" + (state.completed[ci] ? " is-done" : "");
+    doneBtn.textContent = state.completed[ci] ? "Category complete \u2713 Tap to reopen" : "Mark category complete";
+    doneBtn.addEventListener("click", () => setCategoryCompleted(ci, catEl, !state.completed[ci]));
+    body.appendChild(doneBtn);
+
     catEl.appendChild(header);
     catEl.appendChild(body);
     content.appendChild(catEl);
@@ -711,8 +680,8 @@ function updateIncompleteWarning() {
     if (incomplete.length > 0) {
       lines.push(
         incomplete.length === total
-          ? `No categories finished yet (${total} to go).`
-          : `${incomplete.length} categor${incomplete.length === 1 ? "y" : "ies"} left to finish.`
+          ? `No categories completed yet (${total} to go).`
+          : `${incomplete.length} categor${incomplete.length === 1 ? "y" : "ies"} left to complete.`
       );
     }
   }
@@ -821,7 +790,7 @@ function renderReviewScreen() {
   const { total, incomplete } = incompleteCategories();
   if (total > 0 && incomplete.length > 0) {
     const names = incomplete.map(c => c.name).join(", ");
-    gateLines.push(`${incomplete.length} categor${incomplete.length === 1 ? "y" : "ies"} still to finish: ${names}.`);
+    gateLines.push(`${incomplete.length} categor${incomplete.length === 1 ? "y" : "ies"} still to complete: ${names}.`);
   }
   const shortfall = moqShortfall();
   if (shortfall > 0) {

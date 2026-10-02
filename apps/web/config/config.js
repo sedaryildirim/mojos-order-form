@@ -5,8 +5,8 @@ const CONFIG = {
   // Branches are grouped by exact `region` text. Kaif's region has a trailing space so it
   // shows as its own second "Koh Phangan" group (same heading, separate row).
   branches: [
-    { id: "nathon", name: "Mojo's Nathon", email: "mojos.nathon@gmail.com", region: "Koh Samui", suppliers: ["makro-samui", "foodproject", "drinks", "winepro"], minimumOrders: { winepro: 6 } },
     { id: "lamai", name: "Mojo's Lamai", email: "mojos.lamai@gmail.com", region: "Koh Samui", suppliers: ["makro-samui", "foodproject", "drinks", "winepro"], minimumOrders: { winepro: 6 } },
+    { id: "nathon", name: "Mojo's Nathon", email: "mojos.nathon@gmail.com", region: "Koh Samui", suppliers: ["makro-samui", "foodproject", "drinks", "winepro"], minimumOrders: { winepro: 6 } },
     { id: "chaloklum", name: "Mojo's Chaloklum", email: "mojos.chaloklum@gmail.com", region: "Koh Phangan", suppliers: ["makro-phangan", "winepro", "phangangreenveg"], minimumOrders: { winepro: 12 } },
     { id: "thongsala", name: "Mojo's Thongsala", email: "mojos.thongsala@gmail.com", region: "Koh Phangan", suppliers: ["makro-phangan", "phangangreenveg"] },
     { id: "kaifchaloklum", name: "Kaif Chaloklum", email: "amazingphangan.kaif@gmail.com", region: "Koh Phangan ", suppliers: ["makro-kaif", "winepro", "phangangreenveg", "labottega", "fruitshop"], minimumOrders: { winepro: 12 } }

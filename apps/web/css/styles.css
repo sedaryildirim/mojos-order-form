@@ -1396,3 +1396,7 @@ a.launch-card { text-decoration: none; }
 .history-view { margin: 0; color: var(--accent-ink); }
 .combo-box .combo-line { display: block; }
 .combo-box .combo-extra { color: var(--warning-ink); }
+
+/* Manual "category complete" button at the end of each category */
+.cat-complete-btn { display: block; width: calc(100% - 36px); margin: var(--space-4) var(--space-4) var(--space-4); }
+.cat-complete-btn.is-done { background: transparent; color: var(--success); border-color: var(--success); box-shadow: none; }
