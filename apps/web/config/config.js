@@ -5,12 +5,14 @@ const CONFIG = {
   // Branches are grouped by exact `region` text. Kaif's region has a trailing space so it
   // shows as its own second "Koh Phangan" group (same heading, separate row).
   branches: [
-    { id: "nathon", name: "Mojo's Nathon", email: "mojos.nathon@gmail.com", region: "Koh Samui", suppliers: ["makro-samui", "foodproject", "drinks", "winepro"] },
-    { id: "lamai", name: "Mojo's Lamai", email: "mojos.lamai@gmail.com", region: "Koh Samui", suppliers: ["makro-samui", "foodproject", "drinks", "winepro"] },
-    { id: "chaloklum", name: "Mojo's Chaloklum", email: "mojos.chaloklum@gmail.com", region: "Koh Phangan", suppliers: ["makro-phangan", "winepro", "phangangreenveg"] },
-    { id: "thongsala", name: "Mojo's Thongsala", email: "mojos.thongsala@gmail.com", region: "Koh Phangan", suppliers: ["makro-phangan", "winepro", "phangangreenveg"] },
-    { id: "kaifchaloklum", name: "Kaif Chaloklum", email: "amazingphangan.kaif@gmail.com", region: "Koh Phangan ", suppliers: ["makro-kaif", "winepro", "phangangreenveg", "labottega", "fruitshop"] }
+    { id: "nathon", name: "Mojo's Nathon", email: "mojos.nathon@gmail.com", region: "Koh Samui", suppliers: ["makro-samui", "foodproject", "drinks", "winepro"], minimumOrders: { winepro: 6 } },
+    { id: "lamai", name: "Mojo's Lamai", email: "mojos.lamai@gmail.com", region: "Koh Samui", suppliers: ["makro-samui", "foodproject", "drinks", "winepro"], minimumOrders: { winepro: 6 } },
+    { id: "chaloklum", name: "Mojo's Chaloklum", email: "mojos.chaloklum@gmail.com", region: "Koh Phangan", suppliers: ["makro-phangan", "winepro", "phangangreenveg"], minimumOrders: { winepro: 12 } },
+    { id: "thongsala", name: "Mojo's Thongsala", email: "mojos.thongsala@gmail.com", region: "Koh Phangan", suppliers: ["makro-phangan", "phangangreenveg"] },
+    { id: "kaifchaloklum", name: "Kaif Chaloklum", email: "amazingphangan.kaif@gmail.com", region: "Koh Phangan ", suppliers: ["makro-kaif", "winepro", "phangangreenveg", "labottega", "fruitshop"], minimumOrders: { winepro: 12 } }
   ],
+  // minimumOrders (per branch, optional): { supplierId: smallest total quantity that supplier accepts }.
+  // The unit name shown ("bottles") is the supplier's moqLabel in config/data.js.
   // Each id must match a key in the DATA object in config/data.js.
   // Full list shown to a branch unless that branch has its own `suppliers` array (list of ids) above.
   // Three separate Makro lists, same chain, different item selection & pricing per branch:

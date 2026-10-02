@@ -251,7 +251,7 @@ function maybeAutoComplete(ci, catEl, cat) {
     const stillAllTouched = cat.items.every((item, ii) => isItemTouched(item, itemKey(ci, ii)));
     // Where the quantity is typed by hand (a supplier minimum, or no par to suggest from), staff may
     // keep adding after the first number, so the category is marked finished but left open.
-    const stayOpen = !!state.data.moq || cat.items.some(item => !item.noParStock && (item.par === null || item.par === undefined));
+    const stayOpen = !!currentMoq() || cat.items.some(item => !item.noParStock && (item.par === null || item.par === undefined));
     if (stillAllTouched) setCategoryCompleted(ci, catEl, true, !stayOpen);
   }, AUTO_COMPLETE_DELAY_MS);
 }
@@ -282,8 +282,14 @@ function incompleteCategories() {
   return { total, incomplete };
 }
 
+// Minimum order for this store + supplier (0 = none). Set per store in config/config.js.
+function currentMoq() {
+  const set = state.branch && state.branch.minimumOrders;
+  return (set && set[state.supplier.id]) || state.data.moq || 0;
+}
+
 function moqShortfall() {
-  const moq = state.data.moq;
+  const moq = currentMoq();
   if (!moq) return 0;
   return Math.max(0, moq - totalUnitsSelected());
 }
@@ -461,8 +467,8 @@ function renderOrderScreen() {
       const patties = Math.floor((matched * qtys.length * (c.unitGrams || 1000)) / c.pattyWeightG);
       const perBurger = c.pattiesPerBurger || 0;
       const fmtKg = q => (q * unitKg).toFixed((q * unitKg) % 1 ? 1 : 0);
-      let html = `<span class="combo-line"><strong>${patties}</strong> ${c.label}</span>`;
-      if (perBurger) html += `<span class="combo-line"><strong>${Math.floor(patties / perBurger)}</strong> ${c.burgerLabel || "Burgers"}</span>`;
+      let html = `<span class="combo-line">Your order makes <strong>${patties}</strong> ${c.label}` +
+        (perBurger ? ` or <strong>${Math.floor(patties / perBurger)}</strong> ${c.burgerLabel || "Burgers"}` : "") + `</span>`;
       html += `<span class="combo-sub">${fmtKg(matched * qtys.length)}kg matched &divide; ${c.pattyWeightG}g each${perBurger ? `, ${perBurger} patties per burger` : ""}</span>`;
       let mismatched = false;
 
@@ -557,13 +563,17 @@ function renderOrderScreen() {
         </div>
       ` : `
         <div class="item-name">${item.name}</div>
-        <div class="item-sub">${item.unit}${item.price ? " &middot; ฿" + item.price : ""} &middot; <span class="par-text${parUnset ? " par-unset" : ""}">Par ${parUnset ? "not set" : par}</span></div>
+        <div class="item-sub">${item.unit}${item.price ? " &middot; ฿" + item.price : ""}</div>
         <label class="skip-toggle">
           <input type="checkbox" class="skip-checkbox"${isSkipped ? " checked" : ""} aria-label="Skip ${item.name}, not ordering it this time">
           Skip this item
         </label>
         <div class="fields-row">
-          <div class="field stock">
+          <div class="field par">
+            <label>Par</label>
+            <div class="par-value${parUnset ? " par-unset" : ""}"${parUnset ? ' title="Par not set yet"' : ""}>${parUnset ? "&mdash;" : par}</div>
+          </div>
+          <div class="field stock${parUnset ? " is-unset" : ""}">
             <label>Stock</label>
             <input type="number" inputmode="numeric" min="0" class="stock-input" value="${state.stock[key] ?? ""}" placeholder="0" aria-label="${item.name} current stock">
           </div>
@@ -709,7 +719,7 @@ function updateIncompleteWarning() {
 
   const shortfall = moqShortfall();
   if (shortfall > 0) {
-    lines.push(`Minimum order is ${state.data.moq} ${state.data.moqLabel || "units"}. Add ${shortfall} more.`);
+    lines.push(`Minimum order is ${currentMoq()} ${state.data.moqLabel || "units"}. Add ${shortfall} more.`);
   }
 
   lines.push(...comboMismatches());
@@ -815,7 +825,7 @@ function renderReviewScreen() {
   }
   const shortfall = moqShortfall();
   if (shortfall > 0) {
-    gateLines.push(`Minimum order is ${state.data.moq} ${state.data.moqLabel || "units"}. Add ${shortfall} more.`);
+    gateLines.push(`Minimum order is ${currentMoq()} ${state.data.moqLabel || "units"}. Add ${shortfall} more.`);
   }
   gateLines.push(...comboMismatches());
 

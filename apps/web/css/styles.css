@@ -798,8 +798,6 @@ a.launch-card { text-decoration: none; }
 }
 .item-row.has-qty .item-name { font-weight: 600; }
 .item-row.skipped .item-name { color: var(--muted-foreground); font-style: italic; }
-.item-row.skipped .par-text { color: var(--foreground); font-weight: 500; }
-.par-text.par-unset { color: var(--muted-foreground); font-style: italic; font-weight: 400; }
 
 .fields-row { display: none; }
 
@@ -827,6 +825,25 @@ a.launch-card { text-decoration: none; }
   color: var(--muted-foreground);
 }
 
+
+.field .par-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  padding: var(--space-2) var(--space-1);
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  background: var(--muted);
+  color: var(--foreground);
+  font-family: var(--font-mono);
+  font-size: 16px;
+  font-weight: 500;
+}
+.field .par-value.par-unset { border: 1px dashed var(--border-strong); color: var(--muted-foreground); font-weight: 400; }
+/* No par for this item: the stock box is greyed out like the par dash (still typeable) */
+.field.is-unset .stock-input { background: var(--muted); border-style: dashed; color: var(--muted-foreground); }
+.field.is-unset .stock-input::placeholder { color: var(--muted-foreground); }
 
 .stock-input,
 .stepper {
@@ -1378,5 +1395,4 @@ a.launch-card { text-decoration: none; }
 .history-lines li span:last-child { flex-shrink: 0; color: var(--muted-foreground); }
 .history-view { margin: 0; color: var(--accent-ink); }
 .combo-box .combo-line { display: block; }
-.combo-box .combo-line + .combo-line { margin-top: var(--space-1); }
 .combo-box .combo-extra { color: var(--warning-ink); }
