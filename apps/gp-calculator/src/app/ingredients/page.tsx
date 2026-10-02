@@ -9,6 +9,7 @@ import { packLabel, unitPrice } from "@/lib/costing/unit-price";
 import { useViewMode } from "@/lib/client/use-view-mode";
 import { ListSkeleton, LoadError } from "@/components/layout/Skeleton";
 import { ViewToggle } from "@/components/ui/ViewToggle";
+import { SyncButton, SyncPanel, useOrderSheetSync } from "@/components/ingredients/SyncFromOrderSheet";
 
 interface IngredientRow {
   id: string;
@@ -43,6 +44,7 @@ export default function IngredientsPage() {
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
   const [reloadKey, setReloadKey] = useState(0);
+  const sync = useOrderSheetSync(() => setReloadKey((k) => k + 1));
 
   useEffect(() => {
     fetch("/api/suppliers")
@@ -125,6 +127,7 @@ export default function IngredientsPage() {
       <div>
         <h1>Ingredients</h1>
         <div>
+          <SyncButton sync={sync} />
           <Link href="/ingredients/import">
             Import prices
           </Link>
@@ -138,6 +141,8 @@ export default function IngredientsPage() {
           </Link>
         </div>
       </div>
+
+      <SyncPanel sync={sync} />
 
       <div>
         <div>

@@ -855,3 +855,12 @@ div[role="status"] > div[aria-hidden="true"] > div {
   [data-spec-summary] [data-tone="low"] { background: var(--danger-bg) !important; }
 }
 @media print { [data-spec-summary] { position: static; } }
+
+/* The order-sheet sync result: both tables share one set of column widths so their numbers line up. */
+section[aria-label="Order sheet sync"] { margin-bottom: var(--space-5); }
+section[aria-label="Order sheet sync"] button + button { margin-left: var(--space-2); }
+@media (min-width: 721px) {
+  table[data-sync] { table-layout: fixed; margin-bottom: var(--space-3); }
+  table[data-sync] th:nth-child(2) { width: 13rem; }
+  table[data-sync] th:nth-child(3), table[data-sync] th:nth-child(4) { width: 8rem; }
+}
