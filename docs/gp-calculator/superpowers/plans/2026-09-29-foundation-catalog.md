@@ -6,7 +6,7 @@
 
 **Architecture:** Next.js (App Router, TypeScript) app with Prisma/Postgres for persistence, API routes under `app/api/*`, and plain React pages for CRUD screens. Money math lives in framework-free `lib/` modules (unit conversion, per-ingredient cost) so it can be unit-tested without a database or browser. This plan implements Suppliers and Ingredients only — Dish/DishVersion/VersionIngredient and everything built on them (dish builder, versioning, sharing) is a separate plan, `2026-09-29-dish-costing.md`, that extends this schema and reuses these `lib/` modules.
 
-**Tech Stack:** Next.js 14 (App Router) + TypeScript, Tailwind CSS, Prisma + PostgreSQL (local dev via Docker Compose; production via Neon/Supabase per spec), Vitest + @testing-library/react for tests, zod for input validation, `xlsx` (SheetJS) for import parsing.
+**Tech Stack:** Next.js 14 (App Router) + TypeScript, Tailwind CSS, Prisma + PostgreSQL (local dev via Docker Compose; production via Neon per spec), Vitest + @testing-library/react for tests, zod for input validation, `xlsx` (SheetJS) for import parsing.
 
 **Spec:** `docs/superpowers/specs/2026-09-29-gp-calculator-design.md`
 

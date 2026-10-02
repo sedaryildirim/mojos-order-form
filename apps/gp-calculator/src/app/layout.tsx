@@ -7,7 +7,7 @@ import { NavLinks } from "@/components/layout/NavLinks";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { LockButton } from "@/components/layout/LockButton";
 import { TableAlign } from "@/components/layout/TableAlign";
-import { HOME_URL } from "@/lib/client/site";
+import { GP_HOME_URL, HOME_URL } from "@/lib/client/site";
 
 const calistoga = Calistoga({ weight: "400", subsets: ["latin"], variable: "--font-calistoga", display: "swap" });
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
@@ -38,7 +38,7 @@ export default function RootLayout({
         </a>
         <nav aria-label="Main">
           <div>
-            <Link href="/">
+            <Link href={GP_HOME_URL}>
               GP Calculator
             </Link>
             <NavLinks />

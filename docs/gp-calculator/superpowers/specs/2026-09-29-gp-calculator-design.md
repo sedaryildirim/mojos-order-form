@@ -79,7 +79,7 @@ Deleting is a **soft delete**: suppliers and ingredients get `archived = true` i
 ## 7. Tech Stack
 
 - **Next.js** (App Router) — single deployable app, React UI + API routes.
-- **PostgreSQL** (Supabase or Neon, free tier to start) — relational data model above.
+- **PostgreSQL** (hosted, free tier to start) — relational data model above.
 - **Prisma** — ORM/schema migrations.
 - **Tailwind CSS** — clean, minimal UI matching your stated preference.
 - **Vercel** — hosting.

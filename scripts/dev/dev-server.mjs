@@ -102,7 +102,7 @@ server.listen(PORT, () => {
   console.log(GP_ON ? `  GP Calculator   http://localhost:${PORT}/gp   (Next.js on :${GP_PORT})\n` : "  GP Calculator   off (GP=off)\n");
   if (!GP_ON) return;
   gp = spawn(path.join(gpDir, "node_modules/.bin/next"), ["dev", "-p", String(GP_PORT)], {
-    cwd: gpDir, stdio: "inherit", env: { ...process.env, NEXT_PUBLIC_HOME_URL: "/" }
+    cwd: gpDir, stdio: "inherit", env: { ...process.env, NEXT_PUBLIC_HOME_URL: "/", NEXT_PUBLIC_GP_HOME_URL: "/gp" }
   });
   gp.on("exit", (code) => {
     if (code) console.error(`GP app exited with code ${code}. Run "npm run setup" if dependencies are missing.`);
