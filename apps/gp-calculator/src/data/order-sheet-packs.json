@@ -10,5 +10,33 @@
   "makro-kaif:898934": {
     "purchaseUnit": "EACH",
     "packQuantity": 4
+  },
+  "phangangreenveg:257271": {
+    "purchaseUnit": "EACH",
+    "packQuantity": 1
+  },
+  "phangangreenveg:5013": {
+    "purchaseUnit": "G",
+    "packQuantity": 400
+  },
+  "fruitshop:lemon": {
+    "purchaseUnit": "EACH",
+    "packQuantity": 1
+  },
+  "fruitshop:coconut": {
+    "purchaseUnit": "EACH",
+    "packQuantity": 1
+  },
+  "fruitshop:green-apple": {
+    "purchaseUnit": "EACH",
+    "packQuantity": 1
+  },
+  "fruitshop:red-apple": {
+    "purchaseUnit": "EACH",
+    "packQuantity": 1
+  },
+  "fruitshop:tofu": {
+    "purchaseUnit": "EACH",
+    "packQuantity": 1
   }
 }
