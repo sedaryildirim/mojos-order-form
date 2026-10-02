@@ -867,6 +867,7 @@ section[aria-label="Order sheet sync"] button + button { margin-left: var(--spac
 
 /* ============ GP history chart (dish and batch recipe pages) ============ */
 [data-gp-chart] {
+  max-width: 52rem; /* the width of the ingredient table above it, so the chart does not stretch with the page */
   margin: var(--space-5) 0;
   padding: var(--space-4);
   border: 1px solid var(--border);

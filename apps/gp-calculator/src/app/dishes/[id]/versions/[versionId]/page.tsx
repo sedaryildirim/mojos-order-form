@@ -64,7 +64,6 @@ export default async function DishVersionPage({ params }: { params: { versionId:
 
   const notices = (
     <>
-      <GpHistoryChart points={gpHistory} />
       {flaggedCount > 0 && (
         <div role="alert">
           <p>Has guessed prices</p>
@@ -159,6 +158,7 @@ export default async function DishVersionPage({ params }: { params: { versionId:
           </ul>
         </section>
       )}
+      <GpHistoryChart points={gpHistory} />
       <details>
         <summary>Photo and email</summary>
         <PhotoUpload versionId={version.id} />
