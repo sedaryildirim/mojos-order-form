@@ -215,7 +215,7 @@ export function SupplierIngredients({ rows: initialRows, supplierIsPlaceholder =
         <section key={cat}>
           <h3>{cat}</h3>
           <div>
-            <table>
+            <table data-aligned>
               <thead>
                 <tr>
                   <th scope="col">

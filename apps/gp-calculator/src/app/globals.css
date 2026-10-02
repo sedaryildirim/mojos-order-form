@@ -569,6 +569,14 @@ th button {
 }
 th[aria-sort="ascending"], th[aria-sort="descending"] { color: var(--accent-ink); }
 tbody tr:last-child td { border-bottom: 0; }
+/* One table per category: share the same column widths so Pack size, Price, Yield and Actions line up down the page. */
+@media (min-width: 721px) {
+  table[data-aligned] { table-layout: fixed; }
+  table[data-aligned] th:nth-child(2) { width: 9rem; }
+  table[data-aligned] th:nth-child(3) { width: 9rem; }
+  table[data-aligned] th:nth-child(4) { width: 6rem; }
+  table[data-aligned] th:nth-child(5) { width: 10rem; }
+}
 td[data-gp="low"] { color: var(--danger); font-weight: 600; }
 td[data-gp="good"] { color: var(--success); }
 @media (hover: hover) { tbody tr:hover td { background: var(--accent-tint); } }
@@ -582,7 +590,8 @@ section > div:not(:has(> :not(a))) {
   gap: var(--space-4);
 }
 a:has(h3) {
-  display: block;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -595,6 +604,8 @@ a:has(h3) {
 a:has(h3) { min-width: 0; }
 a:has(h3) > div { padding: var(--space-4) var(--space-4); min-width: 0; }
 a:has(h3) > div:first-child:has(img) { padding: 0; }
+/* The text block fills the card, so the stat tiles can sit at the bottom and line up across a row of cards. */
+a:has(h3) > div:not(:first-child:has(img)) { flex: 1; display: flex; flex-direction: column; }
 a:has(h3) img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 0; }
 a:has(h3) > div > div:first-child { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-2); }
 a:has(h3) p { color: var(--muted-foreground); font-size: 13px; }
@@ -610,6 +621,7 @@ div:has(> [data-stat]) {
   gap: var(--space-2);
   margin-top: var(--space-3);
 }
+a:has(h3) div:has(> [data-stat]) { margin-top: auto; padding-top: var(--space-3); }
 [data-stat] { padding: var(--space-2) var(--space-3); border: 1px solid var(--border); border-radius: var(--radius); background: var(--muted); }
 [data-stat] > div:first-child { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted-foreground); }
 [data-stat] > div:nth-child(2) { margin-top: 2px; font-family: var(--font-mono); font-size: 17px; font-weight: 500; color: var(--foreground); font-variant-numeric: tabular-nums; }
