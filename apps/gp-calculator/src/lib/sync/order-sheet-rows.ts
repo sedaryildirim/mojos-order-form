@@ -43,6 +43,9 @@ export function parseOrderSheet(text: string): SheetData {
     if (start < 0 || end < start) throw new Error("no object found");
     const data = JSON.parse(text.slice(start, end + 1)) as SheetData;
     if (!data || typeof data !== "object" || Object.keys(data).length === 0) throw new Error("empty");
+    // Valid JSON is not enough (package.json is valid JSON): an order sheet is suppliers that each have categories.
+    const looksRight = Object.values(data).some((v) => v && typeof v === "object" && Array.isArray((v as { categories?: unknown }).categories));
+    if (!looksRight) throw new Error("not an order sheet");
     return data;
   } catch {
     throw new Error("Could not read the order sheet: the file is not in the expected format. Nothing was changed.");

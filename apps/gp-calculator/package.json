@@ -9,7 +9,8 @@
     "lint": "next lint",
     "test": "vitest run",
     "test:watch": "vitest",
-    "backup": "tsx scripts/backup.ts"
+    "backup": "tsx scripts/backup.ts",
+    "sync:order-sheet": "tsx scripts/sync-order-sheet.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",

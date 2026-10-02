@@ -12,22 +12,32 @@ export interface SyncReport {
   unchanged: number;
   removed: { name: string; supplier: string }[];
   archivedBecauseUsed: { name: string; supplier: string }[];
+  // New items whose pack size could not be read from the name (imported as 1 EACH until it is added to order-sheet-packs.json).
   needsPackSize: { name: string; supplier: string }[];
+  // Existing ingredients sold in a different unit on the sheet (for example grams in the GP, millilitres on the sheet):
+  // linked to the sheet item but left exactly as they were, for the owner to check.
+  packMismatch: { name: string; supplier: string; gpPack: string; sheetPack: string; sheetPrice: number }[];
   // Dry run: the dishes that would be recosted. Applied: the dishes that were.
   dishes: PreviewDish[] | RecalcSummary[];
+}
+
+// Grams and millilitres are treated alike (the GP already stores liquids such as yoghurt and juice in grams).
+function unitsCompatible(a: string, b: string): boolean {
+  const weightOrVolume = (u: string) => u === "G" || u === "ML";
+  return a === b || (weightOrVolume(a) && weightOrVolume(b));
 }
 
 // Brings the GP's ingredients in line with the order sheet. `apply: false` only reports what would change.
 // Prices that change flow on to batch recipes and dishes (new "Updated" versions), exactly like an import does.
 export async function syncOrderSheet(rows: SheetRow[], opts: { apply: boolean; actor: string }): Promise<SyncReport> {
   const { apply, actor } = opts;
-  const report: SyncReport = { applied: apply, created: [], priceChanged: [], unchanged: 0, removed: [], archivedBecauseUsed: [], needsPackSize: [], dishes: [] };
+  // A bad or empty download must never look like "every item was removed from the sheet".
+  if (rows.length === 0) throw new Error("The order sheet has no items to sync. Nothing was changed.");
+  const report: SyncReport = { applied: apply, created: [], priceChanged: [], unchanged: 0, removed: [], archivedBecauseUsed: [], needsPackSize: [], packMismatch: [], dishes: [] };
   const changedIds: string[] = [];
   const previewChanges = new Map<string, PriceChangeInput>();
 
   for (const row of rows) {
-    if (row.needsPackSize) report.needsPackSize.push({ name: row.name, supplier: row.supplier });
-
     let supplier = await prisma.supplier.findFirst({ where: { name: row.supplier } });
     if (!supplier && apply) supplier = await prisma.supplier.create({ data: { name: row.supplier, createdBy: actor, updatedBy: actor } });
 
@@ -38,6 +48,7 @@ export async function syncOrderSheet(rows: SheetRow[], opts: { apply: boolean; a
 
     if (!existing) {
       report.created.push({ name: row.name, supplier: row.supplier });
+      if (row.needsPackSize) report.needsPackSize.push({ name: row.name, supplier: row.supplier });
       if (apply) {
         const made = await prisma.ingredient.create({
           data: {
@@ -50,8 +61,20 @@ export async function syncOrderSheet(rows: SheetRow[], opts: { apply: boolean; a
       continue;
     }
 
-    const priceChanged =
-      Number(existing.packPrice) !== row.packPrice || Number(existing.packQuantity) !== row.packQuantity || existing.purchaseUnit !== row.purchaseUnit;
+    // The GP's own pack definition stays (recipes are costed against it). Only the price moves, scaled to that pack.
+    if (!unitsCompatible(existing.purchaseUnit, row.purchaseUnit)) {
+      report.packMismatch.push({
+        name: row.name, supplier: row.supplier, gpPack: `${Number(existing.packQuantity)} ${existing.purchaseUnit}`,
+        sheetPack: `${row.packQuantity} ${row.purchaseUnit}`, sheetPrice: row.packPrice,
+      });
+      if (apply && existing.sourceKey !== row.sourceKey) {
+        await prisma.ingredient.update({ where: { id: existing.id }, data: { sourceKey: row.sourceKey, updatedBy: actor } });
+      }
+      continue;
+    }
+    const gpQuantity = Number(existing.packQuantity);
+    const newPrice = Math.round(((row.packPrice * gpQuantity) / row.packQuantity) * 100) / 100;
+    const priceChanged = Number(existing.packPrice) !== newPrice;
     const supplierChanged = !!supplier && existing.supplierId !== supplier.id;
     const needsWrite =
       priceChanged || supplierChanged || existing.sourceKey !== row.sourceKey || existing.name !== row.name || existing.category !== row.category || existing.archived || existing.priceEstimated;
@@ -61,8 +84,8 @@ export async function syncOrderSheet(rows: SheetRow[], opts: { apply: boolean; a
       continue;
     }
     if (priceChanged) {
-      report.priceChanged.push({ name: row.name, supplier: row.supplier, oldPrice: Number(existing.packPrice), newPrice: row.packPrice });
-      previewChanges.set(existing.id, { purchaseUnit: row.purchaseUnit, packQuantity: row.packQuantity, packPrice: row.packPrice });
+      report.priceChanged.push({ name: row.name, supplier: row.supplier, oldPrice: Number(existing.packPrice), newPrice });
+      previewChanges.set(existing.id, { packPrice: newPrice });
     } else {
       report.unchanged++;
     }
@@ -70,8 +93,8 @@ export async function syncOrderSheet(rows: SheetRow[], opts: { apply: boolean; a
       await prisma.ingredient.update({
         where: { id: existing.id },
         data: {
-          name: row.name, category: row.category, supplierId: supplier!.id, purchaseUnit: row.purchaseUnit, packQuantity: row.packQuantity,
-          packPrice: row.packPrice, sourceKey: row.sourceKey, archived: false, priceEstimated: false, updatedBy: actor,
+          name: row.name, category: row.category, supplierId: supplier!.id, packPrice: newPrice,
+          sourceKey: row.sourceKey, archived: false, priceEstimated: false, updatedBy: actor,
         },
       });
       if (priceChanged || supplierChanged) await recordPriceHistory(existing.id, actor);

@@ -140,4 +140,57 @@ describe("syncOrderSheet", () => {
     const r = await apply([row({ sourceKey: "makro-kaif:300", name: "ARO Toilet Tissue 48 rolls", purchaseUnit: "EACH", packQuantity: 1, needsPackSize: true })]);
     expect(r.needsPackSize).toEqual([{ name: "ARO Toilet Tissue 48 rolls", supplier: "Makro" }]);
   });
+
+  it("refuses an empty sheet, so a bad download can never remove everything", async () => {
+    const s = await supplier();
+    await ingredient(s.id, { sourceKey: "makro-kaif:100" });
+    await expect(apply([])).rejects.toThrow(/no items/i);
+    expect(await prisma.ingredient.count()).toBe(1);
+  });
+
+  it("keeps an existing ingredient's own pack and scales the sheet price into it", async () => {
+    const s = await supplier();
+    // The GP buys this in 500 g packs at 40; the sheet sells a 1 kg pack at 90, so 500 g costs 45.
+    const ing = await ingredient(s.id, { packQuantity: 500, packPrice: 40 });
+    const r = await apply([row({ packQuantity: 1000, packPrice: 90 })]);
+    const after = await prisma.ingredient.findUniqueOrThrow({ where: { id: ing.id } });
+    expect(Number(after.packQuantity)).toBe(500);
+    expect(Number(after.packPrice)).toBe(45);
+    expect(after.sourceKey).toBe("makro-kaif:100");
+    expect(r.priceChanged).toEqual([{ name: "Cauliflower White 1 kg", supplier: "Makro", oldPrice: 40, newPrice: 45 }]);
+  });
+
+  it("an existing ingredient in an incompatible unit is linked but left untouched, and reported", async () => {
+    const s = await supplier();
+    const ing = await ingredient(s.id, { name: "Big Tofu", packQuantity: 400, packPrice: 15 });
+    const r = await apply([row({ sourceKey: "phangangreenveg:55", name: "Big Tofu", purchaseUnit: "EACH", packQuantity: 1, packPrice: 18 })]);
+    const after = await prisma.ingredient.findUniqueOrThrow({ where: { id: ing.id } });
+    expect(after.purchaseUnit).toBe("G");
+    expect(Number(after.packPrice)).toBe(15);
+    expect(after.sourceKey).toBe("phangangreenveg:55");
+    expect(r.packMismatch).toEqual([{ name: "Big Tofu", supplier: "Makro", gpPack: "400 G", sheetPack: "1 EACH", sheetPrice: 18 }]);
+    expect(r.priceChanged).toEqual([]);
+  });
+
+  it("treats grams and millilitres as interchangeable, as the GP already does for liquids", async () => {
+    const s = await supplier();
+    const ing = await ingredient(s.id, { name: "Yoghurt 1.8 l", packQuantity: 1800, packPrice: 175 });
+    const r = await apply([row({ sourceKey: "makro-kaif:56", name: "Yoghurt 1.8 l", purchaseUnit: "ML", packQuantity: 1800, packPrice: 190 })]);
+    const after = await prisma.ingredient.findUniqueOrThrow({ where: { id: ing.id } });
+    expect(after.purchaseUnit).toBe("G");
+    expect(Number(after.packQuantity)).toBe(1800);
+    expect(Number(after.packPrice)).toBe(190);
+    expect(r.packMismatch).toEqual([]);
+    expect(r.priceChanged).toHaveLength(1);
+  });
+
+  it("only new ingredients are listed as needing a pack size", async () => {
+    const s = await supplier();
+    await ingredient(s.id, { name: "Lemon", packQuantity: 1000, packPrice: 60 });
+    const r = await apply([
+      row({ sourceKey: "fruitshop:1", name: "Lemon", purchaseUnit: "EACH", packQuantity: 1, packPrice: 60, needsPackSize: true }),
+      row({ sourceKey: "fruitshop:2", name: "Coconut", purchaseUnit: "EACH", packQuantity: 1, packPrice: 30, needsPackSize: true }),
+    ]);
+    expect(r.needsPackSize.map((x) => x.name)).toEqual(["Coconut"]);
+  });
 });

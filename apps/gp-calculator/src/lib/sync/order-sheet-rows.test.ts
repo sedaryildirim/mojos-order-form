@@ -22,6 +22,9 @@ describe("parseOrderSheet", () => {
     expect(() => parseOrderSheet("const DATA = {};")).toThrow(/Could not read the order sheet/);
     expect(() => parseOrderSheet("const DATA = {oops};")).toThrow(/Could not read the order sheet/);
   });
+  it("refuses JSON that is not an order sheet, such as package.json", () => {
+    expect(() => parseOrderSheet('{"name":"x","scripts":{"dev":"next"}}')).toThrow(/Could not read the order sheet/);
+  });
   it("never executes the file", () => {
     (globalThis as Record<string, unknown>).__orderSheetRan = undefined;
     parseOrderSheet('globalThis.__orderSheetRan = true; const DATA = {"a":{"categories":[]}};');
