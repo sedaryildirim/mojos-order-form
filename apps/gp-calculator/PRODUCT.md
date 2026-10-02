@@ -8,11 +8,11 @@ product
 
 ## Users
 
-The owner and managers of KAIF, a food and beverage business on Koh Phangan. They work at a laptop or desktop in a bright room, entering supplier prices, building recipes, and checking cost and gross profit per dish. Sessions involve a lot of scanning long lists (400+ ingredients, 35+ dishes) and comparing numbers in Thai baht.
+The owner and managers of KAIF, a food and beverage business on Koh Phangan. They work at a laptop or desktop in a bright room, entering supplier prices, building recipes, and checking cost and gross profit per dish. Sessions involve a lot of scanning long lists (300+ ingredients, 35+ dishes, 17 batch recipes) and comparing numbers in Thai baht.
 
 ## Product Purpose
 
-Cost every dish accurately, track GP as supplier prices change, and keep suppliers and ingredients tidy. Success: the owner can open any screen and read prices, costs, and GP at a glance without squinting, and can spot which dishes changed after a price update.
+Cost every dish and batch recipe accurately, track GP as supplier prices change, and keep suppliers and ingredients tidy. The Kaif ingredient list follows the Kaif order sheet: updating the order sheet and pressing one button brings the new prices in and recalculates every affected dish. Success: the owner can open any screen and read prices, costs, and GP at a glance without squinting, can spot which dishes changed after a price update, and can see on a dish's page how its GP moved over the last few updates.
 
 ## Brand Personality
 
@@ -28,9 +28,10 @@ The site is styled with the shared Mojo's + Kaif design system (see DESIGN.md). 
 
 1. Legibility first: every piece of text meets WCAG AA contrast, body text is comfortably sized, numbers are tabular and easy to compare.
 2. The task disappears the interface: familiar patterns, consistent buttons and form controls, no decoration that does not carry state.
-3. Status is visible: current page, "Cost updated" recipes, low GP, guessed prices and archived items are all clearly signalled and never rely on colour alone.
-4. Dense but calm: show a lot of information per screen with generous spacing between groups, not inside them. Lists open as tables with sticky headers and right-aligned numbers; related form fields share a row.
-5. Never overwrite silently: a save made on a stale copy is refused with a plain message, and a failed save keeps what was typed.
+3. Status is visible: current page, "Cost updated" recipes, low GP, guessed prices (flagged estimates for items the order sheet does not list) and archived items are all clearly signalled and never rely on colour alone.
+4. Line things up: cards in a row, table columns across tables and badges down a column share edges, because the owner scans by eye.
+5. Dense but calm: show a lot of information per screen with generous spacing between groups, not inside them. Lists open as tables with sticky headers and right-aligned numbers; related form fields share a row.
+6. Never overwrite silently: a save made on a stale copy is refused with a plain message, and a failed save keeps what was typed.
 
 ## Accessibility & Inclusion
 

@@ -13,7 +13,7 @@ js/
     a11y.js             Moves focus to the new screen's heading
 config/               The files you edit to run the business (no code needed)
   config.js           Branches, emails, suppliers per branch, launcher tool links
-  data.js             Every supplier's categories, items, prices and par levels
+  data.js             Every supplier's categories, items, prices and par levels (also read by the GP Calculator's sync)
 ```
 
 Script order in `index.html` matters: config, data, ordering app, then the shell scripts.
@@ -22,6 +22,12 @@ Script order in `index.html` matters: config, data, ordering app, then the shell
 
 1. **Branch emails / who sees which supplier:** `config/config.js` (including `minimumOrders` per store, e.g. Wine Pro is 6 bottles for Nathon and Lamai, 12 for Chaloklum and Kaif).
 2. **Items, prices, pars:** `config/data.js` (one array per category, one object per item: `id`, `name`, `unit`, `par`, `price`).
+   **The GP Calculator reads this file.** Its Kaif suppliers (`makro-kaif`, `winepro`, `phangangreenveg`, `labottega`, `fruitshop`) feed the GP's ingredient list when you press *Sync from order sheet* there (see the root README, "Weekly price update"). So:
+   - After `const DATA = ` the file must stay **plain JSON** (double-quoted keys, no comments, no trailing commas, ending in `};`). The GP parses it without running it, and refuses a file it cannot read.
+   - An item's `id` is its identity in the GP. Change a price or a name freely, but **do not change an `id`**: it would look like a brand-new item.
+   - Put the pack size in an item's name (for example "5 kg", "1 l x 3", "30 pcs") so the GP can read it. Prices are per `unit`: `Kilogram` items are per kg, `EACH` items per pack as named.
+   - Mojo's lists (`makro-samui`, `makro-phangan`, `foodproject`, `drinks`, `combo`) are not read by the GP.
+   - After editing, commit and push `master` so GitHub Pages publishes the new sheet before you sync.
 3. **Kaif GP card link:** `tools.kaifGp.url` in `config/config.js` (`""` greys the card out).
 4. **Look and feel:** tokens at the top of `css/styles.css`; see `../../DESIGN.md`.
 

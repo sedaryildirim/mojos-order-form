@@ -23,3 +23,8 @@ It only runs on an empty start: it refuses if the database already has dishes or
 These have no price anywhere yet, so they cost 0 and their dishes show "guessed prices": Baking Powder, Baking Soda, Caesar Dressing,
 Chicken Schnitzel, Coffee, Cold Milk, Croutons, Date Sauce, Emulsifier, Lady Fingers, Raisins, Starter. The other flagged estimates
 (Hollandaise, Hummus, Falafel and so on) start at the guessed prices from the old data. Edit each one on the Ingredients page.
+
+## Related
+
+- The weekly order-sheet sync that keeps ingredient prices current: root `README.md`, "Weekly price update".
+- Dish and batch pages show a GP history chart of the last 6 updates, so you can see how a dish's GP moves as those prices change.
