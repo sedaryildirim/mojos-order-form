@@ -1,0 +1,757 @@
+{
+ "acai": {
+  "ingredient": "La Bottega|Acai Berry Pulp 800gr"
+ },
+ "aioli": {
+  "placeholder": {
+   "name": "Garlic Mayo"
+  }
+ },
+ "avocado": {
+  "ingredient": "Boy Fruit Shop|Avocado"
+ },
+ "babaganoush": {
+  "placeholder": {
+   "name": "Babaganoush"
+  }
+ },
+ "bacon": {
+  "placeholder": {
+   "name": "Bacon"
+  }
+ },
+ "baked beans": {
+  "placeholder": {
+   "name": "Baked Beans"
+  }
+ },
+ "baking powder": {
+  "placeholder": {
+   "name": "Baking Powder"
+  }
+ },
+ "baking soda": {
+  "placeholder": {
+   "name": "Baking Soda"
+  }
+ },
+ "banana": {
+  "ingredient": "Boy Fruit Shop|Banana"
+ },
+ "banana bread": {
+  "batch": "BANANA BREAD"
+ },
+ "banana french toast mix": {
+  "batch": "BANANA BREAD"
+ },
+ "beef patty": {
+  "ingredient": "Makro|Frozen Australian Beef Chuck Roll 1 pc (8 kg)"
+ },
+ "beetroot": {
+  "ingredient": "Phangan Green Vegetables|Beetroot"
+ },
+ "bell pepper": {
+  "ingredient": "Phangan Green Vegetables|Red Bell Pepper"
+ },
+ "biscuits": {
+  "ingredient": "Makro|LOTUS BISCOFF Biscuit Caramelised Crumbs 750 g"
+ },
+ "black and white sesame": {
+  "ingredient": "Makro|White Sesame 500 g"
+ },
+ "blueberries": {
+  "ingredient": "Makro|Blueberry 500 g"
+ },
+ "blueberry": {
+  "ingredient": "Makro|Blueberry 500 g"
+ },
+ "blueberry sauce": {
+  "ingredient": "Makro|BEST FOODS Filling Blueberry 900 g"
+ },
+ "brioche bun": {
+  "batch": "KAIF BURGER BUN",
+  "perPiece": {
+   "quantity": 120,
+   "unit": "G"
+  }
+ },
+ "bruggeman yeast": {
+  "ingredient": "Makro|BRUGGEMAN Yeast Blue 500 g"
+ },
+ "bun": {
+  "batch": "KAIF BURGER BUN",
+  "perPiece": {
+   "quantity": 120,
+   "unit": "G"
+  }
+ },
+ "burger sauce": {
+  "placeholder": {
+   "name": "Burger Sauce"
+  }
+ },
+ "butter": {
+  "ingredient": "Makro|ALLOWRIE Butter Product Salted 5 kg"
+ },
+ "caesar dressing": {
+  "placeholder": {
+   "name": "Caesar Dressing"
+  }
+ },
+ "capers": {
+  "ingredient": "La Bottega|Capers in Vinegar 900gr"
+ },
+ "caramelised onion": {
+  "placeholder": {
+   "name": "Caramelised Onion"
+  }
+ },
+ "carrot": {
+  "ingredient": "Phangan Green Vegetables|Carrots"
+ },
+ "cauliflower": {
+  "ingredient": "Phangan Green Vegetables|Cauliflower"
+ },
+ "celery": {
+  "ingredient": "Phangan Green Vegetables|Celery"
+ },
+ "cherry tomato": {
+  "ingredient": "Phangan Green Vegetables|Cherry Tomato"
+ },
+ "chia seeds": {
+  "placeholder": {
+   "name": "Chia Seeds"
+  }
+ },
+ "chicken breast": {
+  "ingredient": "Makro|Chicken Boneless Breast Skin-On 1 kg"
+ },
+ "chicken kebab": {
+  "placeholder": {
+   "name": "Chicken Kebab"
+  }
+ },
+ "chicken schnitzel": {
+  "placeholder": {
+   "name": "Chicken Schnitzel"
+  }
+ },
+ "chicken skewer": {
+  "placeholder": {
+   "name": "Chicken Skewer"
+  }
+ },
+ "chickpea stew": {
+  "placeholder": {
+   "name": "Chickpea Stew"
+  }
+ },
+ "chocolate": {
+  "ingredient": "Makro|TULIP Dark Compound Coins 1 kg"
+ },
+ "chocolate powder": {
+  "placeholder": {
+   "name": "Cocoa Powder"
+  }
+ },
+ "cinnamon": {
+  "placeholder": {
+   "name": "Cinnamon Powder"
+  }
+ },
+ "cinnamon powder": {
+  "placeholder": {
+   "name": "Cinnamon Powder"
+  }
+ },
+ "cocoa powder": {
+  "placeholder": {
+   "name": "Cocoa Powder"
+  }
+ },
+ "coconut powder": {
+  "ingredient": "Makro|EROS Grated Dried Coconut 1 kg"
+ },
+ "coffee": {
+  "placeholder": {
+   "name": "Coffee"
+  }
+ },
+ "cold milk": {
+  "placeholder": {
+   "name": "Cold Milk"
+  }
+ },
+ "coleslaw": {
+  "placeholder": {
+   "name": "Coleslaw"
+  }
+ },
+ "comte cheese": {
+  "ingredient": "La Bottega|Comte Cheese 'Rivoire' 12 Months"
+ },
+ "coriander": {
+  "ingredient": "Phangan Green Vegetables|Coriander"
+ },
+ "cornichons": {
+  "placeholder": {
+   "name": "Cornichons"
+  }
+ },
+ "cos lettuce": {
+  "ingredient": "Phangan Green Vegetables|Green Cos Lettuce"
+ },
+ "cream cheese": {
+  "ingredient": "Makro|ANCHOR Cream Cheese 1 kg"
+ },
+ "crispy onion": {
+  "ingredient": "Makro|RAITIP Fried Red Onion 500 g"
+ },
+ "croutons": {
+  "placeholder": {
+   "name": "Croutons"
+  }
+ },
+ "cucumber": {
+  "ingredient": "Phangan Green Vegetables|Cucumber"
+ },
+ "curry dip": {
+  "placeholder": {
+   "name": "Curry Dip"
+  }
+ },
+ "daikon": {
+  "ingredient": "Phangan Green Vegetables|Daikon"
+ },
+ "dark chocolate": {
+  "ingredient": "Makro|TULIP Dark Compound Coins 1 kg"
+ },
+ "date sauce": {
+  "placeholder": {
+   "name": "Date Sauce"
+  }
+ },
+ "desiccated coconut": {
+  "ingredient": "Makro|EROS Grated Dried Coconut 1 kg"
+ },
+ "dill": {
+  "ingredient": "Phangan Green Vegetables|Dill"
+ },
+ "dill cream cheese": {
+  "placeholder": {
+   "name": "Dill Cream Cheese"
+  }
+ },
+ "dill sour cream": {
+  "placeholder": {
+   "name": "Dill Sour Cream"
+  }
+ },
+ "double swiss cheese": {
+  "placeholder": {
+   "name": "Double Swiss Cheese"
+  }
+ },
+ "dried fruits": {
+  "placeholder": {
+   "name": "Dried Fruits"
+  }
+ },
+ "dried seaweed": {
+  "ingredient": "Makro|TABERU Roast Seaweed 100 g"
+ },
+ "edamame": {
+  "ingredient": "Makro|ARO Frozen Edamame Kernel 500 g"
+ },
+ "egg": {
+  "ingredient": "Makro|ARO Chicken Egg no.2 No Cover 30 pcs x 5"
+ },
+ "eggplant": {
+  "ingredient": "Phangan Green Vegetables|Purple Eggplant"
+ },
+ "eggs": {
+  "ingredient": "Makro|ARO Chicken Egg no.2 No Cover 30 pcs x 5"
+ },
+ "egyptian hot sauce": {
+  "placeholder": {
+   "name": "Egyptian Hot Sauce"
+  }
+ },
+ "emmental cheese": {
+  "ingredient": "La Bottega|Emmental Wholesale"
+ },
+ "emulsifier": {
+  "placeholder": {
+   "name": "Emulsifier"
+  }
+ },
+ "evoo": {
+  "ingredient": "La Bottega|EVO Oil Sabroso 5L"
+ },
+ "falafel": {
+  "placeholder": {
+   "name": "Falafel"
+  }
+ },
+ "feta": {
+  "ingredient": "La Bottega|Feta Cheese New 500gr"
+ },
+ "flour": {
+  "ingredient": "Makro|KITE All Purpose Flour 1 kg x 10"
+ },
+ "focaccia": {
+  "batch": "FOCACCIA BREAD"
+ },
+ "fresh dill": {
+  "ingredient": "Phangan Green Vegetables|Dill"
+ },
+ "fried chicken": {
+  "placeholder": {
+   "name": "Fried Chicken"
+  }
+ },
+ "fried potato hash rosti": {
+  "placeholder": {
+   "name": "Fried Potato Hash Rosti"
+  }
+ },
+ "garlic mayo": {
+  "placeholder": {
+   "name": "Garlic Mayo"
+  }
+ },
+ "gelatin": {
+  "ingredient": "Makro|GELITA Gelatine 20 g x 5"
+ },
+ "gelatine": {
+  "ingredient": "Makro|GELITA Gelatine 20 g x 5"
+ },
+ "ginger": {
+  "ingredient": "Boy Fruit Shop|Ginger"
+ },
+ "goat cheese": {
+  "ingredient": "La Bottega|Goat Cheese Vacuum 1kg"
+ },
+ "goats cheese": {
+  "ingredient": "La Bottega|Goat Cheese Vacuum 1kg"
+ },
+ "gochujang sauce": {
+  "placeholder": {
+   "name": "Gochujang Sauce"
+  }
+ },
+ "green kite bread flour": {
+  "ingredient": "Makro|KITE All Purpose Flour 1 kg x 10"
+ },
+ "green unsalted butter": {
+  "ingredient": "Makro|ALLOWRIE Butter Product Unsalted 5 kg"
+ },
+ "grilled chicken": {
+  "placeholder": {
+   "name": "Grilled Chicken"
+  }
+ },
+ "grilled eggplant": {
+  "ingredient": "Phangan Green Vegetables|Purple Eggplant"
+ },
+ "grilled sourdough": {
+  "batch": "SOURDOUGH MIX"
+ },
+ "grilled zucchini": {
+  "ingredient": "Phangan Green Vegetables|Zucchini"
+ },
+ "harissa": {
+  "placeholder": {
+   "name": "Harissa"
+  }
+ },
+ "harissa mayo": {
+  "placeholder": {
+   "name": "Harissa"
+  }
+ },
+ "hollandaise": {
+  "placeholder": {
+   "name": "Hollandaise"
+  }
+ },
+ "homemade fries": {
+  "placeholder": {
+   "name": "House Fries"
+  }
+ },
+ "homemade jam": {
+  "placeholder": {
+   "name": "Homemade Jam"
+  }
+ },
+ "honey": {
+  "ingredient": "Makro|ARO Honey 100% 1 kg"
+ },
+ "hot sauce": {
+  "placeholder": {
+   "name": "Egyptian Hot Sauce"
+  }
+ },
+ "house fries": {
+  "placeholder": {
+   "name": "House Fries"
+  }
+ },
+ "house granola": {
+  "placeholder": {
+   "name": "House Granola"
+  }
+ },
+ "hummus": {
+  "placeholder": {
+   "name": "Hummus"
+  }
+ },
+ "icing sugar": {
+  "ingredient": "Makro|LIN Icing Sugar 900 g"
+ },
+ "israeli salad": {
+  "placeholder": {
+   "name": "Israeli Salad"
+  }
+ },
+ "lady fingers": {
+  "placeholder": {
+   "name": "Lady Fingers"
+  }
+ },
+ "laffa": {
+  "batch": "LAFFA BREAD"
+ },
+ "laffa bread": {
+  "batch": "LAFFA BREAD"
+ },
+ "lemon": {
+  "ingredient": "Phangan Green Vegetables|Lemon"
+ },
+ "lemon juice": {
+  "ingredient": "Phangan Green Vegetables|Lemon"
+ },
+ "lemon zest": {
+  "ingredient": "Phangan Green Vegetables|Lemon"
+ },
+ "lentil": {
+  "ingredient": "La Bottega|Brown Lentils 1kg"
+ },
+ "lentil rice": {
+  "placeholder": {
+   "name": "Lentil Rice"
+  }
+ },
+ "lettuce": {
+  "ingredient": "Phangan Green Vegetables|Lettuce"
+ },
+ "lime juice": {
+  "ingredient": "Phangan Green Vegetables|Lime"
+ },
+ "mango": {
+  "ingredient": "Boy Fruit Shop|Mango"
+ },
+ "maple syrup": {
+  "ingredient": "Makro|IMPERIAL Maple Syrup 730 ml"
+ },
+ "mascarpone": {
+  "ingredient": "La Bottega|Mascarpone Tatua 1kg"
+ },
+ "mayo": {
+  "ingredient": "Makro|BEST FOODS Real Mayonnaise 1 kg"
+ },
+ "minced carrot": {
+  "ingredient": "Phangan Green Vegetables|Carrots"
+ },
+ "mint": {
+  "ingredient": "Phangan Green Vegetables|Peppermint"
+ },
+ "mixed berries": {
+  "ingredient": "Makro|ARO Frozen Mixed Berries 1 kg"
+ },
+ "mixed berry": {
+  "ingredient": "Makro|ARO Frozen Mixed Berries 1 kg"
+ },
+ "mixed lettuce": {
+  "ingredient": "Phangan Green Vegetables|Lettuce"
+ },
+ "mixed olives": {
+  "ingredient": "Makro|CRESPO Green Olives In Brine 354 g"
+ },
+ "mixed quinoa and rice berry": {
+  "mix": [
+   {
+    "ingredient": "Makro|BABOO Tri-Color Quinoa 450 g",
+    "share": 0.5
+   },
+   {
+    "ingredient": "Makro|SANDEE RICE Riceberry 100% 1 kg",
+    "share": 0.5
+   }
+  ]
+ },
+ "mixed salad": {
+  "ingredient": "Phangan Green Vegetables|Lettuce"
+ },
+ "mushroom": {
+  "ingredient": "Phangan Green Vegetables|Orinji Mushroom"
+ },
+ "nut seed": {
+  "placeholder": {
+   "name": "Nut Seed Mix"
+  }
+ },
+ "nut seed mix": {
+  "placeholder": {
+   "name": "Nut Seed Mix"
+  }
+ },
+ "oats": {
+  "ingredient": "Makro|ARO Cereal Oats 1 kg"
+ },
+ "oil": {
+  "ingredient": "Makro|MORAKOT Sunflower Oil 1 l"
+ },
+ "olive oil": {
+  "ingredient": "La Bottega|EVO Oil Sabroso 5L"
+ },
+ "olives": {
+  "ingredient": "Makro|CRESPO Green Olives In Brine 354 g"
+ },
+ "orange juice": {
+  "ingredient": "Makro|MALEE 100% Mandarin Orange Juice 1 l x 3"
+ },
+ "paris ham": {
+  "ingredient": "La Bottega|Paris Ham"
+ },
+ "parma ham": {
+  "ingredient": "La Bottega|Parma Ham Wholesale"
+ },
+ "parmesan": {
+  "ingredient": "La Bottega|Grana Padano DOP 16 Months"
+ },
+ "parmesan cheese": {
+  "ingredient": "La Bottega|Grana Padano DOP 16 Months"
+ },
+ "passion fruit pulp": {
+  "ingredient": "Makro|ARO Frozen Passion Fruit Juice Seed-In 1 kg"
+ },
+ "peanut butter": {
+  "ingredient": "Makro|SKIPPY Creamy Peanut Butter 1 kg"
+ },
+ "pesto": {
+  "ingredient": "Makro|AGNESI Pesto Sauce 185 g"
+ },
+ "pickled cucumber": {
+  "placeholder": {
+   "name": "Pickled Cucumber"
+  }
+ },
+ "pickled ginger": {
+  "ingredient": "Makro|BAMBOO BRAND Pink Pickled Ginger 700 g"
+ },
+ "pineapple": {
+  "ingredient": "Boy Fruit Shop|Pineapple (Sweet)"
+ },
+ "potato": {
+  "ingredient": "Phangan Green Vegetables|Potato (10 kg box)"
+ },
+ "potato fries": {
+  "ingredient": "Phangan Green Vegetables|Potato (10 kg box)"
+ },
+ "potatoes": {
+  "ingredient": "Phangan Green Vegetables|Potato (10 kg box)"
+ },
+ "protein powder": {
+  "placeholder": {
+   "name": "Protein Powder"
+  }
+ },
+ "pumpkin": {
+  "ingredient": "Phangan Green Vegetables|Pumpkin"
+ },
+ "pumpkin seed": {
+  "ingredient": "Makro|HERITAGE Dry Roasted Pumpkin Seed 454 g"
+ },
+ "pumpkin seeds": {
+  "ingredient": "Makro|HERITAGE Dry Roasted Pumpkin Seed 454 g"
+ },
+ "quinoa riceberry mix": {
+  "mix": [
+   {
+    "ingredient": "Makro|BABOO Tri-Color Quinoa 450 g",
+    "share": 0.5
+   },
+   {
+    "ingredient": "Makro|SANDEE RICE Riceberry 100% 1 kg",
+    "share": 0.5
+   }
+  ]
+ },
+ "radish": {
+  "ingredient": "Phangan Green Vegetables|Red Radish"
+ },
+ "raisins": {
+  "placeholder": {
+   "name": "Raisins"
+  }
+ },
+ "red cabbage": {
+  "ingredient": "Phangan Green Vegetables|Purple Cabbage"
+ },
+ "red dragon fruit": {
+  "ingredient": "Boy Fruit Shop|Dragon Fruit Red"
+ },
+ "red onion": {
+  "ingredient": "Phangan Green Vegetables|Red Onions"
+ },
+ "regency": {
+  "placeholder": {
+   "name": "Regency"
+  }
+ },
+ "ricotta cheese": {
+  "ingredient": "Makro|DEL CASARO Ricotta 400 g"
+ },
+ "roasted beetroot": {
+  "ingredient": "Phangan Green Vegetables|Beetroot"
+ },
+ "roasted pumpkin": {
+  "ingredient": "Phangan Green Vegetables|Pumpkin"
+ },
+ "roasted tomato": {
+  "ingredient": "Phangan Green Vegetables|Tomatoes"
+ },
+ "rocket": {
+  "ingredient": "Phangan Green Vegetables|Wild Rocket Salad (per kg)"
+ },
+ "salami": {
+  "ingredient": "La Bottega|Salame Milano Wholesale"
+ },
+ "salmon": {
+  "ingredient": "La Bottega|Smoked Salmon Big"
+ },
+ "salt": {
+  "ingredient": "Makro|PRUNG THIP Iodized Table Salt 1 kg"
+ },
+ "sausage": {
+  "ingredient": "Makro|TGM Pork Sausage 500 g"
+ },
+ "seaweed": {
+  "ingredient": "Makro|ARO Frozen Green Seaweed Salad 1 kg"
+ },
+ "sesame": {
+  "ingredient": "Makro|White Sesame 500 g"
+ },
+ "sesame sauce": {
+  "ingredient": "Makro|KEWPIE Dressing Roasted Sesame 1 l"
+ },
+ "sesame seeds": {
+  "ingredient": "Makro|White Sesame 500 g"
+ },
+ "shakshuka mix": {
+  "placeholder": {
+   "name": "Shakshuka Mix"
+  }
+ },
+ "smashed avocado": {
+  "ingredient": "Boy Fruit Shop|Avocado"
+ },
+ "sour cream": {
+  "ingredient": "Makro|ALLI Sour Cream 450 g"
+ },
+ "sourdough": {
+  "batch": "SOURDOUGH MIX"
+ },
+ "sourdough toast": {
+  "batch": "SOURDOUGH MIX"
+ },
+ "spinach": {
+  "ingredient": "Makro|ARO Frozen Spinach Whole Leaf 1 kg"
+ },
+ "starter": {
+  "placeholder": {
+   "name": "Starter"
+  }
+ },
+ "sugar": {
+  "ingredient": "Makro|MITR PHOL Caster Sugar 1 kg"
+ },
+ "sumac": {
+  "placeholder": {
+   "name": "Sumac"
+  }
+ },
+ "sundried tomato": {
+  "ingredient": "Makro|NATURE'S DELIGHT Sun Dried Tomatoes 1 kg"
+ },
+ "sunflower oil": {
+  "ingredient": "Makro|MORAKOT Sunflower Oil 1 l"
+ },
+ "sweet milk": {
+  "ingredient": "Makro|ARO Sweetened Condensed Non-Diary Creamer 2 kg"
+ },
+ "tahini": {
+  "ingredient": "La Bottega|Tahini 5kg Tub"
+ },
+ "tofu": {
+  "ingredient": "Phangan Green Vegetables|Big Tofu"
+ },
+ "tomato": {
+  "ingredient": "Phangan Green Vegetables|Tomatoes"
+ },
+ "tropical fruit mix": {
+  "placeholder": {
+   "name": "Tropical Fruit Mix"
+  }
+ },
+ "truffle oil": {
+  "ingredient": "La Bottega|White Truffle Oil 250ml"
+ },
+ "tuna": {
+  "ingredient": "Makro|Frozen Tuna Saku Size L 1 kg"
+ },
+ "vanilla flavour": {
+  "ingredient": "Makro|MCCORMICK Imitation Vanilla 473 ml"
+ },
+ "vinaigrette": {
+  "placeholder": {
+   "name": "Vinaigrette"
+  }
+ },
+ "walnut": {
+  "ingredient": "Makro|ARO Walnut 1 kg"
+ },
+ "water": {
+  "skip": true,
+  "why": "not costed"
+ },
+ "watermelon": {
+  "ingredient": "Boy Fruit Shop|Watermelon"
+ },
+ "whipped cream": {
+  "ingredient": "Makro|ANCHOR Whipping Cream 1 l"
+ },
+ "whipping cream": {
+  "ingredient": "Makro|ANCHOR Whipping Cream 1 l"
+ },
+ "white chocolate": {
+  "placeholder": {
+   "name": "White Chocolate"
+  }
+ },
+ "white dragon fruit": {
+  "ingredient": "Boy Fruit Shop|Dragon Fruit White"
+ },
+ "yeast": {
+  "ingredient": "Makro|BRUGGEMAN Yeast Blue 500 g"
+ },
+ "yoghurt": {
+  "ingredient": "Makro|YOLIDA Yoghurt Low Fat Unsweetened 1.8 l"
+ },
+ "zucchini": {
+  "ingredient": "Phangan Green Vegetables|Zucchini"
+ }
+}
