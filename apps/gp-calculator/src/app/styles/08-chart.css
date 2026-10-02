@@ -1,0 +1,56 @@
+/* ============ GP history chart (dish and batch recipe pages) ============ */
+[data-gp-chart] {
+  max-width: 52rem; /* the width of the ingredient table above it, so the chart does not stretch with the page */
+  margin: var(--space-5) 0;
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+  box-shadow: var(--shadow-md);
+}
+[data-gp-chart] [data-chart-head] { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); }
+[data-gp-chart] h2 { margin: 0; font-size: 16px; }
+[data-gp-chart] [data-chart-head] p { margin: 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-foreground); }
+[data-chart-readout] { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1) var(--space-4); margin: var(--space-3) 0 var(--space-2); font-family: var(--font-mono); font-size: 12px; color: var(--muted-foreground); }
+[data-chart-readout] > span:first-child { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+[data-chart-readout] strong { font-size: 28px; font-weight: 500; line-height: 1; color: var(--foreground); font-variant-numeric: tabular-nums; }
+[data-gp-chart] [data-tone="up"] { color: var(--success); }
+[data-gp-chart] [data-tone="down"] { color: var(--danger); }
+[data-chart-frame] { position: relative; }
+[data-chart-frame] svg { display: block; width: 100%; height: auto; overflow: visible; }
+[data-chart-frame] svg [data-grid] { stroke: var(--border); stroke-width: 1; }
+[data-chart-frame] svg [data-grid][data-faint] { opacity: 0.4; stroke-dasharray: 2 5; }
+[data-chart-frame] svg [data-axis] { fill: var(--muted-foreground); font-family: var(--font-mono); font-size: 10px; }
+[data-chart-frame] svg [data-target] { stroke: var(--accent-ink); stroke-width: 1; stroke-dasharray: 6 4; opacity: 0.8; }
+[data-chart-frame] svg [data-target-label] { fill: var(--accent-ink); font-family: var(--font-mono); font-size: 10px; }
+[data-chart-frame] svg [data-chart-line] { stroke-width: 2.25; stroke-linejoin: round; stroke-linecap: round; }
+[data-chart-frame] svg [data-last-line] { stroke-width: 1; stroke-dasharray: 3 3; opacity: 0.75; }
+[data-chart-frame] svg [data-last-tag] text { fill: #fff; font-family: var(--font-mono); font-size: 10px; font-weight: 600; }
+[data-chart-frame] svg [data-crosshair] line { stroke: var(--muted-foreground); stroke-width: 1; stroke-dasharray: 3 3; }
+[data-chart-frame] svg [data-point] { cursor: pointer; stroke-width: 2; outline: none; transition: r 0.15s ease-out; }
+[data-chart-frame] svg [data-point][data-active="true"], [data-chart-frame] svg [data-point]:focus-visible { r: 7; }
+[data-chart-tooltip] {
+  position: absolute;
+  top: 8px;
+  z-index: 2;
+  min-width: 190px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--muted);
+  box-shadow: var(--shadow-lg);
+  font-size: 12px;
+  pointer-events: none;
+  transform: translateX(14px);
+}
+[data-chart-tooltip][data-flip="left"] { transform: translateX(calc(-100% - 14px)); }
+[data-chart-tooltip] p { margin: 0; color: var(--muted-foreground); }
+[data-chart-tooltip] p:first-child { color: var(--foreground); font-weight: 600; }
+[data-chart-tooltip] dl { display: grid; grid-template-columns: auto auto; gap: 2px var(--space-4); margin: var(--space-2) 0 0; font-family: var(--font-mono); }
+[data-chart-tooltip] dt, [data-chart-tooltip] dd { margin: 0; padding: 0; font-size: 12px; font-weight: 400; line-height: 1.5; letter-spacing: 0; text-transform: none; }
+[data-chart-tooltip] dt { color: var(--muted-foreground); }
+[data-chart-tooltip] dd { text-align: right; color: var(--foreground); font-variant-numeric: tabular-nums; }
+[data-gp-chart] [data-chart-hint] { margin: var(--space-2) 0 0; font-size: 13px; color: var(--muted-foreground); }
+[data-gp-chart] details { margin-top: var(--space-3); }
+@media (prefers-reduced-motion: reduce) { [data-chart-frame] svg [data-point] { transition: none; } }
+

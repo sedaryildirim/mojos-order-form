@@ -4,7 +4,7 @@
 
 ## Approach
 
-- The markup is semantic HTML with **no class names**. All styling is in `src/app/globals.css` and hangs off elements, ARIA attributes and structure (`nav[aria-label="Main"]`, `[role="alert"]`, `th[aria-sort]`, `button[aria-pressed]`, `div:has(> table)` and so on).
+- The markup is semantic HTML with **no class names**. All styling is in `src/app/styles/` (nine ordered files, imported in `layout.tsx`; keep that order, the cascade depends on it) and hangs off elements, ARIA attributes and structure (`nav[aria-label="Main"]`, `[role="alert"]`, `th[aria-sort]`, `button[aria-pressed]`, `div:has(> table)` and so on).
 - Where structure alone is not enough there are a few data attributes: `data-stat` (a labelled figure tile), `data-tone="good|low"` and `data-muted="true"` (GP status), `data-aligned` (a table that shares fixed column widths with its siblings), `data-sync` (the two sync result tables), `data-amount` (a price that sits in a fixed-width slot), `data-header-actions` (a header group mixing a button with link-buttons) and the `data-gp-chart` / `data-chart-*` family for the GP history chart. Status is always also written in words ("On target", "Below target"), never colour alone.
 - **Everything must line up.** Cards in a row, table columns across separate tables and badges down a column must share edges. Check by rendering the page with the real stylesheet and looking at it, not by reading the CSS.
 - Do not nest `:has()` inside `:has()` (browsers drop the whole rule). Use `section > div:not(...)` style selectors instead.
@@ -44,7 +44,7 @@ Dark is the default; `[data-theme="light"]` remaps the same tokens. `layout.tsx`
 ## Rules
 
 - No decoration on working screens: no hero, glow or entrance animation. Motion is limited to hover and press feedback and the loading shimmer, and is switched off by `prefers-reduced-motion`.
-- New colours go in the tokens at the top of `globals.css`, never inline.
+- New colours go in the tokens at the top of `styles/01-base.css`, never inline.
 - Keep every control at 44px or larger and every status paired with text.
 - Numbers use JetBrains Mono with tabular figures so columns line up.
 

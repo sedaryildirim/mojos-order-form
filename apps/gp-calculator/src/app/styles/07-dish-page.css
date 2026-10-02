@@ -1,0 +1,123 @@
+/* Dish page actions: one main action, a menu for exports, quiet links for the rest */
+[data-actions] { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); margin: var(--space-3) 0; }
+[data-actions] > a:first-child {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius);
+  border: 1px solid var(--accent-line);
+  color: var(--accent-ink);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+[data-actions] > a:not(:first-child) { padding: 0 var(--space-2); font-size: 14px; }
+[data-actions] > span { padding: 2px var(--space-2); border-radius: 999px; border: 1px solid var(--border-strong); font-size: 12px; color: var(--muted-foreground); }
+[data-menu] { position: relative; margin: 0; padding: 0; border: 0; background: none; }
+[data-menu] > summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-strong);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+[data-menu] > summary::-webkit-details-marker { display: none; }
+[data-menu][open] > summary { background: var(--muted); border-color: var(--accent-line); }
+[data-menu] > div {
+  position: absolute;
+  z-index: var(--z-menu);
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 190px;
+  display: grid;
+  gap: 2px;
+  padding: var(--space-2);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--card);
+  box-shadow: var(--shadow-lg);
+}
+[data-menu] > div > a {
+  display: block;
+  min-height: 0;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: 8px;
+  color: var(--foreground);
+  font-weight: 500;
+  text-decoration: none;
+}
+@media (hover: hover) { [data-menu] > div > a:hover { background: var(--muted); } }
+@media print { [data-actions] { display: none; } }
+
+/* ============ Page layouts ============ */
+/* Home: the list on the left, status beside it */
+@media (min-width: 1000px) {
+  [data-home-grid] { display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(280px, 1fr); gap: 0 var(--space-6); align-items: start; }
+  [data-home-grid] section > h2 { margin-top: var(--space-6); }
+  [data-home-grid] section > ul > li { flex-direction: column; align-items: flex-start; gap: var(--space-1); }
+}
+
+/* Dish page: title with its actions, ingredient table on the left, a sticky summary on the right */
+[data-spec-head] { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3) var(--space-5); margin-bottom: var(--space-4); }
+[data-spec-head] [data-actions] { margin: 0; }
+[data-spec-main] > :first-child { margin-top: 0; }
+@media (min-width: 1000px) {
+  article[data-spec="top"] {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    grid-template-areas: "head summary" "main summary";
+    column-gap: var(--space-6);
+    align-items: start;
+  }
+  article[data-spec="top"] > [data-spec-head] { grid-area: head; }
+  article[data-spec="top"] > [data-spec-main] { grid-area: main; }
+  [data-spec-summary] {
+    grid-area: summary;
+    position: sticky;
+    top: calc(var(--nav-h) + var(--space-4));
+    display: block;
+    margin: 0;
+    overflow: clip;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--card);
+    box-shadow: var(--shadow-md);
+  }
+  [data-spec-summary] > div {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    column-gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border: 0 !important;
+    border-radius: 0;
+    border-bottom: 1px solid var(--border) !important;
+    background: none;
+  }
+  [data-spec-summary] > div:last-child { border-bottom: 0 !important; }
+  [data-spec-summary] dd { margin: 0; font-size: 18px; text-align: right; }
+  [data-spec-summary] dd + dd { grid-column: 1 / -1; text-align: right; font-size: 13px; }
+  /* GP is the figure that matters most */
+  [data-spec-summary] > div:nth-child(3) { padding-block: var(--space-4); background: var(--accent-tint); }
+  [data-spec-summary] > div:nth-child(3) dd:first-of-type { font-size: 34px; line-height: 1.1; }
+  [data-spec-summary] [data-tone="good"] { background: var(--success-bg) !important; }
+  [data-spec-summary] [data-tone="low"] { background: var(--danger-bg) !important; }
+}
+@media print { [data-spec-summary] { position: static; } }
+
+/* The order-sheet sync result: both tables share one set of column widths so their numbers line up. */
+section[aria-label="Order sheet sync"] { margin-bottom: var(--space-5); }
+section[aria-label="Order sheet sync"] button + button { margin-left: var(--space-2); }
+@media (min-width: 721px) {
+  table[data-sync] { table-layout: fixed; margin-bottom: var(--space-3); }
+  table[data-sync] th:nth-child(2) { width: 13rem; }
+  table[data-sync] th:nth-child(3), table[data-sync] th:nth-child(4) { width: 8rem; }
+}
+

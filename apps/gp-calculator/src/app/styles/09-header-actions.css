@@ -1,0 +1,17 @@
+/* A page-header action group that mixes a button with a row of link-buttons (Ingredients). The button is dressed like the links. */
+[data-header-actions] { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+[data-header-actions] > button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--foreground);
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: none;
+}
+@media (hover: hover) { [data-header-actions] > button:hover:not(:disabled) { background: var(--muted); border-color: var(--accent-line); } }
+

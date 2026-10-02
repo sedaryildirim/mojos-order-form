@@ -1,0 +1,159 @@
+/* ============ Cards and stats ============ */
+section > div:not(:has(> :not(a))) {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: var(--space-4);
+}
+a:has(h3) {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+  color: var(--foreground);
+  text-decoration: none;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.3s ease-out, box-shadow 0.3s ease-out, border-color 0.3s ease-out;
+}
+a:has(h3) { min-width: 0; }
+a:has(h3) > div { padding: var(--space-4) var(--space-4); min-width: 0; }
+a:has(h3) > div:first-child:has(img) { padding: 0; }
+/* The text block fills the card, so the stat tiles can sit at the bottom and line up across a row of cards. */
+a:has(h3) > div:not(:first-child:has(img)) { flex: 1; display: flex; flex-direction: column; }
+a:has(h3) img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 0; }
+a:has(h3) > div > div:first-child { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-2); }
+a:has(h3) p { color: var(--muted-foreground); font-size: 13px; }
+a:has(h3) p:first-of-type { margin-top: var(--space-2); }
+@media (hover: hover) {
+  a:has(h3):hover { transform: translateY(-2px); border-color: var(--accent-line); box-shadow: var(--shadow-lg); }
+}
+
+/* Cost / Price / GP tiles inside a dish card */
+div:has(> [data-stat]) {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+a:has(h3) div:has(> [data-stat]) { margin-top: auto; padding-top: var(--space-3); }
+[data-stat] { padding: var(--space-2) var(--space-3); border: 1px solid var(--border); border-radius: var(--radius); background: var(--muted); }
+[data-stat] > div:first-child { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted-foreground); }
+[data-stat] > div:nth-child(2) { margin-top: 2px; font-family: var(--font-mono); font-size: 17px; font-weight: 500; color: var(--foreground); font-variant-numeric: tabular-nums; }
+[data-stat] > div:nth-child(3) { margin-top: 2px; font-size: 12px; color: var(--muted-foreground); }
+[data-stat][data-muted="true"] > div:nth-child(2) { color: var(--muted-foreground); font-weight: 400; }
+a:has(h3) > div > div:first-child > span { display: inline-flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
+
+/* Flags beside an ingredient name, e.g. "Estimated price" */
+/* A price with a unit badge after it: the number gets a fixed slot so the badges line up down the column. */
+td > data[data-amount] { display: inline-block; min-width: 7rem; }
+td > a + span, td > span {
+  display: inline-block;
+  margin-left: var(--space-2);
+  padding: 1px var(--space-2);
+  border-radius: 999px;
+  border: 1px solid var(--danger);
+  background: var(--danger-bg);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+a:has(h3) > p { padding-inline: var(--space-4); }
+a:has(h3) > p span { margin-left: var(--space-2); font-family: var(--font-mono); font-size: 12px; color: var(--foreground); }
+
+/* Version and "Recosted" chips */
+h3 + span, h3 ~ span > span {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+
+/* Cost / Price / GP figures, whether in a card or the dish page */
+dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: var(--space-3);
+  margin: var(--space-4) 0;
+}
+dl > div {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+dt { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-foreground); }
+dd { margin: var(--space-1) 0 0; font-family: var(--font-mono); font-size: 22px; font-weight: 500; font-variant-numeric: tabular-nums; }
+dd + dd { font-family: var(--font-ui); font-size: 13px; font-weight: 500; color: var(--muted-foreground); }
+[data-tone="good"] { border-color: var(--success) !important; background: var(--success-bg) !important; }
+[data-tone="good"] > div:nth-child(3), [data-tone="good"] dd + dd { color: var(--success); }
+[data-tone="low"] > div:nth-child(3), [data-tone="low"] dd + dd { color: var(--danger); }
+[data-tone="low"]  { border-color: var(--danger) !important; background: var(--danger-bg) !important; }
+[data-tone] dd + dd, [data-tone] > div:last-child:not(:first-child) { font-weight: 600; }
+[data-muted="true"] dd, [data-muted="true"] > div:nth-child(2) { color: var(--muted-foreground); font-weight: 400; }
+
+section h2:first-child { margin-top: var(--space-6); }
+details { margin: var(--space-3) 0; padding: var(--space-3) var(--space-4); border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); }
+summary { cursor: pointer; font-weight: 600; }
+
+main section > ul, main > ul { list-style: none; padding: 0; display: grid; gap: var(--space-2); }
+main section > ul > li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+}
+main section > ul > li > span:last-child { font-family: var(--font-mono); font-size: 13px; color: var(--muted-foreground); }
+main section > ul > li > span:first-child { font-family: var(--font-ui); font-size: 14px; color: var(--foreground); }
+
+/* ============ Loading placeholders ============ */
+div[role="status"] { display: grid; gap: var(--space-3); padding: 0; border: 0; background: none; }
+div[role="status"] > span { color: var(--muted-foreground); font-size: 13px; }
+div[role="status"] > div[aria-hidden="true"] { display: grid; gap: var(--space-2); }
+div[role="status"] > div[aria-hidden="true"] > div {
+  height: 56px;
+  border-radius: var(--radius);
+  background: linear-gradient(90deg, var(--muted), var(--card), var(--muted));
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+}
+@keyframes shimmer { to { background-position: -200% 0; } }
+
+@media (max-width: 720px) {
+  main, article { padding: var(--space-5) var(--space-4) 64px; }
+  nav[aria-label="Main"] > div { padding: var(--space-2) var(--space-4); }
+  th, td { padding: var(--space-2) var(--space-3); }
+  /* small screens: wide tables scroll sideways inside their card, and the top bar links stay on one row */
+  div:has(> table) { overflow-x: auto; }
+  th { top: 0; white-space: nowrap; }
+  td[data-num] { white-space: nowrap; }
+  table { min-width: 620px; }
+  td { max-width: 16rem; }
+  nav[aria-label="Main"] > div { gap: var(--space-2) var(--space-2); }
+  nav[aria-label="Main"] a[data-home] { padding: 0 10px; font-size: 13px; }
+  nav[aria-label="Main"] button { padding: 0 12px; min-height: 40px; }
+  nav[aria-label="Main"] > div > div:first-of-type {
+    flex-wrap: nowrap;
+    flex-basis: 100%;
+    order: 3;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav[aria-label="Main"] > div > div:first-of-type a { white-space: nowrap; }
+  nav[aria-label="Main"] > div > div:last-of-type { margin-left: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition-duration: 0.01ms !important; }
+}
+
+@media print {
+  nav, a[href="#main"], div[aria-live], button { display: none !important; }
+  body { background: #fff; color: #000; }
+  main, article { max-width: none; padding: 0; }
+  div:has(> table), dl > div { box-shadow: none; }
+}
+

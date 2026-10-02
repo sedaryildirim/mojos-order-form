@@ -98,7 +98,7 @@ Before every push, read `git diff origin/master..HEAD`. Pushing `master` redeplo
 | Give a new item a pack size the GP cannot read from its name | `apps/gp-calculator/src/data/order-sheet-packs.json` |
 | Set the real price of a flagged estimate (Hollandaise, Hummus...) | **Ingredients** page in the GP Calculator |
 | Change where the two apps link to each other | see [docs/architecture.md](docs/architecture.md#how-they-link) |
-| Change colours, fonts or spacing | `apps/web/css/styles.css` and `apps/gp-calculator/src/app/globals.css` (tokens at the top) |
+| Change colours, fonts or spacing | `apps/web/css/styles.css` and `apps/gp-calculator/src/app/styles/` (tokens at the top of `01-base.css`) |
 | Change the GP password | `GP_PASSWORD` (and `GP_SESSION_SECRET`) in `apps/gp-calculator/.env` |
 
 ## Conventions

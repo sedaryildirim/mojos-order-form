@@ -1,0 +1,130 @@
+/* ============ Forms ============ */
+label { display: block; margin-bottom: var(--space-2); font-size: 13px; font-weight: 500; color: var(--muted-foreground); }
+label:has(> input[type="checkbox"]),
+label:has(> input[type="radio"]) {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  margin: 0;
+  font-size: 14px;
+  color: var(--foreground);
+}
+input[type="checkbox"], input[type="radio"] { width: 20px; height: 20px; margin: 0; accent-color: var(--accent); }
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+select,
+textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-strong);
+  background: var(--card);
+  color: var(--foreground);
+  font: inherit;
+  transition: border-color 0.2s ease-out, box-shadow 0.2s ease-out;
+}
+input[type="number"] { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+textarea { min-height: 96px; resize: vertical; }
+input::placeholder, textarea::placeholder { color: var(--muted-foreground); opacity: 0.8; }
+input:not([type="checkbox"]):not([type="radio"]):focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
+}
+input:disabled, select:disabled, textarea:disabled { background: var(--muted); color: var(--muted-foreground); }
+input[aria-invalid="true"], select[aria-invalid="true"], textarea[aria-invalid="true"] { border-color: var(--danger); }
+input[type="file"] { font: inherit; color: var(--muted-foreground); }
+
+form { display: grid; gap: var(--space-4); max-width: 760px; }
+/* related fields share a row */
+[data-row] { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: var(--space-4); align-items: start; }
+form > div, form > fieldset { min-width: 0; }
+fieldset { margin: 0; padding: var(--space-4); border: 1px solid var(--border); border-radius: var(--radius-lg); }
+legend { padding: 0 var(--space-2); font-weight: 600; }
+
+/* Filter bars: a div of labelled fields sitting directly in a page */
+main > div:has(> div > label),
+main > div:has(> label),
+main > section > div:has(> div > label),
+[data-filters] {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-5);
+  padding: 0 0 var(--space-4);
+  border-bottom: 1px solid var(--border);
+}
+main > div:has(> div > label) > div,
+main > section > div:has(> div > label) > div,
+[data-filters] > div { min-width: 180px; flex: 1 1 180px; max-width: 320px; }
+main > div:has(> div > label) label { margin-bottom: var(--space-2); }
+
+/* Hint text under a field */
+input + p, select + p, textarea + p { margin: var(--space-2) 0 0; font-size: 13px; color: var(--muted-foreground); }
+
+/* Pick-lists: a list of buttons */
+ul:has(> li > button) { list-style: none; padding: 0; display: grid; gap: var(--space-2); max-height: 320px; overflow-y: auto; }
+ul:has(> li > button) button { width: 100%; justify-content: flex-start; text-align: left; font-weight: 500; }
+
+/* Messages */
+[role="alert"] {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius);
+  border: 1px solid var(--danger);
+  background: var(--danger-bg);
+  color: var(--foreground);
+  font-weight: 500;
+}
+p[role="alert"] { margin: var(--space-2) 0; font-size: 13px; }
+[role="status"] {
+  display: inline-block;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius);
+  background: var(--accent-tint);
+  border: 1px solid var(--accent-line);
+  font-size: 13px;
+}
+div[role="alert"] { display: grid; gap: var(--space-1); justify-items: start; margin: var(--space-4) 0; }
+div[role="alert"] p { margin: 0; }
+
+/* ============ Buttons ============ */
+button {
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius);
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out, background-color 0.2s ease-out, border-color 0.2s ease-out, filter 0.2s ease-out;
+}
+button:active:not(:disabled) { transform: scale(0.98); }
+button[type="submit"] {
+  border-color: transparent;
+  background: var(--gradient-btn);
+  color: var(--accent-foreground);
+  box-shadow: var(--shadow-md);
+}
+button:disabled { cursor: not-allowed; background: var(--muted); color: var(--muted-foreground); border-color: var(--border); box-shadow: none; }
+@media (hover: hover) {
+  button:hover:not(:disabled) { background: var(--muted); border-color: var(--accent-line); }
+  button[type="submit"]:hover:not(:disabled) { background: var(--gradient-btn); transform: translateY(-2px); box-shadow: var(--shadow-accent-lg); filter: brightness(1.08); }
+}
+button[aria-pressed="true"] { background: var(--accent-tint); border-color: var(--accent); color: var(--accent-ink); }
+
+/* Segmented control (Cards / Table) */
+div[role="group"][aria-label="Layout"] { display: inline-flex; }
+div[role="group"][aria-label="Layout"] button { border-radius: 0; }
+div[role="group"][aria-label="Layout"] button:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+div[role="group"][aria-label="Layout"] button:last-child { border-radius: 0 var(--radius) var(--radius) 0; margin-left: -1px; }
+
+/* Two-step confirm */
+div[role="group"]:not([aria-label="Layout"]) { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
+div[role="group"]:not([aria-label="Layout"]) p { margin: 0 var(--space-2) 0 0; font-weight: 500; }
+

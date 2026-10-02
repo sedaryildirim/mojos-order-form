@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
 import { Calistoga, Inter, JetBrains_Mono } from "next/font/google";
-import "./globals.css";
+import "./styles/01-base.css";
+import "./styles/02-topbar-gate.css";
+import "./styles/03-page-header.css";
+import "./styles/04-forms-buttons.css";
+import "./styles/05-tables.css";
+import "./styles/06-cards-stats.css";
+import "./styles/07-dish-page.css";
+import "./styles/08-chart.css";
+import "./styles/09-header-actions.css";
 import Link from "next/link";
 import { FlashMessage } from "@/components/layout/FlashMessage";
 import { NavLinks } from "@/components/layout/NavLinks";

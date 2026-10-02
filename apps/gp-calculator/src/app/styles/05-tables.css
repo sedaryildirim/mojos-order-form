@@ -1,0 +1,52 @@
+/* ============ Tables ============ */
+div:has(> table) {
+  overflow: clip; /* rounds the corners without becoming a scroll container, so the header can stick */
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--card);
+  box-shadow: var(--shadow-md);
+}
+table { width: 100%; border-collapse: separate; border-spacing: 0; font-variant-numeric: tabular-nums; }
+caption { padding: var(--space-3) var(--space-4); text-align: left; font-weight: 600; }
+th, td { padding: var(--space-2) var(--space-4); text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
+th[data-num], td[data-num] { text-align: right; }
+th {
+  position: sticky;
+  top: var(--nav-h);
+  z-index: 1;
+  background: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+th button {
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  box-shadow: none;
+}
+th[aria-sort="ascending"], th[aria-sort="descending"] { color: var(--accent-ink); }
+tbody tr:last-child td { border-bottom: 0; }
+/* One table per category: share the same column widths so Pack size, Price, Yield and Actions line up down the page. */
+@media (min-width: 721px) {
+  table[data-aligned] { table-layout: fixed; }
+  table[data-aligned] th:nth-child(2) { width: 9rem; }
+  table[data-aligned] th:nth-child(3) { width: 9rem; }
+  table[data-aligned] th:nth-child(4) { width: 6rem; }
+  table[data-aligned] th:nth-child(5) { width: 10rem; }
+}
+td[data-gp="low"] { color: var(--danger); font-weight: 600; }
+td[data-gp="good"] { color: var(--success); }
+@media (hover: hover) { tbody tr:hover td { background: var(--accent-tint); } }
+td a { font-weight: 500; overflow-wrap: break-word; }
+td { overflow-wrap: break-word; max-width: 28rem; }
+
