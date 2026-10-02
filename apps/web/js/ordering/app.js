@@ -211,12 +211,12 @@ function scrollBelowStickyBars(el) {
   window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
 }
 
-function setCategoryCompleted(ci, catEl, completed) {
+function setCategoryCompleted(ci, catEl, completed, collapse = true) {
   state.completed[ci] = completed;
   catEl.classList.toggle("completed", completed);
   saveDraft();
   updateIncompleteWarning();
-  if (completed) {
+  if (completed && collapse) {
     setCategoryOpen(catEl, false);
     const next = catEl.nextElementSibling;
     if (next && next.classList.contains("category")) {
@@ -249,7 +249,10 @@ function maybeAutoComplete(ci, catEl, cat) {
     delete autoCompleteTimers[ci];
     if (state.completed[ci]) return;
     const stillAllTouched = cat.items.every((item, ii) => isItemTouched(item, itemKey(ci, ii)));
-    if (stillAllTouched) setCategoryCompleted(ci, catEl, true);
+    // Where the quantity is typed by hand (a supplier minimum, or no par to suggest from), staff may
+    // keep adding after the first number, so the category is marked finished but left open.
+    const stayOpen = !!state.data.moq || cat.items.some(item => !item.noParStock && (item.par === null || item.par === undefined));
+    if (stillAllTouched) setCategoryCompleted(ci, catEl, true, !stayOpen);
   }, AUTO_COMPLETE_DELAY_MS);
 }
 
@@ -449,14 +452,22 @@ function renderOrderScreen() {
     const comboBox = cat.combo ? document.createElement("div") : null;
     function updateComboBox() {
       if (!comboBox) return;
-      const qtys = cat.combo.itemIndices.map(idx => state.toOrder[itemKey(ci, idx)] || 0);
-      const totalG = qtys.reduce((sum, q) => sum + q, 0) * (cat.combo.unitGrams || 1000);
-      const patties = Math.floor(totalG / cat.combo.pattyWeightG);
-      let html = `<strong>${patties}</strong> ${cat.combo.label} <span class="combo-sub">${(totalG / 1000).toFixed(totalG % 1000 ? 1 : 0)}kg &divide; ${cat.combo.pattyWeightG}g each</span>`;
+      const c = cat.combo;
+      const qtys = c.itemIndices.map(idx => state.toOrder[itemKey(ci, idx)] || 0);
+      const unitKg = (c.unitGrams || 1000) / 1000;
+      // Patties are only made from matched weight: 9 kg of one cut with 6 kg of the other
+      // makes patties from 6 + 6 kg, and the extra 3 kg is called out below.
+      const matched = Math.min(...qtys);
+      const patties = Math.floor((matched * qtys.length * (c.unitGrams || 1000)) / c.pattyWeightG);
+      const perBurger = c.pattiesPerBurger || 0;
+      const fmtKg = q => (q * unitKg).toFixed((q * unitKg) % 1 ? 1 : 0);
+      let html = `<span class="combo-line"><strong>${patties}</strong> ${c.label}</span>`;
+      if (perBurger) html += `<span class="combo-line"><strong>${Math.floor(patties / perBurger)}</strong> ${c.burgerLabel || "Burgers"}</span>`;
+      html += `<span class="combo-sub">${fmtKg(matched * qtys.length)}kg matched &divide; ${c.pattyWeightG}g each${perBurger ? `, ${perBurger} patties per burger` : ""}</span>`;
       let mismatched = false;
 
-      if (cat.combo.requireTogether) {
-        const minEach = cat.combo.minEach || 1;
+      if (c.requireTogether) {
+        const minEach = c.minEach || 1;
         const anyTouched = qtys.some(q => q > 0);
         const allMet = qtys.every(q => q >= minEach);
         mismatched = anyTouched && !allMet;
@@ -464,6 +475,14 @@ function renderOrderScreen() {
           ? `<span class="combo-warning">&#9888; Order both items together, minimum ${minEach} kg each</span>`
           : `<span class="combo-note">Must be ordered together, minimum ${minEach} kg each</span>`;
       }
+
+      // anything ordered beyond the matched amount does not turn into patties
+      c.itemIndices.forEach((idx, n) => {
+        const extra = qtys[n] - matched;
+        if (extra > 0 && matched > 0) {
+          html += `<span class="combo-note combo-extra">You've also ordered ${fmtKg(extra)} kg extra of ${cat.items[idx].name}</span>`;
+        }
+      });
 
       comboBox.className = "combo-box" + (mismatched ? " combo-box-warning" : "");
       comboBox.innerHTML = html;

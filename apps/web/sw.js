@@ -5,7 +5,7 @@
 // prices, pars or emails starts a fresh cache by itself (the browser re-checks those imported files
 // whenever it checks sw.js). Only bump CODE_VERSION when you change the site's own code or styles.
 importScripts("config/config.js", "config/data.js");
-const CODE_VERSION = 4;
+const CODE_VERSION = 5;
 function fingerprint(text) {
   let h = 5381;
   for (let i = 0; i < text.length; i++) h = ((h << 5) + h + text.charCodeAt(i)) | 0;

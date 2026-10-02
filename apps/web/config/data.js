@@ -4103,6 +4103,8 @@ const DATA = {
           ],
           "unitGrams": 1000,
           "pattyWeightG": 80,
+          "pattiesPerBurger": 2,
+          "burgerLabel": "Burgers",
           "label": "Burger Patties",
           "requireTogether": true,
           "minEach": 1
