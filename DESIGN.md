@@ -144,10 +144,10 @@ Soft layered shadows (`0 1px 3px` up to `0 20px 25px`, plus blue-tinted accent s
 - **Supplier picker:** compact top bar ("← Change store", "Select a supplier" with the chosen store underneath).
 - **Launcher title:** the white text and the gradient text are on separate lines; the hero has square corners.
 - **Order screen layout:** only the top bar stays pinned; the search bar slides away on scroll down and returns on scroll up (`js/shell/scroll-search.js`). An open category's header sticks under the top bar. Each item shows its par as text in the unit line ("Kilogram · ฿280 · Par 12"), with just Stock and To order as inputs. The warning bar shows its first line, with "+N more" to open the rest.
-- **Review screen:** "← Edit" in the top bar; the bottom bar is Excel plus Email and Copy.
+- **Review screen:** "← Edit" in the top bar; the bottom bar is Share Excel and Share PDF side by side (primary), then Email and Copy. The order screen opens with a collapsed "Past orders" panel when the store and supplier have history: date, item count, total and how it was sent, with "Show items" and "Use these quantities" (two taps if it would replace quantities already entered).
 - **Store picker:** on wider screens the islands sit side by side.
 - **Order screen:** top bar with only "Clear" (two-tap, the one destructive action) and "Supplier" (leaves straight away, progress is saved). One toast for all messages. The par/stock legend shows once per device. Categories complete themselves when every item is reviewed; there is no manual complete button.
-- **Confirm screen:** "Order from another supplier" (primary) and "Done" (back to the launcher). Excel, Email and Copy sit under "Send again".
+- **Confirm screen:** "Order from another supplier" (primary) and "Done" (back to the launcher). Excel, PDF, Email and Copy sit under "Send again".
 - **Order screen header:** topbar, toast and search sit in one sticky block (`.sticky-head`), so no height is hard-coded.
 
 ## 6. Do's and Don'ts

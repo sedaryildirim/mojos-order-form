@@ -6,7 +6,7 @@ Static site (no build step). Published to GitHub Pages from this folder.
 index.html            All screens: launcher, branch, supplier, order, review, confirm
 css/styles.css        All styles (design tokens at the top)
 js/
-  ordering/app.js     Ordering form logic (drafts, totals, Excel/email/copy)
+  ordering/app.js     Ordering form logic (drafts, order history, totals, Excel/PDF/email/copy)
   shell/              Site-wide enhancements that never touch ordering logic
     launcher.js         Launcher cards, back to all tools, theme toggle on the launcher (the only theme toggle)
     hero-fx.js          Pointer-reactive dot field on hero panels
@@ -28,8 +28,9 @@ Script order in `index.html` matters: config, data, ordering app, then the shell
 ## Resilience
 
 - **Drafts are safe.** Saved under stable item ids, so editing `config/data.js` never moves a saved quantity onto a different item. Saving only touches the current supplier's slice, so two tabs can't overwrite each other, and a full or blocked store shows a notice instead of breaking the form. After an order is sent, a copy is kept: the confirm screen has "Didn't send it? Restore my order".
-- **Works offline.** The Excel library and fonts are bundled (`js/vendor/`, `fonts/`), and `sw.js` caches the site so it opens with no signal (needs https or localhost; not `file://`). After you edit `config/` the change appears on the second reload; bump `VERSION` in `sw.js` to force it at once.
-- **Long emails.** Many mail apps cut a `mailto:` link off near 2,000 characters; long orders get a warning pointing to Excel or Copy.
+- **Works offline.** The Excel and PDF libraries and fonts are bundled (`js/vendor/`, `fonts/`), and `sw.js` caches the site so it opens with no signal (needs https or localhost; not `file://`). The cache name includes a fingerprint of `config/config.js` and `config/data.js`, so editing items, prices, pars or emails refreshes phones on their own. Bump `CODE_VERSION` in `sw.js` only when you change the site's own code or styles.
+- **Order history.** Each store and supplier keeps its last 10 sent orders on this device (`mojos_order_history_v1`), shown as "Past orders" on the order screen. Each entry snapshots its items, so it still reads correctly after the data changes; "Use these quantities" matches items back by id and skips any that no longer exist. Re-sending an identical order updates the entry instead of duplicating it.
+- **Long emails.** Many mail apps cut a `mailto:` link off near 2,000 characters; long orders get a warning pointing to Excel, PDF or Copy.
 
 ## Run
 

@@ -15,7 +15,7 @@
 
 ## The two apps
 
-**web (`apps/web`)** is plain HTML, CSS and JavaScript with no build step. `index.html` holds every screen; `js/ordering/app.js` runs the ordering form (drafts in localStorage, totals, Excel/email/copy); `js/shell/` holds the menu and visual enhancements; `config/` holds everything the owner edits.
+**web (`apps/web`)** is plain HTML, CSS and JavaScript with no build step. `index.html` holds every screen; `js/ordering/app.js` runs the ordering form (drafts in localStorage, totals, Excel/PDF/email/copy); `js/shell/` holds the menu and visual enhancements; `config/` holds everything the owner edits.
 
 **gp-calculator (`apps/gp-calculator`)** is a Next.js 14 app with Prisma and Postgres. Pages are in `src/app`, UI in `src/components/<feature>`, logic in `src/lib/<domain>`. It has its own tests (Vitest) and a password gate in front of every page.
 

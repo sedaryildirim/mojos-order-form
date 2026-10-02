@@ -1,7 +1,17 @@
 // Offline support: the whole site is static, so cache it and the app opens with no connection.
 // Strategy: stale-while-revalidate for same-origin files (instant load, refreshed in the background).
-// After editing config/ or data, reload twice to see the change; bump VERSION to force an immediate refresh.
-const VERSION = "mojos-v3";
+//
+// The cache name includes a fingerprint of config/config.js and config/data.js, so editing items,
+// prices, pars or emails starts a fresh cache by itself (the browser re-checks those imported files
+// whenever it checks sw.js). Only bump CODE_VERSION when you change the site's own code or styles.
+importScripts("config/config.js", "config/data.js");
+const CODE_VERSION = 4;
+function fingerprint(text) {
+  let h = 5381;
+  for (let i = 0; i < text.length; i++) h = ((h << 5) + h + text.charCodeAt(i)) | 0;
+  return (h >>> 0).toString(36);
+}
+const VERSION = "mojos-v" + CODE_VERSION + "-" + fingerprint(JSON.stringify(DATA) + JSON.stringify(CONFIG));
 const SHELL = [
   "./",
   "index.html",
@@ -13,6 +23,7 @@ const SHELL = [
   "config/config.js",
   "config/data.js",
   "js/vendor/xlsx.full.min.js",
+  "js/vendor/jspdf.umd.min.js",
   "js/ordering/app.js",
   "js/shell/hero-fx.js",
   "js/shell/a11y.js",

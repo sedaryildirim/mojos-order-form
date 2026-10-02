@@ -420,6 +420,9 @@ function renderOrderScreen() {
     content.appendChild(notice);
   }
 
+  const history = renderHistory();
+  if (history) content.appendChild(history);
+
   if (state.data.categories.length === 0) {
     content.insertAdjacentHTML("beforeend", `<div class="review-empty">No items for this supplier yet.<br>Add them in config/data.js.</div>`);
     updateBottomBar();
@@ -811,6 +814,8 @@ function renderReviewScreen() {
 function setSubmitButtonsDisabled(disabled) {
   $("#emailOrderBtn").disabled = disabled;
   $("#copyReviewBtn").disabled = disabled;
+  $("#excelReviewBtn").disabled = disabled;
+  $("#pdfReviewBtn").disabled = disabled;
 }
 
 function buildOrderText() {
@@ -843,11 +848,11 @@ function buildOrderText() {
   return lines.join("\n");
 }
 
-function orderFileName() {
-  const supplier = supplierShortName().replace(/\s+/g, "_");
-  const branch = state.branch.name.replace(/\s+/g, "_");
+function orderFileName(ext) {
+  const supplier = supplierShortName().replace(/\s+/g, "_").replace(/[^\w-]/g, "");
+  const branch = state.branch.name.replace(/\s+/g, "_").replace(/[^\w-]/g, "");
   const date = formatDateDDMMYYYY(new Date()).replace(/\//g, "-");
-  return `${supplier}_${branch}_${date}.xlsx`;
+  return `${supplier}_${branch}_${date}.${ext}`;
 }
 
 function buildOrderWorkbook() {
@@ -892,33 +897,42 @@ function buildOrderWorkbook() {
   return wb;
 }
 
-let excelBusy = false;
+let fileBusy = false;
 
-async function sendOrderAsExcel() {
-  if (excelBusy) return;
-  if (typeof XLSX === "undefined") {
-    showGlobalToast("Excel isn't available right now. Use Email or Copy instead.");
+// Excel and PDF go through the same path: build a file, hand it to the share sheet,
+// or fall back to a plain download.
+async function sendFile(kind) {
+  if (fileBusy) return;
+  const lib = kind === "pdf" ? window.jspdf : window.XLSX;
+  const label = kind === "pdf" ? "PDF" : "Excel";
+  if (!lib) {
+    showGlobalToast(`${label} isn't available right now. Use Email or Copy instead.`);
     return;
   }
-  excelBusy = true;
-  const buttons = [$("#excelReviewBtn"), $("#excelConfirmBtn")];
+  fileBusy = true;
+  const buttons = $all(".file-btn");
   buttons.forEach(b => { b.disabled = true; });
   try {
-    await buildAndSendExcel();
+    const file = kind === "pdf" ? buildOrderPdf() : buildOrderExcel();
+    await shareOrDownload(file.blob, file.filename, label, kind);
   } catch (e) {
-    showGlobalToast("Couldn't create the Excel file. Use Email or Copy instead.");
+    showGlobalToast(`Couldn't create the ${label} file. Use Email or Copy instead.`);
   } finally {
-    excelBusy = false;
+    fileBusy = false;
     buttons.forEach(b => { b.disabled = false; });
   }
 }
 
-async function buildAndSendExcel() {
+function buildOrderExcel() {
   const wb = buildOrderWorkbook();
   const wbArray = XLSX.write(wb, { bookType: "xlsx", type: "array" });
-  const blob = new Blob([wbArray], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
-  const filename = orderFileName();
+  return {
+    blob: new Blob([wbArray], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }),
+    filename: orderFileName("xlsx")
+  };
+}
 
+async function shareOrDownload(blob, filename, label, via) {
   if (navigator.share && navigator.canShare) {
     try {
       const file = new File([blob], filename, { type: blob.type });
@@ -928,8 +942,8 @@ async function buildAndSendExcel() {
           title: `${state.supplier.name} order`,
           text: `${state.supplier.name} order for ${state.branch.name} branch`
         });
-        clearSentDraft();
-        showConfirmScreen("Order shared", "The Excel file has been shared.");
+        clearSentDraft(via);
+        showConfirmScreen("Order shared", `The ${label} file has been shared.`);
         return;
       }
     } catch (e) {
@@ -946,8 +960,72 @@ async function buildAndSendExcel() {
   a.click();
   document.body.removeChild(a);
   setTimeout(() => URL.revokeObjectURL(url), 1000);
-  clearSentDraft();
-  showConfirmScreen("Order downloaded", "The Excel file has been saved to your device.");
+  clearSentDraft(via);
+  showConfirmScreen("Order downloaded", `The ${label} file has been saved to your device.`);
+}
+
+// The PDF goes straight to the supplier, so it lists what to deliver and nothing about money:
+// no prices, line totals, subtotal, VAT or total.
+function buildOrderPdf() {
+  const doc = new window.jspdf.jsPDF({ unit: "mm", format: "a4" });
+  const pageW = 210, pageH = 297, margin = 15, bottom = pageH - 18;
+  const col = { art: margin, name: margin + 28, unit: margin + 124, qty: pageW - margin };
+  let y = margin;
+
+  function ensure(space) {
+    if (y + space <= bottom) return;
+    doc.addPage();
+    y = margin;
+  }
+
+  doc.setFont("helvetica", "bold").setFontSize(16);
+  doc.text(state.supplier.name, margin, y + 5);
+  y += 11;
+  doc.setFont("helvetica", "normal").setFontSize(10).setTextColor(90);
+  doc.text(`${state.branch.name} branch`, margin, y);
+  doc.text(`Order date: ${formatDateDDMMYYYY(new Date())}`, pageW - margin, y, { align: "right" });
+  y += 4;
+  doc.setDrawColor(200).line(margin, y, pageW - margin, y);
+  y += 7;
+
+  state.data.categories.forEach((cat, ci) => {
+    const rows = cat.items
+      .map((item, ii) => ({ item, qty: state.toOrder[itemKey(ci, ii)] || 0 }))
+      .filter(r => r.qty > 0);
+    if (rows.length === 0) return;
+
+    ensure(24);
+    doc.setFont("helvetica", "bold").setFontSize(11).setTextColor(20);
+    doc.text(cat.name, margin, y);
+    y += 2.5;
+    doc.setFontSize(8).setTextColor(110);
+    doc.text("ARTICLE NO.", col.art, y + 3);
+    doc.text("ITEM", col.name, y + 3);
+    doc.text("UNIT", col.unit, y + 3);
+    doc.text("QTY", col.qty, y + 3, { align: "right" });
+    y += 5;
+    doc.setDrawColor(210).line(margin, y, pageW - margin, y);
+    y += 5;
+
+    rows.forEach(({ item, qty }) => {
+      const nameLines = doc.setFont("helvetica", "normal").setFontSize(10).splitTextToSize(item.name, 92);
+      ensure(nameLines.length * 4.6 + 2);
+      doc.setTextColor(20);
+      doc.text(String(item.id || ""), col.art, y);
+      doc.text(nameLines, col.name, y);
+      doc.text(String(item.unit), col.unit, y);
+      doc.setFont("helvetica", "bold").text(String(qty), col.qty, y, { align: "right" });
+      y += nameLines.length * 4.6 + 1.6;
+    });
+    y += 5;
+  });
+
+  const pages = doc.getNumberOfPages();
+  for (let p = 1; p <= pages; p++) {
+    doc.setPage(p).setFont("helvetica", "normal").setFontSize(8).setTextColor(130);
+    doc.text(`Page ${p} of ${pages}`, pageW - margin, pageH - 10, { align: "right" });
+  }
+  return { blob: doc.output("blob"), filename: orderFileName("pdf") };
 }
 
 function formatDateDDMMYYYY(d) {
@@ -960,9 +1038,134 @@ function supplierShortName() {
   return state.supplier.name.replace(/^Order\s+/i, "").toUpperCase();
 }
 
+// ---- order history: the last few orders for each store + supplier, kept on this device ----
+// Each entry snapshots its own lines (name, unit, price), so it still reads correctly after
+// config/data.js changes, and "Use these quantities" matches lines back up by stable item id.
+const HISTORY_KEY = "mojos_order_history_v1";
+const HISTORY_MAX = 10;
+const VIA_LABEL = { email: "Email", copy: "Copy", excel: "Excel", pdf: "PDF" };
+
+function readHistory() {
+  const raw = storageGet(HISTORY_KEY);
+  if (!raw) return {};
+  try { return JSON.parse(raw) || {}; } catch (e) { return {}; }
+}
+
+function historyFor(branchId, supplierId) {
+  const all = readHistory();
+  return (all[branchId] && all[branchId][supplierId]) || [];
+}
+
+function recordHistory(via) {
+  if (totalItemsSelected() === 0) return;
+  const lines = [];
+  state.data.categories.forEach((cat, ci) => {
+    cat.items.forEach((item, ii) => {
+      const qty = state.toOrder[itemKey(ci, ii)] || 0;
+      if (qty > 0) lines.push({ id: itemId(cat, item), cat: cat.name, name: item.name, unit: item.unit, price: item.price || 0, qty });
+    });
+  });
+  const entry = { at: Date.now(), via: via || "", total: Math.round(totalWithVat()), lines };
+
+  const all = readHistory();
+  const b = state.branch.id, s = state.supplier.id;
+  all[b] = all[b] || {};
+  const list = all[b][s] || [];
+  // "Send again" re-sends the same order: update that entry instead of adding a duplicate
+  const sameLines = a => a.lines.length === lines.length && a.lines.every((l, i) => l.id === lines[i].id && l.qty === lines[i].qty);
+  if (list[0] && sameLines(list[0])) list[0] = entry;
+  else list.unshift(entry);
+  all[b][s] = list.slice(0, HISTORY_MAX);
+  storageSet(HISTORY_KEY, JSON.stringify(all));
+}
+
+function formatHistoryDate(ms) {
+  const d = new Date(ms);
+  return d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }) + ", " +
+    d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+}
+
+// Puts a past order's quantities into the current order. Stock counts stay as entered; items still
+// need to be reviewed, so every category finishes as usual before the order can be sent.
+function useHistoryEntry(entry) {
+  const byId = {};
+  state.data.categories.forEach((cat, ci) => {
+    cat.items.forEach((item, ii) => { byId[itemId(cat, item)] = itemKey(ci, ii); });
+  });
+  state.toOrder = {};
+  let used = 0;
+  entry.lines.forEach(l => {
+    const key = byId[l.id];
+    if (key === undefined) return;
+    state.toOrder[key] = l.qty;
+    delete state.skipped[key];
+    used++;
+  });
+  saveDraft();
+  renderOrderScreen();
+  window.scrollTo(0, 0);
+  const missing = entry.lines.length - used;
+  showGlobalToast(
+    `Loaded ${used} item${used === 1 ? "" : "s"} from ${formatHistoryDate(entry.at)}.` +
+    (missing > 0 ? ` ${missing} no longer on this list.` : "") + " Check your stock, then review."
+  );
+}
+
+function renderHistory() {
+  const entries = historyFor(state.branch.id, state.supplier.id);
+  if (entries.length === 0) return null;
+
+  const box = document.createElement("details");
+  box.className = "history";
+  box.innerHTML = `<summary>Past orders <span class="meta">(${entries.length})</span></summary>`;
+  const list = document.createElement("div");
+  list.className = "history-list";
+
+  entries.forEach(entry => {
+    const item = document.createElement("div");
+    item.className = "history-entry";
+    const n = entry.lines.length;
+    const via = VIA_LABEL[entry.via] ? ` &middot; ${VIA_LABEL[entry.via]}` : "";
+    item.innerHTML = `
+      <div class="history-head">
+        <span class="history-date">${formatHistoryDate(entry.at)}</span>
+        <span class="history-sum">${n} item${n === 1 ? "" : "s"} &middot; ${formatMoney(entry.total)}${via}</span>
+      </div>
+      <div class="history-actions">
+        <button type="button" class="btn-link history-view" aria-expanded="false">Show items</button>
+        <button type="button" class="btn secondary history-use">Use these quantities</button>
+      </div>
+      <ul class="history-lines hidden">${entry.lines.map(l => `<li><span>${l.name}</span><span>x${l.qty} ${l.unit}</span></li>`).join("")}</ul>
+    `;
+    const viewBtn = $(".history-view", item);
+    const linesEl = $(".history-lines", item);
+    viewBtn.addEventListener("click", () => {
+      const open = linesEl.classList.toggle("hidden") === false;
+      viewBtn.textContent = open ? "Hide items" : "Show items";
+      viewBtn.setAttribute("aria-expanded", String(open));
+    });
+    const useBtn = $(".history-use", item);
+    let armTimer = null;
+    useBtn.addEventListener("click", () => {
+      if (totalItemsSelected() > 0 && !useBtn.classList.contains("armed")) {
+        // replaces quantities already entered: tap twice
+        useBtn.classList.add("armed");
+        useBtn.textContent = "Tap again to replace current quantities";
+        armTimer = setTimeout(() => { useBtn.classList.remove("armed"); useBtn.textContent = "Use these quantities"; }, 4000);
+        return;
+      }
+      clearTimeout(armTimer);
+      useHistoryEntry(entry);
+    });
+    list.appendChild(item);
+  });
+  box.appendChild(list);
+  return box;
+}
+
 let lastOrderText = "";
 
-function clearSentDraft() {
+function clearSentDraft(via) {
   // Clear this branch+supplier's draft now that it's been submitted, but keep one copy of it:
   // opening the mail app does not prove the email was sent, so the confirm screen can restore it.
   const all = readAllDrafts();
@@ -970,6 +1173,7 @@ function clearSentDraft() {
   if (slice) {
     storageSet(LAST_SENT_KEY, JSON.stringify({ branch: state.branch.id, supplier: state.supplier.id, slice, at: Date.now() }));
   }
+  recordHistory(via);
   writeSlice(state.branch.id, state.supplier.id, null);
 }
 
@@ -1005,7 +1209,7 @@ function emailOrder() {
   const tooLong = mailto.length > 1900;
   window.location.href = mailto;
 
-  clearSentDraft();
+  clearSentDraft("email");
   setTimeout(() => showConfirmScreen(
     tooLong ? "Check your email" : "Email ready to send",
     tooLong
@@ -1018,7 +1222,7 @@ function copyOrderFromReview() {
   const body = buildOrderText();
   lastOrderText = body;
   copyTextToClipboard(body, () => {
-    clearSentDraft();
+    clearSentDraft("copy");
     showConfirmScreen(
       "Order copied",
       "The order has been copied to your clipboard. Paste it into WhatsApp, Line, email, or wherever you send orders."
@@ -1122,7 +1326,8 @@ function init() {
   });
   $("#emailOrderBtn").addEventListener("click", emailOrder);
   $("#copyReviewBtn").addEventListener("click", copyOrderFromReview);
-  $("#excelReviewBtn").addEventListener("click", sendOrderAsExcel);
+  $("#excelReviewBtn").addEventListener("click", () => sendFile("excel"));
+  $("#pdfReviewBtn").addEventListener("click", () => sendFile("pdf"));
   // Progress is saved as you type, so leaving the order needs no confirmation.
   $("#switchBranch").addEventListener("click", () => {
     renderSupplierScreen();
@@ -1141,7 +1346,8 @@ function init() {
   });
   $("#emailConfirmBtn").addEventListener("click", emailOrder);
   $("#copyOrderBtn").addEventListener("click", copyOrderText);
-  $("#excelConfirmBtn").addEventListener("click", sendOrderAsExcel);
+  $("#excelConfirmBtn").addEventListener("click", () => sendFile("excel"));
+  $("#pdfConfirmBtn").addEventListener("click", () => sendFile("pdf"));
   const howTo = $("#howTo");
   if (storageGet(HOWTO_KEY)) howTo.classList.add("hidden");
   $("#howToDismiss").addEventListener("click", () => {

@@ -27,7 +27,7 @@ Not a generic SaaS dashboard: no hero-metric cards, no corporate-cream B2B look.
 - Numbers over decoration: par, stock, and to-order figures are the interface. Every visual choice should make them faster to read and edit with a thumb, not compete with them.
 - One-handed, interruptible: staff carry stock while ordering. Large tap targets, forgiving inputs, autosaved progress, and no step that can't be resumed mid-task.
 - State is the feedback: category completion, running totals and warnings replace modals; one toast carries the few transient messages. The screen always shows where the order stands.
-- Safe by default: drafts are saved as you type under stable item ids, a sent order can be restored, a full or blocked browser store shows a notice instead of breaking, and the form opens with no signal (assets are bundled and cached).
+- Safe by default: drafts are saved as you type under stable item ids, a sent order can be restored, each supplier keeps its last ten orders to reuse, a full or blocked browser store shows a notice instead of breaking, and the form opens with no signal (assets are bundled and cached).
 - Practice restraint where staff work: this is a tool used daily under time pressure. On the order and review screens aesthetic choices lose to clarity and speed every time they conflict. The first and last screens may carry more personality.
 
 ## Accessibility & Inclusion

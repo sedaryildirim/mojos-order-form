@@ -118,7 +118,10 @@
   </header>
   <div class="review-list" id="reviewList"></div>
   <div class="bottombar stacked">
-    <button class="btn block" id="excelReviewBtn">&#128202; Share Excel file</button>
+    <div class="action-row">
+      <button class="btn file-btn" id="excelReviewBtn">&#128202; Share Excel</button>
+      <button class="btn file-btn" id="pdfReviewBtn">&#128196; Share PDF</button>
+    </div>
     <div class="action-row">
       <button class="btn secondary" id="emailOrderBtn">&#9993; Email order</button>
       <button class="btn secondary" id="copyReviewBtn">&#128203; Copy order</button>
@@ -136,7 +139,8 @@
     <button class="btn secondary" id="newOrderBtn">Done</button>
     <details class="send-again">
       <summary>Send again</summary>
-      <button class="btn secondary block" id="excelConfirmBtn">&#128202; Share Excel file</button>
+      <button class="btn secondary file-btn" id="excelConfirmBtn">&#128202; Share Excel</button>
+      <button class="btn secondary file-btn" id="pdfConfirmBtn">&#128196; Share PDF</button>
       <button class="btn secondary" id="emailConfirmBtn">&#9993; Email order</button>
       <button class="btn secondary copy-btn" id="copyOrderBtn">&#128203; Copy order</button>
     </details>
@@ -149,6 +153,7 @@
 <div class="global-toast hidden" id="globalToast" role="status" aria-live="polite"></div>
 
 <script src="js/vendor/xlsx.full.min.js"></script>
+<script src="js/vendor/jspdf.umd.min.js"></script>
 <script src="config/config.js"></script>
 <script src="config/data.js"></script>
 <script src="js/ordering/app.js"></script>
