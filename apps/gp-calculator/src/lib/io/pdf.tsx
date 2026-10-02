@@ -1,5 +1,5 @@
 import { Document, Page, Text, View, StyleSheet, renderToBuffer } from "@react-pdf/renderer";
-import { formatTHB } from "@/lib/costing/currency";
+import { formatTHBText } from "@/lib/costing/currency";
 import { gpFromSellingPrice, suggestedPriceFromTargetGp } from "@/lib/costing/costing";
 import { SpecSheetVersion } from "@/components/dishes/SpecSheet";
 
@@ -38,14 +38,14 @@ export async function renderSpecSheetPdf(version: SpecSheetVersion): Promise<Buf
               and correctly calls .toString() for Decimal-like objects.
             */}
             <Text>{line.ingredientNameSnapshot}: {String(line.quantity)} {line.unit}</Text>
-            <Text>{formatTHB(Number(line.lineCostSnapshot))}</Text>
+            <Text>{formatTHBText(Number(line.lineCostSnapshot))}</Text>
           </View>
         ))}
         <View style={styles.summary}>
-          <Text>Cost: {formatTHB(cost)}</Text>
-          {sellingPrice && <Text>Selling price: {formatTHB(sellingPrice)}</Text>}
-          <Text>GP: {gp ? `${formatTHB(gp.gpThb)} (${(gp.gpPct * 100).toFixed(1)}%)` : "not set"}</Text>
-          {suggestedPrice !== null && <Text>Suggested price for {targetGpPct}% target GP: {formatTHB(suggestedPrice)}</Text>}
+          <Text>Cost: {formatTHBText(cost)}</Text>
+          {sellingPrice && <Text>Selling price: {formatTHBText(sellingPrice)}</Text>}
+          <Text>GP: {gp ? `${formatTHBText(gp.gpThb)} (${(gp.gpPct * 100).toFixed(1)}%)` : "not set"}</Text>
+          {suggestedPrice !== null && <Text>Suggested price for {targetGpPct}% target GP: {formatTHBText(suggestedPrice)}</Text>}
         </View>
       </Page>
     </Document>

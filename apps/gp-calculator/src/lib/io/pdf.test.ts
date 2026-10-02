@@ -1,6 +1,7 @@
 import { renderSpecSheetPdf } from "./pdf";
 import { expect, test, vi } from "vitest";
 import * as costing from "@/lib/costing/costing";
+import * as currency from "@/lib/costing/currency";
 
 const version = {
   dish: { name: "Onion Soup" },
@@ -60,4 +61,18 @@ test("computes a suggested price for a target-GP-only version (no selling price)
   expect(spy).toHaveBeenCalledWith(10, 70); // cost = Number(costSnapshot) = 10
   expect(buffer.length).toBeGreaterThan(0);
   spy.mockRestore();
+});
+
+// The PDF's built-in font has no baht glyph, so the symbol printed as "?". Amounts must be written as "THB 12.34".
+test("writes amounts as THB text, never with the baht symbol", async () => {
+  const symbol = vi.spyOn(currency, "formatTHB");
+  const text = vi.spyOn(currency, "formatTHBText");
+
+  const buffer = await renderSpecSheetPdf(version as any);
+
+  expect(buffer.length).toBeGreaterThan(0);
+  expect(symbol).not.toHaveBeenCalled();
+  expect(text).toHaveBeenCalled();
+  symbol.mockRestore();
+  text.mockRestore();
 });

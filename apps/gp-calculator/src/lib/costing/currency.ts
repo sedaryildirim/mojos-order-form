@@ -8,3 +8,8 @@ export function formatTHB(amount: number): string {
     })
   );
 }
+
+// Same amount written as "THB 1,250.00". For the PDF, whose built-in font has no baht symbol (it prints "?").
+export function formatTHBText(amount: number): string {
+  return "THB " + formatTHB(amount).slice(1);
+}
