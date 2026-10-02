@@ -1312,7 +1312,6 @@ a.launch-card { text-decoration: none; }
 .topbar > .topbar-title { flex: 1; min-width: 0; }
 .topbar > .back-link + div { flex: 1; min-width: 0; }
 
-.launch-note { margin: var(--space-1) var(--space-1) 0; font-size: 13px; color: var(--muted-foreground); }
 
 .global-toast.is-danger { background: var(--danger); border-color: transparent; color: var(--accent-foreground); font-weight: 600; }
 

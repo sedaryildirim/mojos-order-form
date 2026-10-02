@@ -1,7 +1,7 @@
 // Offline support: the whole site is static, so cache it and the app opens with no connection.
 // Strategy: stale-while-revalidate for same-origin files (instant load, refreshed in the background).
 // After editing config/ or data, reload twice to see the change; bump VERSION to force an immediate refresh.
-const VERSION = "mojos-v2";
+const VERSION = "mojos-v3";
 const SHELL = [
   "./",
   "index.html",

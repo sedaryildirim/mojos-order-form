@@ -10,7 +10,7 @@ Kitchen/back-of-house staff at the Mojo's and Kaif stores (Nathon, Lamai, Chalok
 
 ## Product Purpose
 
-The app opens on a launcher of kitchen tools: Ordering (the daily tool, shown large), the Kaif GP Calculator (tagged Beta, opens the separate GP app) and a note that the Mojo's GP Calculator is not available yet. Ordering opens the store picker (Koh Samui, then Koh Phangan, with Kaif Chaloklum as its own group), then the supplier picker.
+The app opens on a launcher of kitchen tools: Ordering (the daily tool, shown large), the Kaif GP Calculator (tagged Beta, opens the separate GP app) and, between them, a greyed-out Mojo's GP Calculator card marked "Not available yet". Ordering opens the store picker (Koh Samui, then Koh Phangan, with Kaif Chaloklum as its own group), then the supplier picker.
 
 Replace a manual Excel order sheet with a mobile-first ordering form: pick store and supplier, work through categorized items entering current stock (to-order auto-calculates from par level; a category completes itself once every item is reviewed or skipped), review a master list with an estimated total, then send the order by email, copy/paste, or as a generated Excel file (shared straight to Mail/WhatsApp on supported phones, downloaded otherwise). Success = fewer ordering errors, faster than the spreadsheet, and a clear record of what was sent.
 

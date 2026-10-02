@@ -139,7 +139,7 @@ Soft layered shadows (`0 1px 3px` up to `0 20px 25px`, plus blue-tinted accent s
 - **Focus:** 2px ring, light blue on slate surfaces, electric blue elsewhere. Screen changes move focus to the new heading (`apps/web/js/shell/a11y.js`). `apps/web/js/shell/launcher.js` wires the menu and always opens the app on the menu.
 
 ### Screens and titles
-- **Launcher (first screen, every load, the only screen with a hero):** title "Mojo's + Kaif / GP Calculator and Ordering System", two cards (Ordering large and primary; Kaif GP Calculator smaller and quieter, tagged "Beta: still being tested", opens the GP app; Ordering) and a quiet line "Mojo's GP Calculator: not available yet." Live cards carry the arrow badge.
+- **Launcher (first screen, every load, the only screen with a hero):** title "Mojo's + Kaif / GP Calculator and Ordering System", three cards (Kaif GP Calculator, smaller and quieter, tagged "Beta: still being tested", opens the GP app; Mojo's GP Calculator, greyed out and tagged "Not available yet"; Ordering, large and primary, last). Live cards carry the arrow badge.
 - **Store picker:** compact top bar ("← All tools", "Choose your store"), then region pills grouping the stores; Kaif Chaloklum sits under a second "Koh Phangan" pill. No hero, because it is a working screen.
 - **Supplier picker:** compact top bar ("← Change store", "Select a supplier" with the chosen store underneath).
 - **Launcher title:** the white text and the gradient text are on separate lines; the hero has square corners.
