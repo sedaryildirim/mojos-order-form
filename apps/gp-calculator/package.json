@@ -11,7 +11,8 @@
     "test:watch": "vitest",
     "backup": "tsx scripts/backup.ts",
     "sync:order-sheet": "tsx scripts/sync-order-sheet.ts",
-    "map:ingredients": "tsx scripts/apply-ingredient-mapping.ts"
+    "map:ingredients": "tsx scripts/apply-ingredient-mapping.ts",
+    "prune:ingredients": "tsx scripts/prune-unmanaged-ingredients.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
