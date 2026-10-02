@@ -1,0 +1,32 @@
+KAIF FOOD BIBLE - SAMPLE (INVENTED RECIPES FOR TESTS)
+=======================================================
+
+Batch recipes are marked [BATCH].
+
+
+---------------------------------------
+STARTERS
+---------------------------------------
+
+TOMATO TOAST
+- 120g sourdough toast
+- 15g butter
+- 2 eggs, poached
+- 30g bell pepper, carrot
+- 60g ham (Plain) OR 60g salmon (Fancy)
+
+HOUSE SALAD
+- 100g mixed salad
+- 150g chicken breast (optional)
+- 15g parmesan (finely grated)
+
+
+---------------------------------------
+BAKING
+---------------------------------------
+
+PLAIN LOAF [BATCH]
+Yield: 4 portions x 250g
+- 500g flour
+- 10g salt
+- 120g eggs (2)

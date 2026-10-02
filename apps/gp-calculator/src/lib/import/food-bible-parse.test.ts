@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { parseFoodBible, parseLine } from "./food-bible-parse";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 
 const one = (phrase: string, quantity: number, unit: string) => ({ phrase, quantity, unit });
@@ -54,24 +54,39 @@ describe("parseLine", () => {
 });
 
 describe("parseFoodBible", () => {
-  const recipes = parseFoodBible(readFileSync(path.join(__dirname, "../../data/food-bible.txt"), "utf8"));
+  const recipes = parseFoodBible(readFileSync(path.join(__dirname, "sample-bible.txt"), "utf8"));
 
-  it("finds every dish and batch", () => {
-    expect(recipes).toHaveLength(52);
+  it("finds every dish and batch, and ignores the title", () => {
+    expect(recipes.map((r) => r.name)).toEqual(["TOMATO TOAST", "HOUSE SALAD", "PLAIN LOAF"]);
+    expect(recipes.filter((r) => r.batch).map((r) => r.name)).toEqual(["PLAIN LOAF"]);
+  });
+
+  it("keeps the section, the batch marker, the yield text and the lines", () => {
+    const loaf = recipes.find((r) => r.name === "PLAIN LOAF")!;
+    expect(loaf).toMatchObject({ section: "BAKING", batch: true, meta: ["Yield: 4 portions x 250g"] });
+    expect(loaf.lines).toEqual(["500g flour", "10g salt", "120g eggs (2)"]);
+    expect(recipes[0]).toMatchObject({ section: "STARTERS", batch: false });
+    expect(recipes[0].lines).toHaveLength(5);
+  });
+
+  it("every ingredient line in the sample can be read", () => {
+    for (const r of recipes) for (const l of r.lines) expect(() => parseLine(l), `${r.name}: ${l}`).not.toThrow();
+  });
+});
+
+// The real Food Bible is kept off GitHub (the repository is public), so this only runs on the machine that has it.
+const REAL = path.join(__dirname, "../../data/food-bible.txt");
+describe.skipIf(!existsSync(REAL))("the real Food Bible (local file)", () => {
+  // Read inside the tests: a skipped describe block is still built, and the file may not exist.
+  const load = () => parseFoodBible(readFileSync(REAL, "utf8"));
+
+  it("has 35 dishes and 17 batches", () => {
+    const recipes = load();
     expect(recipes.filter((r) => r.batch)).toHaveLength(17);
     expect(recipes.filter((r) => !r.batch)).toHaveLength(35);
   });
 
-  it("keeps the section, batch marker, yield text and lines", () => {
-    const banana = recipes.find((r) => r.name === "BANANA BREAD")!;
-    expect(banana).toMatchObject({ section: "CAKES & SWEETS", batch: true, meta: ["Yield: 9 portions x 200g"] });
-    expect(banana.lines).toHaveLength(9);
-    const sourdough = recipes.find((r) => r.name === "TOASTED SOURDOUGH")!;
-    expect(sourdough).toMatchObject({ section: "BREAKFAST", batch: false });
-    expect(sourdough.lines).toEqual(["120g plain toast", "15g butter", "40g homemade jam"]);
-  });
-
-  it("every ingredient line in the bible can be read", () => {
-    for (const r of recipes) for (const l of r.lines) expect(() => parseLine(l), `${r.name}: ${l}`).not.toThrow();
+  it("every ingredient line can be read", () => {
+    for (const r of load()) for (const l of r.lines) expect(() => parseLine(l), `${r.name}: ${l}`).not.toThrow();
   });
 });

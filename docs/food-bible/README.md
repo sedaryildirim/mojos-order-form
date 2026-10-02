@@ -1,7 +1,8 @@
 # Kaif Food Bible import
 
-`kaif-food-bible.txt` is the recipe source (35 dishes and 17 batch recipes, 380 ingredient lines). A copy lives at
-`apps/gp-calculator/src/data/food-bible.txt`, which is the one the importer reads.
+The recipe source is `kaif-food-bible.txt` (35 dishes and 17 batch recipes, 380 ingredient lines). **It is kept on the owner's machine only**: the
+repository is public, so the recipes (and the trial cost report) are git-ignored and never pushed. A copy at
+`apps/gp-calculator/src/data/food-bible.txt` is the one the importer reads. The tests use the invented `src/lib/import/sample-bible.txt` instead.
 
 Imported on 2026-10-02 with `npm run import:food-bible -- --backup <backup.json> --apply` (dry run without `--apply`).
 It only runs on an empty start: it refuses if the database already has dishes or batch recipes.
