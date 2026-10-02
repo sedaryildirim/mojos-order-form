@@ -15,5 +15,8 @@ if [ ! -f .env ] && [ ! -f .env.local ]; then
   echo "Created apps/gp-calculator/.env from .env.example: set DATABASE_URL in it."
 fi
 
+# The test suite refuses to run without a test database URL (it wipes tables).
+[ -f .env.test ] || { cp .env.test.example .env.test; echo "Created apps/gp-calculator/.env.test from .env.test.example (database gp_calculator_test)."; }
+
 if command -v pg_isready >/dev/null && pg_isready -q; then echo "Postgres: accepting connections"; else echo "Postgres: NOT reachable. Start it before running the GP app."; fi
 echo "Setup done. Run: npm run dev"
