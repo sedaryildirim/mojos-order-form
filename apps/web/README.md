@@ -6,7 +6,9 @@ Static site (no build step). Published to GitHub Pages from this folder.
 index.html            All screens: launcher, branch, supplier, order, review, confirm
 css/styles.css        All styles (design tokens at the top)
 js/
-  ordering/app.js     Ordering form logic (drafts, order history, totals, Excel/PDF/email/copy)
+  ordering/           Ordering form logic, six scripts loaded in numbered order (state and drafts, totals, screens,
+                      review and export, order history, actions and init); they share one global scope, so keep the order
+                      in index.html and the cache list in sw.js
   shell/              Site-wide enhancements that never touch ordering logic
     launcher.js         Launcher cards, back to all tools, theme toggle on the launcher (the only theme toggle)
     hero-fx.js          Pointer-reactive dot field on hero panels

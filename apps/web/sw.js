@@ -5,7 +5,7 @@
 // prices, pars or emails starts a fresh cache by itself (the browser re-checks those imported files
 // whenever it checks sw.js). Only bump CODE_VERSION when you change the site's own code or styles.
 importScripts("config/config.js", "config/data.js");
-const CODE_VERSION = 9;
+const CODE_VERSION = 10;
 function fingerprint(text) {
   let h = 5381;
   for (let i = 0; i < text.length; i++) h = ((h << 5) + h + text.charCodeAt(i)) | 0;
@@ -24,7 +24,12 @@ const SHELL = [
   "config/data.js",
   "js/vendor/xlsx.full.min.js",
   "js/vendor/jspdf.umd.min.js",
-  "js/ordering/app.js",
+  "js/ordering/01-state-storage.js",
+  "js/ordering/02-totals.js",
+  "js/ordering/03-order-screens.js",
+  "js/ordering/04-review-export.js",
+  "js/ordering/05-history.js",
+  "js/ordering/06-actions-init.js",
   "js/shell/hero-fx.js",
   "js/shell/a11y.js",
   "js/shell/launcher.js",

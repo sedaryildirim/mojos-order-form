@@ -1,0 +1,299 @@
+function renderReviewScreen() {
+  const list = $("#reviewList");
+  list.innerHTML = "";
+  const n = totalItemsSelected();
+
+  if (n === 0) {
+    list.innerHTML = `<div class="review-empty">No items selected yet.</div>`;
+    setSubmitButtonsDisabled(true);
+    return;
+  }
+
+  state.data.categories.forEach((cat, ci) => {
+    const rows = cat.items
+      .map((item, ii) => ({ item, key: itemKey(ci, ii) }))
+      .filter(({ key }) => state.toOrder[key] > 0);
+    if (rows.length === 0) return;
+
+    const catBlock = document.createElement("div");
+    catBlock.className = "review-cat";
+    catBlock.innerHTML = `<h3>${cat.name}</h3>`;
+    rows.forEach(({ item, key }) => {
+      const qty = state.toOrder[key];
+      const lineTotal = qty * (item.price || 0);
+      const row = document.createElement("div");
+      row.className = "review-item";
+      row.innerHTML = `<span>${item.name}</span><span class="qty">x${qty} ${item.unit}${item.price ? `<span class="price">${formatMoney(lineTotal)}</span>` : ""}</span>`;
+      catBlock.appendChild(row);
+    });
+    list.appendChild(catBlock);
+  });
+
+  const subtotal = totalEstimatedCost();
+  const vat = subtotal * VAT_RATE;
+
+  const subtotalRow = document.createElement("div");
+  subtotalRow.className = "review-subtotal";
+  subtotalRow.innerHTML = `<span>Subtotal</span><span>${formatMoney(subtotal)}</span>`;
+  list.appendChild(subtotalRow);
+
+  const vatRow = document.createElement("div");
+  vatRow.className = "review-subtotal";
+  vatRow.innerHTML = `<span>VAT (7%)</span><span>${formatMoney(vat)}</span>`;
+  list.appendChild(vatRow);
+
+  const totalRow = document.createElement("div");
+  totalRow.className = "review-total";
+  totalRow.innerHTML = `<span>Estimated Total</span><span>${formatMoney(subtotal + vat)}</span>`;
+  list.appendChild(totalRow);
+
+  const gateLines = [];
+  const { total, incomplete } = incompleteCategories();
+  if (total > 0 && incomplete.length > 0) {
+    const names = incomplete.map(c => c.name).join(", ");
+    gateLines.push(`${incomplete.length} categor${incomplete.length === 1 ? "y" : "ies"} still to complete: ${names}.`);
+  }
+  const shortfall = moqShortfall();
+  if (shortfall > 0) {
+    gateLines.push(`Minimum order is ${currentMoq()} ${state.data.moqLabel || "units"}. Add ${shortfall} more.`);
+  }
+  gateLines.push(...comboMismatches());
+
+  if (gateLines.length > 0) {
+    const gate = document.createElement("div");
+    gate.className = "review-gate-warning";
+    gate.innerHTML = `&#9888; ${gateLines.join("<br>")} Go back and fix this before sending.`;
+    list.appendChild(gate);
+    setSubmitButtonsDisabled(true);
+  } else {
+    setSubmitButtonsDisabled(false);
+  }
+}
+
+function setSubmitButtonsDisabled(disabled) {
+  $("#emailOrderBtn").disabled = disabled;
+  $("#copyReviewBtn").disabled = disabled;
+  $("#excelReviewBtn").disabled = disabled;
+  $("#pdfReviewBtn").disabled = disabled;
+}
+
+function buildOrderText() {
+  const lines = [];
+  const now = new Date();
+  lines.push(`Mojo's Order - ${state.supplier.name} - ${state.branch.name} branch`);
+  lines.push(`Date: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`);
+  lines.push("");
+
+  state.data.categories.forEach((cat, ci) => {
+    const rows = cat.items
+      .map((item, ii) => ({ item, key: itemKey(ci, ii) }))
+      .filter(({ key }) => state.toOrder[key] > 0);
+    if (rows.length === 0) return;
+    lines.push(`${cat.name.toUpperCase()}${state.completed[ci] ? " (COMPLETE)" : ""}`);
+    rows.forEach(({ item, key }) => {
+      const stock = state.stock[key] ?? "-";
+      const par = (item.par === null || item.par === undefined) ? "-" : item.par;
+      lines.push(`  - ${item.name} : Par ${par} | Stock ${stock} | Order ${state.toOrder[key]} ${item.unit}`);
+    });
+    lines.push("");
+  });
+
+  const subtotal = totalEstimatedCost();
+  const vat = subtotal * VAT_RATE;
+  lines.push(`Total line items: ${totalItemsSelected()}`);
+  lines.push(`Subtotal: ${formatMoney(subtotal)}`);
+  lines.push(`VAT (7%): ${formatMoney(vat)}`);
+  lines.push(`Estimated total cost (incl. VAT): ${formatMoney(subtotal + vat)}`);
+  return lines.join("\n");
+}
+
+function orderFileName(ext) {
+  const supplier = supplierShortName().replace(/\s+/g, "_").replace(/[^\w-]/g, "");
+  const branch = state.branch.name.replace(/\s+/g, "_").replace(/[^\w-]/g, "");
+  const date = formatDateDDMMYYYY(new Date()).replace(/\//g, "-");
+  return `${supplier}_${branch}_${date}.${ext}`;
+}
+
+function buildOrderWorkbook() {
+  const priceRows = [];
+  priceRows.push([`${state.supplier.name} - ${state.branch.name} branch`]);
+  priceRows.push([`Order date: ${formatDateDDMMYYYY(new Date())}`]);
+  priceRows.push([]);
+  priceRows.push(["Category", "Article No.", "Description", "Unit", "Unit Price (THB)", "Qty", "Line Total (THB)"]);
+
+  const plainRows = [];
+  plainRows.push([`${state.supplier.name} - ${state.branch.name} branch`]);
+  plainRows.push([`Order date: ${formatDateDDMMYYYY(new Date())}`]);
+  plainRows.push([]);
+  plainRows.push(["Category", "Article No.", "Description", "Unit", "Qty"]);
+
+  state.data.categories.forEach((cat, ci) => {
+    cat.items.forEach((item, ii) => {
+      const key = itemKey(ci, ii);
+      const qty = state.toOrder[key] || 0;
+      if (qty <= 0) return;
+      priceRows.push([cat.name, item.id || "", item.name, item.unit, item.price || 0, qty, qty * (item.price || 0)]);
+      plainRows.push([cat.name, item.id || "", item.name, item.unit, qty]);
+    });
+  });
+
+  const subtotal = totalEstimatedCost();
+  const vat = subtotal * VAT_RATE;
+  priceRows.push([]);
+  priceRows.push(["", "", "", "", "", "Subtotal", Math.round(subtotal)]);
+  priceRows.push(["", "", "", "", "", "VAT (7%)", Math.round(vat)]);
+  priceRows.push(["", "", "", "", "", "Total (incl. VAT)", Math.round(subtotal + vat)]);
+
+  const wsPrice = XLSX.utils.aoa_to_sheet(priceRows);
+  wsPrice["!cols"] = [{ wch: 20 }, { wch: 12 }, { wch: 38 }, { wch: 12 }, { wch: 14 }, { wch: 8 }, { wch: 16 }];
+
+  const wsPlain = XLSX.utils.aoa_to_sheet(plainRows);
+  wsPlain["!cols"] = [{ wch: 20 }, { wch: 12 }, { wch: 38 }, { wch: 12 }, { wch: 8 }];
+
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, wsPrice, "Order");
+  XLSX.utils.book_append_sheet(wb, wsPlain, "Order (No Prices)");
+  return wb;
+}
+
+let fileBusy = false;
+
+// Excel and PDF go through the same path: build a file, hand it to the share sheet,
+// or fall back to a plain download.
+async function sendFile(kind) {
+  if (fileBusy) return;
+  const lib = kind === "pdf" ? window.jspdf : window.XLSX;
+  const label = kind === "pdf" ? "PDF" : "Excel";
+  if (!lib) {
+    showGlobalToast(`${label} isn't available right now. Use Email or Copy instead.`);
+    return;
+  }
+  fileBusy = true;
+  const buttons = $all(".file-btn");
+  buttons.forEach(b => { b.disabled = true; });
+  try {
+    const file = kind === "pdf" ? buildOrderPdf() : buildOrderExcel();
+    await shareOrDownload(file.blob, file.filename, label, kind);
+  } catch (e) {
+    showGlobalToast(`Couldn't create the ${label} file. Use Email or Copy instead.`);
+  } finally {
+    fileBusy = false;
+    buttons.forEach(b => { b.disabled = false; });
+  }
+}
+
+function buildOrderExcel() {
+  const wb = buildOrderWorkbook();
+  const wbArray = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+  return {
+    blob: new Blob([wbArray], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }),
+    filename: orderFileName("xlsx")
+  };
+}
+
+async function shareOrDownload(blob, filename, label, via) {
+  if (navigator.share && navigator.canShare) {
+    try {
+      const file = new File([blob], filename, { type: blob.type });
+      if (navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: `${state.supplier.name} order`,
+          text: `${state.supplier.name} order for ${state.branch.name} branch`
+        });
+        clearSentDraft(via);
+        showConfirmScreen("Order shared", `The ${label} file has been shared.`);
+        return;
+      }
+    } catch (e) {
+      if (e && e.name === "AbortError") return; // user cancelled the share sheet, do nothing
+      // any other failure: fall through to the plain download below
+    }
+  }
+
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  clearSentDraft(via);
+  showConfirmScreen("Order downloaded", `The ${label} file has been saved to your device.`);
+}
+
+// The PDF goes straight to the supplier, so it lists what to deliver and nothing about money:
+// no prices, line totals, subtotal, VAT or total.
+function buildOrderPdf() {
+  const doc = new window.jspdf.jsPDF({ unit: "mm", format: "a4" });
+  const pageW = 210, pageH = 297, margin = 15, bottom = pageH - 18;
+  const col = { art: margin, name: margin + 28, unit: margin + 124, qty: pageW - margin };
+  let y = margin;
+
+  function ensure(space) {
+    if (y + space <= bottom) return;
+    doc.addPage();
+    y = margin;
+  }
+
+  doc.setFont("helvetica", "bold").setFontSize(16);
+  doc.text(state.supplier.name, margin, y + 5);
+  y += 11;
+  doc.setFont("helvetica", "normal").setFontSize(10).setTextColor(90);
+  doc.text(`${state.branch.name} branch`, margin, y);
+  doc.text(`Order date: ${formatDateDDMMYYYY(new Date())}`, pageW - margin, y, { align: "right" });
+  y += 4;
+  doc.setDrawColor(200).line(margin, y, pageW - margin, y);
+  y += 7;
+
+  state.data.categories.forEach((cat, ci) => {
+    const rows = cat.items
+      .map((item, ii) => ({ item, qty: state.toOrder[itemKey(ci, ii)] || 0 }))
+      .filter(r => r.qty > 0);
+    if (rows.length === 0) return;
+
+    ensure(24);
+    doc.setFont("helvetica", "bold").setFontSize(11).setTextColor(20);
+    doc.text(cat.name, margin, y);
+    y += 2.5;
+    doc.setFontSize(8).setTextColor(110);
+    doc.text("ARTICLE NO.", col.art, y + 3);
+    doc.text("ITEM", col.name, y + 3);
+    doc.text("UNIT", col.unit, y + 3);
+    doc.text("QTY", col.qty, y + 3, { align: "right" });
+    y += 5;
+    doc.setDrawColor(210).line(margin, y, pageW - margin, y);
+    y += 5;
+
+    rows.forEach(({ item, qty }) => {
+      const nameLines = doc.setFont("helvetica", "normal").setFontSize(10).splitTextToSize(item.name, 92);
+      ensure(nameLines.length * 4.6 + 2);
+      doc.setTextColor(20);
+      doc.text(String(item.id || ""), col.art, y);
+      doc.text(nameLines, col.name, y);
+      doc.text(String(item.unit), col.unit, y);
+      doc.setFont("helvetica", "bold").text(String(qty), col.qty, y, { align: "right" });
+      y += nameLines.length * 4.6 + 1.6;
+    });
+    y += 5;
+  });
+
+  const pages = doc.getNumberOfPages();
+  for (let p = 1; p <= pages; p++) {
+    doc.setPage(p).setFont("helvetica", "normal").setFontSize(8).setTextColor(130);
+    doc.text(`Page ${p} of ${pages}`, pageW - margin, pageH - 10, { align: "right" });
+  }
+  return { blob: doc.output("blob"), filename: orderFileName("pdf") };
+}
+
+function formatDateDDMMYYYY(d) {
+  const dd = String(d.getDate()).padStart(2, "0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  return `${dd}/${mm}/${d.getFullYear()}`;
+}
+
+function supplierShortName() {
+  return state.supplier.name.replace(/^Order\s+/i, "").toUpperCase();
+}
+

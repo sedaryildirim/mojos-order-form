@@ -7,8 +7,9 @@
     "dev": "node scripts/dev/dev-server.mjs",
     "dev:web": "GP=off node scripts/dev/dev-server.mjs",
     "stop": "bash scripts/stop.sh",
-    "test": "node --test 'scripts/dev/*.test.mjs' && npm --prefix apps/gp-calculator test",
+    "test": "node scripts/check-order-sheet.mjs && node --test 'scripts/**/*.test.mjs' && npm --prefix apps/gp-calculator test",
     "build": "npm --prefix apps/gp-calculator run build",
-    "backup": "npm --prefix apps/gp-calculator run backup"
+    "backup": "npm --prefix apps/gp-calculator run backup",
+    "check:sheet": "node scripts/check-order-sheet.mjs"
   }
 }

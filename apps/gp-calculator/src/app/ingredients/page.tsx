@@ -4,7 +4,7 @@ import Link from "next/link";
 import { PageTitle } from "@/components/layout/PageTitle";
 import { useEffect, useMemo, useState } from "react";
 import { formatTHB } from "@/lib/costing/currency";
-import { comparableName } from "@/lib/costing/ingredient-compare";
+import { cheaperElsewhere, CheaperOption } from "@/lib/costing/cheaper-elsewhere";
 import { packLabel, unitPrice } from "@/lib/costing/unit-price";
 import { useViewMode } from "@/lib/client/use-view-mode";
 import { ListSkeleton, LoadError } from "@/components/layout/Skeleton";
@@ -24,11 +24,6 @@ interface IngredientRow {
   supplier: { id: string; name: string; archived: boolean };
   estimateNote: string | null;
   archived: boolean;
-}
-
-interface CheaperOption {
-  supplier: string;
-  pctCheaper: number;
 }
 
 export default function IngredientsPage() {
@@ -88,28 +83,7 @@ export default function IngredientsPage() {
       (!search || i.name.toLowerCase().includes(search.toLowerCase())) && (!attentionOnly || i.estimateNote !== null)
   );
 
-  // For each ingredient: the cheapest same-named item from another supplier, if it is meaningfully cheaper.
-  const cheaperElsewhere = useMemo(() => {
-    const byName = new Map<string, IngredientRow[]>();
-    for (const i of ingredients) {
-      const key = `${comparableName(i.name)}|${i.purchaseUnit}`;
-      byName.set(key, [...(byName.get(key) ?? []), i]);
-    }
-    const unitPrice = (i: IngredientRow) => Number(i.packPrice) / Number(i.packQuantity) / (Number(i.yieldPct) / 100);
-    const result = new Map<string, CheaperOption>();
-    for (const group of Array.from(byName.values())) {
-      if (group.length < 2) continue;
-      for (const i of group) {
-        const best = group
-          .filter((o: IngredientRow) => o.supplierId !== i.supplierId && !o.estimateNote && o.supplier.name !== "House-Made")
-          .sort((a: IngredientRow, b: IngredientRow) => unitPrice(a) - unitPrice(b))[0];
-        if (best && unitPrice(best) < unitPrice(i) * 0.95) {
-          result.set(i.id, { supplier: best.supplier.name, pctCheaper: Math.round((1 - unitPrice(best) / unitPrice(i)) * 100) });
-        }
-      }
-    }
-    return result;
-  }, [ingredients]);
+  const cheaper = useMemo(() => cheaperElsewhere(ingredients), [ingredients]);
 
   const grouped = useMemo(() => {
     const groups = new Map<string, IngredientRow[]>();
@@ -217,7 +191,7 @@ export default function IngredientsPage() {
         <p>No ingredients match these filters. Clear a filter or the search to see more.</p>
       )}
 
-      {!loading && mode === "table" && filtered.length > 0 && <IngredientTable rows={filtered} cheaper={cheaperElsewhere} />}
+      {!loading && mode === "table" && filtered.length > 0 && <IngredientTable rows={filtered} cheaper={cheaper} />}
 
       {!loading &&
         mode === "cards" &&
@@ -231,7 +205,7 @@ export default function IngredientsPage() {
             </h2>
             <div>
               {itemsInGroup.map((i) => (
-                <IngredientCard key={i.id} ingredient={i} cheaper={cheaperElsewhere.get(i.id)} />
+                <IngredientCard key={i.id} ingredient={i} cheaper={cheaper.get(i.id)} />
               ))}
             </div>
           </section>

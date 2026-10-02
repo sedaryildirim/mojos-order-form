@@ -49,7 +49,7 @@ This folder is `mojos-kaif-master-folder`; the GitHub repository keeps its name,
 
 ## Weekly price update (order sheet -> GP Calculator)
 
-1. Update prices or items in `apps/web/config/data.js`, commit, and push `master`. GitHub Pages publishes the new sheet within a minute or two. **Keep `data.js` machine-readable**: after `const DATA = ` it must stay plain JSON (double-quoted keys, no comments, no trailing commas), because the GP reads it without running it.
+1. Update prices or items in `apps/web/config/data.js`, run `npm run check:sheet` (catches duplicate ids and bad prices), commit, and push `master`. GitHub Pages publishes the new sheet within a minute or two. **Keep `data.js` machine-readable**: after `const DATA = ` it must stay plain JSON (double-quoted keys, no comments, no trailing commas), because the GP reads it without running it.
 2. In the GP Calculator open **Ingredients** and press **Sync from order sheet**. It shows a preview (new items, price changes, which dishes change cost) and nothing is saved until you press **Apply**.
 3. Every dish and batch recipe that uses a changed price gets a new "Updated" version with cost and GP recalculated.
 
