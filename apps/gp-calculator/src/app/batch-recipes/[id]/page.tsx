@@ -6,6 +6,8 @@ import { BatchRecipeForm, BatchRecipePayload } from "@/components/batch/BatchRec
 import { BatchScaler } from "@/components/batch/BatchScaler";
 import { ConfirmButton } from "@/components/ui/ConfirmButton";
 import { PageTitle } from "@/components/layout/PageTitle";
+import { GpHistoryChart } from "@/components/charts/GpHistoryChart";
+import type { GpPoint } from "@/lib/costing/gp-history";
 import { ListSkeleton, LoadError } from "@/components/layout/Skeleton";
 import { batchPortions } from "@/lib/costing/batch-math";
 import { setFlash } from "@/lib/client/flash";
@@ -41,6 +43,7 @@ export default function EditBatchRecipePage() {
   const [loadError, setLoadError] = useState(false);
   const [reloadKey, setReloadKey] = useState(0);
   const [overrides, setOverrides] = useState<Record<string, string | null>>({});
+  const [gpHistory, setGpHistory] = useState<GpPoint[]>([]);
 
   useEffect(() => {
     setLoadError(false);
@@ -60,6 +63,14 @@ export default function EditBatchRecipePage() {
         setBatch(await r.json());
       })
       .catch(() => setLoadError(true));
+  }, [id, reloadKey]);
+
+  // The chart is a nice-to-have: if it cannot load, the recipe still works.
+  useEffect(() => {
+    fetch(`/api/batch-recipes/${id}/gp-history`)
+      .then((r) => (r.ok ? r.json() : []))
+      .then(setGpHistory)
+      .catch(() => {});
   }, [id, reloadKey]);
 
   // When you come back from fixing a price in another tab, refresh only the red flags, never your edits.
@@ -142,6 +153,7 @@ export default function EditBatchRecipePage() {
           </p>
         </div>
       )}
+      {gpHistory.length > 0 && <GpHistoryChart points={gpHistory} />}
       <BatchScaler
         lines={batch.lines.map((l) => ({ name: l.ingredient.name, quantity: Number(l.quantity), unit: l.unit }))}
         portions={batchPortions(Number(batch.yieldQuantity), batch.yieldUnit, batch.portionSize === null ? null : Number(batch.portionSize))}

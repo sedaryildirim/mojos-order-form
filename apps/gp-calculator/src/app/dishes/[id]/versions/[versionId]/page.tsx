@@ -7,6 +7,8 @@ import { gpFromSellingPrice, roundUpToMenuPrice, suggestedPriceFromTargetGp, TAR
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { findEstimatedIngredientIds } from "@/lib/costing/estimates";
+import { loadDishGpHistory } from "@/lib/costing/gp-history";
+import { GpHistoryChart } from "@/components/charts/GpHistoryChart";
 
 export const dynamic = "force-dynamic";
 import type { SpecSheetVersion } from "@/components/dishes/SpecSheet";
@@ -58,8 +60,11 @@ export default async function DishVersionPage({ params }: { params: { versionId:
     select: { id: true },
   });
 
+  const gpHistory = await loadDishGpHistory(version.dishId);
+
   const notices = (
     <>
+      <GpHistoryChart points={gpHistory} />
       {flaggedCount > 0 && (
         <div role="alert">
           <p>Has guessed prices</p>
