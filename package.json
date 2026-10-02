@@ -1,0 +1,14 @@
+{
+  "name": "mojos-kaif-master",
+  "private": true,
+  "description": "Mojo's + Kaif: ordering site and GP Calculator. Run `npm run dev` for everything on http://localhost:8080.",
+  "scripts": {
+    "setup": "bash scripts/setup.sh",
+    "dev": "node scripts/dev/dev-server.mjs",
+    "dev:web": "GP=off node scripts/dev/dev-server.mjs",
+    "stop": "bash scripts/stop.sh",
+    "test": "node --test 'scripts/dev/*.test.mjs' && npm --prefix apps/gp-calculator test",
+    "build": "npm --prefix apps/gp-calculator run build",
+    "backup": "npm --prefix apps/gp-calculator run backup"
+  }
+}
