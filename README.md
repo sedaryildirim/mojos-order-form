@@ -39,6 +39,28 @@ npm run stop      # stops it
 
 This folder is `mojos-kaif-master-folder`; the GitHub repository keeps its name, `mojos-order-form`.
 
+## Weekly price update (order sheet -> GP Calculator)
+
+The GP Calculator's ingredient list for Kaif comes from the order sheet's Kaif suppliers (Makro Kaif, Wine Pro, Phangan Green Vegetables, La Bottega, Fruit Shop).
+
+1. Update prices or items in `apps/web/config/data.js`, commit, and push `master`. GitHub Pages publishes the new sheet within a minute or two.
+2. In the GP Calculator open **Ingredients** and press **Sync from order sheet**. It shows a preview (new items, price changes, which dishes change cost) and nothing is saved until you press **Apply**.
+3. Every dish and batch recipe that uses a changed price gets a new "Updated" version with cost and GP recalculated.
+
+The same thing from a terminal, using the local file instead of the published one:
+
+```bash
+cd apps/gp-calculator
+npm run sync:order-sheet -- --file ../web/config/data.js            # preview
+npm run sync:order-sheet -- --file ../web/config/data.js --apply    # save
+```
+
+Good to know:
+- Items are matched by their order-sheet id (stored as `sourceKey`), so a renamed item updates in place. An item that disappears from the sheet is deleted if nothing uses it, or archived if a recipe still does.
+- An existing ingredient keeps its own pack size; only its price is updated, scaled to that pack. If the unit differs (for example grams in the GP, "each" on the sheet) it is left alone and listed.
+- A new item whose pack size is not in its name (for example "Smoked Bacon") is added as 1 EACH and flagged. Add its real size to `apps/gp-calculator/src/data/order-sheet-packs.json`, keyed by its id such as `"labottega:236095": { "purchaseUnit": "G", "packQuantity": 1000 }`.
+- After pulling a new version of the code, run `npm run setup` and restart `npm run dev`: a running server keeps the old database client until it restarts.
+
 ## Common jobs
 
 | I want to... | Edit |
