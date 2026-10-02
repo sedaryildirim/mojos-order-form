@@ -31,3 +31,7 @@ The apps share nothing else: no shared code, no shared database, no shared login
 ## Why two apps in one repo
 
 They are used together and look the same, so keeping them side by side keeps the design, docs and links in step. They deploy separately because one is static files and the other needs a server and a database.
+
+## Local development
+
+`npm run dev` (repo root) starts one front door on http://localhost:8080 (`scripts/dev/dev-server.mjs`). It serves `apps/web` as static files and forwards the GP app's own paths (`/_next`, `/api`, `/dishes`, `/ingredients`, `/suppliers`, `/batch-recipes`, `/orders`, `/locked`, `/share`, and `/gp` as its home) to a Next.js dev server it starts on port 3410. Locally it also rewrites the launcher's GP link to `/gp` and replaces the offline service worker with one that removes itself, so cached pages never hide the GP app. None of this affects production hosting.

@@ -35,6 +35,6 @@ Script order in `index.html` matters: config, data, ordering app, then the shell
 
 ## Run
 
-Open `index.html` in a browser, or from the repo root run `./scripts/dev.sh`.
+Open `index.html` in a browser, or from the repo root run `npm run dev:web` (site only) or `npm run dev` (site and GP Calculator).
 
 Order drafts and the theme choice are saved in the browser (localStorage). Dark is the default theme.

@@ -20,7 +20,8 @@ docs/
   deployment.md           Hosting each app, and the settings that link them
   gp-calculator/          Original GP spec and implementation plans
 scripts/
-  dev.sh                  Start both apps locally
+  setup.sh, stop.sh       One-time setup; stop the local servers
+  dev.sh, dev/            Local dev server: site and GP Calculator on one port
 data/                     Source price spreadsheets (kept locally, git-ignored)
 .github/workflows/        Publishes apps/web to GitHub Pages
 PRODUCT.md, DESIGN.md     Product intent and the design system shared by both apps
@@ -29,10 +30,14 @@ PRODUCT.md, DESIGN.md     Product intent and the design system shared by both ap
 ## Run locally
 
 ```bash
-./scripts/dev.sh          # web on :8080, GP Calculator on :3000
+npm run setup     # once: installs the GP app's dependencies, creates its .env, checks Postgres
+npm run dev       # everything on http://localhost:8080  (site at /, GP Calculator at /gp)
+npm run stop      # stops it
 ```
 
-The GP Calculator needs a Postgres database: copy `apps/gp-calculator/.env.example` to `.env` and set `DATABASE_URL`. To run only the static site, open `apps/web/index.html` in a browser.
+`npm run dev:web` serves only the static site (no database needed). `npm test`, `npm run build` and `npm run backup` run the GP app's commands from the root. The GP Calculator needs Postgres and a `DATABASE_URL` in `apps/gp-calculator/.env`.
+
+This folder is `mojos-kaif-master-folder`; the GitHub repository keeps its name, `mojos-order-form`.
 
 ## Common jobs
 

@@ -35,7 +35,7 @@ Tests sit next to the code they cover (`*.test.ts(x)`). Import across folders wi
 cp .env.example .env        # set DATABASE_URL (and optional BLOB / Resend keys)
 npm install
 npx prisma migrate deploy   # or: npx prisma db push
-npm run dev                 # http://localhost:3000
+npm run dev                 # http://localhost:3000 on its own; from the repo root, `npm run dev` serves it at http://localhost:8080/gp
 ```
 
 ## Password and home link

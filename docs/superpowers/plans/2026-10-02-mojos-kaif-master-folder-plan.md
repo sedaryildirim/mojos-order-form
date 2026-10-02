@@ -151,7 +151,7 @@ test("safeJoin stays inside the base directory", () => {
 
 - [ ] **Step 2: Run it to verify it fails**
 
-Run: `cd /Users/sedaryildirim/mojos-kaif-master-folder && node --test scripts/dev/`
+Run: `cd /Users/sedaryildirim/mojos-kaif-master-folder && node --test 'scripts/dev/*.test.mjs'`
 Expected: FAIL, `Cannot find module './routes.mjs'`.
 
 - [ ] **Step 3: Write the implementation**
@@ -189,7 +189,7 @@ export function safeJoin(baseDir, urlPath) {
 
 - [ ] **Step 4: Run the tests**
 
-Run: `node --test scripts/dev/`
+Run: `node --test 'scripts/dev/*.test.mjs'`
 Expected: all tests PASS.
 
 - [ ] **Step 5: Commit**
@@ -385,7 +385,7 @@ Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>"
     "dev": "node scripts/dev/dev-server.mjs",
     "dev:web": "GP=off node scripts/dev/dev-server.mjs",
     "stop": "bash scripts/stop.sh",
-    "test": "node --test scripts/dev/ && npm --prefix apps/gp-calculator test",
+    "test": "node --test 'scripts/dev/*.test.mjs' && npm --prefix apps/gp-calculator test",
     "build": "npm --prefix apps/gp-calculator run build",
     "backup": "npm --prefix apps/gp-calculator run backup"
   }
