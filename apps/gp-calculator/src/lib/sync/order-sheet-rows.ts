@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import packOverrides from "@/data/order-sheet-packs.json";
 import { parsePackSize } from "./pack-size";
 
-export const DEFAULT_ORDER_SHEET_URL = "https://sedaryildirim.github.io/mojos-order-form/config/data.js";
+const DEFAULT_ORDER_SHEET_URL = "https://sedaryildirim.github.io/mojos-order-form/config/data.js";
 
 // Order-sheet supplier id -> the GP supplier name. Only Kaif's suppliers are synced.
 export const SYNCED_SUPPLIERS: Record<string, string> = {
@@ -16,13 +16,13 @@ export const SYNCED_SUPPLIERS: Record<string, string> = {
 type Unit = "G" | "ML" | "EACH";
 type Override = { purchaseUnit: Unit; packQuantity: number };
 
-export interface SheetItem {
+interface SheetItem {
   id: string | number;
   name: string;
   unit: string;
   price: number;
 }
-export type SheetData = Record<string, { categories: { name: string; items: SheetItem[] }[] }>;
+type SheetData = Record<string, { categories: { name: string; items: SheetItem[] }[] }>;
 
 export interface SheetRow {
   sourceKey: string;

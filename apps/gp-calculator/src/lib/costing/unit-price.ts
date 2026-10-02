@@ -1,4 +1,4 @@
-export interface UnitPriceInput {
+interface UnitPriceInput {
   purchaseUnit: string;
   packQuantity: number;
   packPrice: number;

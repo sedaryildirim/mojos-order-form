@@ -25,15 +25,12 @@ export const ingredientInputSchema = z.object({
   createdBy: person,
 });
 
-export type SupplierInput = z.infer<typeof supplierInputSchema>;
-export type IngredientInput = z.infer<typeof ingredientInputSchema>;
 
 export const dishInputSchema = z.object({
   name,
   category,
   createdBy: person,
 });
-export type DishInput = z.infer<typeof dishInputSchema>;
 
 export const dishVersionInputSchema = z.object({
   notes: notes.optional(),
@@ -50,7 +47,6 @@ export const dishVersionInputSchema = z.object({
     )
     .min(1, "A dish needs at least one ingredient"),
 });
-export type DishVersionInput = z.infer<typeof dishVersionInputSchema>;
 
 export const emailShareSchema = z.object({
   to: z.string().trim().max(LIMITS.email).email("Enter a valid email address"),
@@ -75,4 +71,3 @@ export const batchRecipeInputSchema = z.object({
     )
     .default([]),
 });
-export type BatchRecipeInput = z.infer<typeof batchRecipeInputSchema>;

@@ -2,14 +2,14 @@ import type { GpPoint } from "./gp-history";
 
 // Geometry for the GP history chart: where each point, gridline and label goes. No drawing happens here.
 
-export interface ChartOptions {
+interface ChartOptions {
   width: number;
   height: number;
   // The GP target, in percent. Drawn as a dashed line when the chart shows GP.
   target: number;
 }
 
-export interface ChartGeometry {
+interface ChartGeometry {
   mode: "gp" | "cost";
   plot: { left: number; right: number; top: number; bottom: number };
   xs: number[];

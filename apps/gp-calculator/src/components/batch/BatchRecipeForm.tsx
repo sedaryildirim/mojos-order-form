@@ -12,7 +12,7 @@ import { ACTOR } from "@/lib/client/actor";
 
 const ALL_UNITS: Unit[] = ["G", "KG", "ML", "L", "EACH"];
 
-export const YIELD_UNIT_LABELS: Record<"EACH" | "G" | "ML", string> = {
+const YIELD_UNIT_LABELS: Record<"EACH" | "G" | "ML", string> = {
   EACH: "portions (each)",
   G: "grams",
   ML: "millilitres",

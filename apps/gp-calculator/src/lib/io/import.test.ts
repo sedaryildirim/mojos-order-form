@@ -15,7 +15,7 @@ const fixturePath = path.join(__dirname, "fixtures/sample-import.csv");
 const xlsxFixturePath = path.join(__dirname, "fixtures/sample-import.xlsx");
 
 test("parseImportRows reads a CSV into row objects", () => {
-  const rows = parseImportRows(readFileSync(fixturePath), "sample-import.csv");
+  const rows = parseImportRows(readFileSync(fixturePath));
   expect(rows).toHaveLength(3);
   expect(rows[0]).toMatchObject({ name: "Onions", packPrice: "200" });
 });
@@ -25,14 +25,14 @@ test("parseImportRows reads an XLSX file into row objects, using raw cell values
   // cells (Onions, Milk) carry an Excel currency number format ("$200.00"), so
   // this also guards against a regression to raw:false, which would return the
   // formatted string "$200.00" instead of the raw numeric value.
-  const rows = parseImportRows(readFileSync(xlsxFixturePath), "sample-import.xlsx");
+  const rows = parseImportRows(readFileSync(xlsxFixturePath));
   expect(rows).toHaveLength(3);
   expect(rows[0]).toMatchObject({ name: "Onions", packPrice: "200" });
   expect(rows[1]).toMatchObject({ name: "Milk", packPrice: "45" });
 });
 
 test("importIngredients imports an XLSX file end-to-end, skipping the invalid row", async () => {
-  const rows = parseImportRows(readFileSync(xlsxFixturePath), "sample-import.xlsx");
+  const rows = parseImportRows(readFileSync(xlsxFixturePath));
   const result = await importIngredients(rows, "Sedary");
 
   expect(result.created).toBe(2);
@@ -43,7 +43,7 @@ test("importIngredients imports an XLSX file end-to-end, skipping the invalid ro
 });
 
 test("importIngredients creates suppliers and ingredients, skipping invalid rows", async () => {
-  const rows = parseImportRows(readFileSync(fixturePath), "sample-import.csv");
+  const rows = parseImportRows(readFileSync(fixturePath));
   const result = await importIngredients(rows, "Sedary");
 
   expect(result.created).toBe(2);
@@ -108,7 +108,7 @@ test("importIngredients still skips a row with an unknown purchase unit", async 
 });
 
 test("importIngredients updates an existing ingredient matched by name+supplier instead of duplicating", async () => {
-  const rows = parseImportRows(readFileSync(fixturePath), "sample-import.csv");
+  const rows = parseImportRows(readFileSync(fixturePath));
   await importIngredients(rows, "Sedary");
 
   const priceUpdateRows = [{ name: "Onions", category: "Veg", supplier: "Fresh Farms Co", purchaseUnit: "G", packQuantity: "5000", packPrice: "220", yieldPct: "100" }];
@@ -123,7 +123,7 @@ test("importIngredients updates an existing ingredient matched by name+supplier 
 });
 
 test("importIngredients reports no price change when a re-uploaded row is identical to what's already stored", async () => {
-  const rows = parseImportRows(readFileSync(fixturePath), "sample-import.csv");
+  const rows = parseImportRows(readFileSync(fixturePath));
   await importIngredients(rows, "Sedary");
 
   // Re-import the exact same rows unchanged (e.g. re-uploading a downloaded template
@@ -135,7 +135,7 @@ test("importIngredients reports no price change when a re-uploaded row is identi
 });
 
 test("importIngredients flags a price change even when only packQuantity or purchaseUnit changes, not just packPrice", async () => {
-  const rows = parseImportRows(readFileSync(fixturePath), "sample-import.csv");
+  const rows = parseImportRows(readFileSync(fixturePath));
   await importIngredients(rows, "Sedary");
 
   const packSizeChangeRows = [{ name: "Onions", category: "Veg", supplier: "Fresh Farms Co", purchaseUnit: "G", packQuantity: "10000", packPrice: "200", yieldPct: "100" }];
@@ -153,7 +153,7 @@ async function estimatedBacon() {
 }
 
 const HEADER = "name,category,supplier,purchaseUnit,packQuantity,packPrice,yieldPct";
-const csvRows = (line: string) => parseImportRows(Buffer.from(`${HEADER}\n${line}`), "t.csv");
+const csvRows = (line: string) => parseImportRows(Buffer.from(`${HEADER}\n${line}`));
 
 test("a row with a real supplier confirms the matching estimated ingredient, keeping its id", async () => {
   const bacon = await estimatedBacon();
@@ -208,7 +208,7 @@ test("previewImport reports counts, skipped rows and affected dishes without wri
     "Garlic,Veg,Fresh Farms Co,G,1000,90,100", // new
     "Bad,Veg,Fresh Farms Co,G,1000,,100", // no price
   ].join("\n");
-  const result = await previewImport(parseImportRows(Buffer.from(csv), "t.csv"));
+  const result = await previewImport(parseImportRows(Buffer.from(csv)));
 
   expect(result).toMatchObject({ created: 1, updated: 1, unchanged: 0 });
   expect(result.skipped).toEqual([{ row: 4, reason: expect.stringMatching(/price/i) }]);
@@ -228,6 +228,6 @@ test("previewImport counts an estimate being confirmed and rows that change noth
     data: { name: "Cheese", category: "Dairy", supplierId: real.id, purchaseUnit: "G", packQuantity: 1000, packPrice: 300, createdBy: "S", updatedBy: "S" },
   });
   const csv = [HEADER, "Bacon,Meat,La Bottega,G,1000,520,100", "Cheese,Dairy,La Bottega,G,1000,300,100"].join("\n");
-  const result = await previewImport(parseImportRows(Buffer.from(csv), "t.csv"));
+  const result = await previewImport(parseImportRows(Buffer.from(csv)));
   expect(result).toMatchObject({ created: 0, updated: 2, confirmed: 1, unchanged: 1 });
 });

@@ -18,7 +18,7 @@ export async function recordPriceHistory(ingredientId: string, actor: string): P
   });
 }
 
-export interface PriceHistoryEntry {
+interface PriceHistoryEntry {
   id: string;
   recordedAt: Date;
   recordedBy: string;

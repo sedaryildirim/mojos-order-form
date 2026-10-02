@@ -26,6 +26,7 @@ const report = (over = {}) => ({
   archivedBecauseUsed: [{ name: "Old but used", supplier: "Makro" }],
   needsPackSize: [{ name: "Toilet Tissue", supplier: "Makro" }],
   packMismatch: [],
+  notRecosted: [],
   dishes: [{ dishId: "d1", name: "Salad", oldCost: 10, newCost: 12, sellingPrice: 100, oldGpPct: 0.9, newGpPct: 0.88 }],
   ...over,
 });

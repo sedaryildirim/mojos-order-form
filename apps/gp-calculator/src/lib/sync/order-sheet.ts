@@ -5,7 +5,7 @@ import { recordPriceHistory } from "@/lib/costing/price-history";
 import { recalculateDishVersionsForIngredients, RecalcSummary } from "@/lib/costing/recalc";
 import { SheetRow, SYNCED_SUPPLIERS } from "./order-sheet-rows";
 
-export interface SyncReport {
+interface SyncReport {
   applied: boolean;
   created: { name: string; supplier: string }[];
   priceChanged: { name: string; supplier: string; oldPrice: number; newPrice: number }[];
@@ -19,6 +19,9 @@ export interface SyncReport {
   packMismatch: { name: string; supplier: string; gpPack: string; sheetPack: string; sheetPrice: number }[];
   // Dry run: the dishes that would be recosted. Applied: the dishes that were.
   dishes: PreviewDish[] | RecalcSummary[];
+  // Applied only: dishes and batches that use a changed price but could not be recosted (a recipe line's unit no
+  // longer fits its ingredient). They keep their old cost until someone fixes the line.
+  notRecosted: string[];
 }
 
 // Grams and millilitres are treated alike (the GP already stores liquids such as yoghurt and juice in grams).
@@ -33,7 +36,7 @@ export async function syncOrderSheet(rows: SheetRow[], opts: { apply: boolean; a
   const { apply, actor } = opts;
   // A bad or empty download must never look like "every item was removed from the sheet".
   if (rows.length === 0) throw new Error("The order sheet has no items to sync. Nothing was changed.");
-  const report: SyncReport = { applied: apply, created: [], priceChanged: [], unchanged: 0, removed: [], archivedBecauseUsed: [], needsPackSize: [], packMismatch: [], dishes: [] };
+  const report: SyncReport = { applied: apply, created: [], priceChanged: [], unchanged: 0, removed: [], archivedBecauseUsed: [], needsPackSize: [], packMismatch: [], dishes: [], notRecosted: [] };
   const changedIds: string[] = [];
   const previewChanges = new Map<string, PriceChangeInput>();
 
@@ -127,8 +130,8 @@ export async function syncOrderSheet(rows: SheetRow[], opts: { apply: boolean; a
   }
 
   if (apply) {
-    const outputs = await syncBatchesForIngredients(changedIds, actor);
-    report.dishes = await recalculateDishVersionsForIngredients([...changedIds, ...outputs], actor);
+    const outputs = await syncBatchesForIngredients(changedIds, actor, report.notRecosted);
+    report.dishes = await recalculateDishVersionsForIngredients([...changedIds, ...outputs], actor, report.notRecosted);
   } else {
     report.dishes = await previewPriceChanges(previewChanges);
   }

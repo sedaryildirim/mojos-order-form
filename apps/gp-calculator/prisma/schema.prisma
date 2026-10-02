@@ -109,6 +109,9 @@ model VersionIngredient {
   quantity               Decimal     @db.Decimal(10, 3)
   unit                   RecipeUnit
   lineCostSnapshot       Decimal     @db.Decimal(10, 2)
+
+  @@index([dishVersionId])
+  @@index([ingredientId])
 }
 
 model BatchRecipe {
@@ -137,6 +140,9 @@ model BatchRecipeLine {
   ingredient    Ingredient  @relation(fields: [ingredientId], references: [id])
   quantity      Decimal     @db.Decimal(10, 3)
   unit          RecipeUnit
+
+  @@index([batchRecipeId])
+  @@index([ingredientId])
 }
 
 // One row each time an ingredient's price, pack, yield or supplier changes (plus a baseline row).

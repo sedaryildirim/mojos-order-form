@@ -18,9 +18,15 @@ export interface RecalcSummary {
 // and photo carry forward unchanged from the version it supersedes -- only the
 // cost (and therefore GP) is recalculated. Never touches older versions; the
 // immutable-cost-snapshot rule still holds for any version once it's not latest.
+//
+// A dish that cannot be recosted (a recipe line whose unit family no longer matches
+// its ingredient's purchaseUnit) stays on its existing version -- a human has to fix
+// the line by hand. Its name is pushed onto `skipped` so callers can say so.
+// All new versions are written in one transaction.
 export async function recalculateDishVersionsForIngredients(
   ingredientIds: string[],
-  actorName: string
+  actorName: string,
+  skipped: string[] = []
 ): Promise<RecalcSummary[]> {
   if (ingredientIds.length === 0) return [];
   const changedSet = new Set(ingredientIds);
@@ -39,15 +45,17 @@ export async function recalculateDishVersionsForIngredients(
     const latest = dish.versions[0];
     return latest !== undefined && latest.lines.some((line) => changedSet.has(line.ingredientId));
   });
+  if (affected.length === 0) return [];
+
+  const usedIds = new Set(affected.flatMap((dish) => dish.versions[0].lines.map((line) => line.ingredientId)));
+  const ingredients = await prisma.ingredient.findMany({ where: { id: { in: Array.from(usedIds) } } });
+  const ingredientMap = new Map(ingredients.map((i) => [i.id, i]));
 
   const summaries: RecalcSummary[] = [];
+  const creates: ReturnType<typeof prisma.dishVersion.create>[] = [];
 
   for (const dish of affected) {
     const latest = dish.versions[0];
-    const usedIngredientIds = latest.lines.map((line) => line.ingredientId);
-    const ingredients = await prisma.ingredient.findMany({ where: { id: { in: usedIngredientIds } } });
-    const ingredientMap = new Map(ingredients.map((i) => [i.id, i]));
-
     try {
       const lineData = latest.lines.map((line) => {
         const ingredient = ingredientMap.get(line.ingredientId);
@@ -74,40 +82,38 @@ export async function recalculateDishVersionsForIngredients(
       });
 
       const newCost = lineData.reduce((sum, l) => sum + l.lineCostSnapshot, 0);
+      const sellingPrice = latest.sellingPrice ? Number(latest.sellingPrice) : null;
 
-      await prisma.dishVersion.create({
-        data: {
-          dishId: dish.id,
-          versionNumber: latest.versionNumber + 1,
-          costSnapshot: newCost,
-          sellingPrice: latest.sellingPrice,
-          targetGpPct: latest.targetGpPct,
-          notes: latest.notes,
-          photoUrl: latest.photoUrl,
-          source: "AUTO_PRICE_REFRESH",
-          createdBy: actorName,
-          lines: { create: lineData },
-        },
-      });
-
+      creates.push(
+        prisma.dishVersion.create({
+          data: {
+            dishId: dish.id,
+            versionNumber: latest.versionNumber + 1,
+            costSnapshot: newCost,
+            sellingPrice: latest.sellingPrice,
+            targetGpPct: latest.targetGpPct,
+            notes: latest.notes,
+            photoUrl: latest.photoUrl,
+            source: "AUTO_PRICE_REFRESH",
+            createdBy: actorName,
+            lines: { create: lineData },
+          },
+        })
+      );
       summaries.push({
         dishId: dish.id,
         dishName: dish.name,
         versionNumber: latest.versionNumber + 1,
         oldCost: Number(latest.costSnapshot),
         newCost,
-        sellingPrice: latest.sellingPrice ? Number(latest.sellingPrice) : null,
-        gpPct: gpFromSellingPrice(newCost, latest.sellingPrice ? Number(latest.sellingPrice) : null)?.gpPct ?? null,
+        sellingPrice,
+        gpPct: gpFromSellingPrice(newCost, sellingPrice)?.gpPct ?? null,
       });
     } catch {
-      // A recipe line whose unit family no longer matches its ingredient's
-      // purchaseUnit (e.g. the same import also changed purchaseUnit to an
-      // incompatible family) can't be recosted automatically. Leave that
-      // dish on its existing version rather than guess -- a human needs to
-      // fix the recipe line by hand.
-      continue;
+      skipped.push(dish.name);
     }
   }
 
+  if (creates.length > 0) await prisma.$transaction(creates);
   return summaries;
 }

@@ -2,7 +2,7 @@ import { prisma } from "@/lib/db/prisma";
 import { gpFromSellingPrice, TARGET_GP_PCT } from "@/lib/costing/costing";
 import { dishAttention, findEstimatedIngredientIds, batchAttention } from "@/lib/costing/estimates";
 
-export interface LowGpDish {
+interface LowGpDish {
   id: string;
   name: string;
   cost: number;
@@ -10,7 +10,7 @@ export interface LowGpDish {
   gpPct: number;
 }
 
-export interface HomeSummary {
+interface HomeSummary {
   dishCount: number;
   ingredientCount: number;
   supplierCount: number;
@@ -23,7 +23,7 @@ export interface HomeSummary {
 }
 
 // Everything the home page shows: what to look at first, worst margins at the top.
-export const RECENT_DAYS = 14;
+const RECENT_DAYS = 14;
 
 export async function getHomeSummary(now = new Date()): Promise<HomeSummary> {
   const [dishes, batches, estimatedIds, ingredientCount, supplierCount, estimatedIngredients] = await Promise.all([

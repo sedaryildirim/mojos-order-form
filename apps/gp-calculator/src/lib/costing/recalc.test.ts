@@ -127,10 +127,12 @@ test("skips a dish it can't recost (unit-family mismatch) instead of throwing, a
   await prisma.ingredient.update({ where: { id: eggs.id }, data: { purchaseUnit: "G" } });
   await prisma.ingredient.update({ where: { id: onions.id }, data: { packPrice: 400 } });
 
-  const summary = await recalculateDishVersionsForIngredients([onions.id, eggs.id], "Sedary");
+  const skipped: string[] = [];
+  const summary = await recalculateDishVersionsForIngredients([onions.id, eggs.id], "Sedary", skipped);
 
-  // Onion Soup recosts fine; Omelette is skipped rather than throwing.
+  // Onion Soup recosts fine; Omelette is skipped rather than throwing, and is reported by name.
   expect(summary.map((s) => s.dishId)).toEqual([dish.id]);
+  expect(skipped).toEqual(["Omelette"]);
   const omeletteVersions = await prisma.dishVersion.findMany({ where: { dishId: omelette.id } });
   expect(omeletteVersions).toHaveLength(1);
 });

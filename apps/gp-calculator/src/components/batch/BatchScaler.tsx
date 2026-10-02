@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export interface ScalerLine {
+interface ScalerLine {
   name: string;
   quantity: number;
   unit: string;

@@ -1,5 +1,5 @@
 // Recognises an image by its first bytes, not by the name or type the browser claims.
-export type ImageType = "jpeg" | "png" | "gif" | "webp";
+type ImageType = "jpeg" | "png" | "gif" | "webp";
 
 export function detectImageType(bytes: Uint8Array): ImageType | null {
   const starts = (sig: number[], offset = 0) => sig.every((b, i) => bytes[offset + i] === b);

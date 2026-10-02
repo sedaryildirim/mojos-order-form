@@ -21,6 +21,7 @@ async function main() {
   for (const x of r.needsPackSize) console.log(`  PACK?   ${x.name} (${x.supplier}) is new and its pack size is not in the name`);
   for (const x of r.packMismatch) console.log(`  UNIT?   ${x.name} (${x.supplier}): GP has ${x.gpPack}, sheet has ${x.sheetPack} at ${x.sheetPrice} (left as it is)`);
   for (const x of r.archivedBecauseUsed) console.log(`  ARCHIVED (still used) ${x.name} (${x.supplier})`);
+  for (const n of r.notRecosted) console.log(`  NOT RECALCULATED (a recipe line no longer fits its ingredient's unit): ${n}`);
   console.log(`  dishes ${apply ? "recalculated" : "that would change"}: ${r.dishes.length}`);
   await prisma.$disconnect();
 }

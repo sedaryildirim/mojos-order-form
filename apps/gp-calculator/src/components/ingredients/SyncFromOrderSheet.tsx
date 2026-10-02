@@ -8,7 +8,7 @@ interface Entry {
   name: string;
   supplier: string;
 }
-export interface SyncReportBody {
+interface SyncReportBody {
   applied: boolean;
   created: Entry[];
   priceChanged: (Entry & { oldPrice: number; newPrice: number })[];
@@ -17,6 +17,7 @@ export interface SyncReportBody {
   archivedBecauseUsed: Entry[];
   needsPackSize: Entry[];
   packMismatch: (Entry & { gpPack: string; sheetPack: string; sheetPrice: number })[];
+  notRecosted: string[];
   // A preview names the dish `name`; an applied sync names it `dishName`.
   dishes: { dishId: string; name?: string; dishName?: string; sellingPrice: number | null; oldCost: number; newCost: number }[];
 }
@@ -58,7 +59,7 @@ export function useOrderSheetSync(onSynced?: () => void) {
   };
 }
 
-export type OrderSheetSync = ReturnType<typeof useOrderSheetSync>;
+type OrderSheetSync = ReturnType<typeof useOrderSheetSync>;
 
 // The button sits in the page's action row.
 export function SyncButton({ sync }: { sync: OrderSheetSync }) {
@@ -130,6 +131,9 @@ export function SyncPanel({ sync }: { sync: OrderSheetSync }) {
             </table>
           )}
           {report.archivedBecauseUsed.length > 0 && <p>Archived because a recipe still uses them: {names(report.archivedBecauseUsed)}</p>}
+          {report.notRecosted.length > 0 && (
+            <p role="alert">Not recalculated, because a recipe line no longer fits its ingredient&apos;s unit: {report.notRecosted.join(", ")}</p>
+          )}
           {report.needsPackSize.length > 0 && <p>New items that need a pack size: {names(report.needsPackSize)}</p>}
           {!report.applied && (
             <button type="button" disabled={busy} onClick={sync.apply}>

@@ -22,7 +22,7 @@ test("round-trips through parseImportRows unchanged", () => {
   const buffer = buildIngredientTemplateWorkbook([
     { name: "Milk", category: "Dairy", supplier: "Fresh Farms Co", purchaseUnit: "ML", packQuantity: 1000, packPrice: 45, yieldPct: 100 },
   ]);
-  const rows = parseImportRows(buffer, "template.xlsx");
+  const rows = parseImportRows(buffer);
   expect(rows).toEqual([
     { name: "Milk", category: "Dairy", supplier: "Fresh Farms Co", purchaseUnit: "ML", packQuantity: "1000", packPrice: "45", yieldPct: "100" },
   ]);
@@ -30,6 +30,6 @@ test("round-trips through parseImportRows unchanged", () => {
 
 test("produces just the header row with no data rows when there are no ingredients", () => {
   const buffer = buildIngredientTemplateWorkbook([]);
-  const rows = parseImportRows(buffer, "template.xlsx");
+  const rows = parseImportRows(buffer);
   expect(rows).toEqual([]);
 });

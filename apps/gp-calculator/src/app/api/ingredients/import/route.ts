@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
 
   let rows;
   try {
-    rows = parseImportRows(buffer, file.name);
+    rows = parseImportRows(buffer);
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     return NextResponse.json({ error: `Could not read this file (${message}). Check that it matches the template from Download template.` }, { status: 400 });

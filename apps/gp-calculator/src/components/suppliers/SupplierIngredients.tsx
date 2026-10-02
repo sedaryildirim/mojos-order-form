@@ -9,7 +9,7 @@ import { formatTHB } from "@/lib/costing/currency";
 import { packLabel, unitWord } from "@/lib/costing/unit-price";
 import { safeFetch, apiError } from "@/lib/client/api";
 
-export interface SupplierIngredientRow {
+interface SupplierIngredientRow {
   id: string;
   name: string;
   category: string;

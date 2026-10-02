@@ -2,9 +2,9 @@
 const PUBLIC_PREFIXES = ["/api/auth/", "/share/", "/_next/", "/locked"];
 const PUBLIC_EXACT = ["/favicon.ico"];
 
-export type Access = "allow" | "lock-page" | "deny-api";
+type Access = "allow" | "lock-page" | "deny-api";
 
-export function isPublicPath(pathname: string): boolean {
+function isPublicPath(pathname: string): boolean {
   return PUBLIC_EXACT.includes(pathname) || PUBLIC_PREFIXES.some((p) => pathname === p.replace(/\/$/, "") || pathname.startsWith(p));
 }
 

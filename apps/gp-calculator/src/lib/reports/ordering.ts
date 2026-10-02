@@ -2,7 +2,7 @@ import { prisma } from "@/lib/db/prisma";
 import { convert, Unit } from "@/lib/costing/units";
 import { findEstimatedIngredientIds } from "@/lib/costing/estimates";
 
-export interface PlanItem {
+interface PlanItem {
   kind: "dish" | "batch";
   id: string;
   // dish: number of portions to make; batch: number of batches
@@ -22,13 +22,13 @@ export interface OrderLine {
   estimated: boolean;
 }
 
-export interface SupplierOrder {
+interface SupplierOrder {
   supplier: string;
   lines: OrderLine[];
   orderCost: number;
 }
 
-export interface OrderPlan {
+interface OrderPlan {
   suppliers: SupplierOrder[];
   totalOrderCost: number;
   totalUseCost: number;

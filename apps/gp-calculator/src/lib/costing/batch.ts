@@ -3,7 +3,7 @@ import { lineCost } from "./costing";
 import { batchPortions } from "./batch-math";
 import { recordPriceHistory } from "./price-history";
 
-export const HOUSE_MADE_SUPPLIER = "House-Made";
+const HOUSE_MADE_SUPPLIER = "House-Made";
 
 interface CostableLine {
   quantity: unknown;
@@ -104,13 +104,14 @@ export async function syncBatchOutput(batchId: string, actor: string): Promise<s
 // After ingredient prices change: re-sync every batch that uses one of them (and,
 // since a batch can use another batch's output, repeat until nothing new changes).
 // Returns the output-ingredient ids whose price changed, so callers can recost dishes.
-export async function syncBatchesForIngredients(changedIngredientIds: string[], actor: string): Promise<string[]> {
+// Batches that cannot be recosted are left as they are and their names pushed onto `skipped`.
+export async function syncBatchesForIngredients(changedIngredientIds: string[], actor: string, skipped: string[] = []): Promise<string[]> {
   const changedOutputs = new Set<string>();
   let frontier = new Set(changedIngredientIds);
   for (let round = 0; round < 5 && frontier.size > 0; round++) {
     const batches = await prisma.batchRecipe.findMany({
       where: { lines: { some: { ingredientId: { in: Array.from(frontier) } } } },
-      select: { id: true },
+      select: { id: true, name: true },
     });
     const next = new Set<string>();
     for (const b of batches) {
@@ -121,7 +122,8 @@ export async function syncBatchesForIngredients(changedIngredientIds: string[], 
           next.add(out);
         }
       } catch {
-        // a batch line whose unit no longer fits its ingredient can't be recosted; leave it as-is
+        // a batch line whose unit no longer fits its ingredient can't be recosted; leave it as-is and say so
+        if (!skipped.includes(b.name)) skipped.push(b.name);
       }
     }
     frontier = next;

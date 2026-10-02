@@ -4,7 +4,7 @@ import { comparableName } from "./ingredient-compare";
 import { syncBatchesForIngredients } from "./batch";
 import { recalculateDishVersionsForIngredients, RecalcSummary } from "./recalc";
 
-export interface CheaperAlternative {
+interface CheaperAlternative {
   id: string;
   name: string;
   supplier: string;
@@ -31,7 +31,7 @@ export async function findCheaperAlternative(ingredientId: string): Promise<Chea
   return { id: best.id, name: best.name, supplier: best.supplier.name, pctCheaper: Math.round((1 - unitPrice(best) / unitPrice(me)) * 100) };
 }
 
-export interface SwitchResult {
+interface SwitchResult {
   dishesSwitched: number;
   batchesSwitched: number;
   recalculated: RecalcSummary[];

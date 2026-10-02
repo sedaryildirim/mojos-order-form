@@ -1,6 +1,6 @@
 import * as XLSX from "xlsx";
 
-export interface IngredientTemplateRow {
+interface IngredientTemplateRow {
   name: string;
   category: string;
   supplier: string;

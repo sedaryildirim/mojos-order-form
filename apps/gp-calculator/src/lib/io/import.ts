@@ -17,7 +17,7 @@ export interface RawRow {
   yieldPct: string;
 }
 
-export interface ImportResult {
+interface ImportResult {
   created: number;
   updated: number;
   skipped: { row: number; reason: string }[];
@@ -32,8 +32,7 @@ export interface ImportResult {
   confirmed: number;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- filename is part of the required public signature (kept for future format-specific handling / logging) though XLSX.read auto-detects format from the buffer itself
-export function parseImportRows(fileBuffer: Buffer, filename: string): RawRow[] {
+export function parseImportRows(fileBuffer: Buffer): RawRow[] {
   const workbook = XLSX.read(fileBuffer, { type: "buffer" });
   const sheet = workbook.Sheets[workbook.SheetNames[0]];
   // raw: true (the default) returns each cell's underlying value rather than its
@@ -82,7 +81,7 @@ function parseRow(row: RawRow): ParsedRow {
   };
 }
 
-export interface ImportPreview {
+interface ImportPreview {
   created: number;
   updated: number;
   confirmed: number;

@@ -10,10 +10,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "backup": "tsx scripts/backup.ts",
-    "sync:order-sheet": "tsx scripts/sync-order-sheet.ts",
-    "map:ingredients": "tsx scripts/apply-ingredient-mapping.ts",
-    "prune:ingredients": "tsx scripts/prune-unmanaged-ingredients.ts",
-    "import:food-bible": "tsx scripts/import-food-bible.ts"
+    "sync:order-sheet": "tsx scripts/sync-order-sheet.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",

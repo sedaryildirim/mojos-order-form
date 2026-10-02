@@ -1,4 +1,4 @@
-export interface PackSize {
+interface PackSize {
   purchaseUnit: "G" | "ML" | "EACH";
   packQuantity: number;
   needsPackSize: boolean;

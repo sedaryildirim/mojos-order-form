@@ -72,6 +72,7 @@ export function SpecSheet({
 
       <div data-spec-main>
       {version.notes && <p>{version.notes}</p>}
+      {/* eslint-disable-next-line @next/next/no-img-element -- photos are uploaded blob URLs of unknown size; next/image needs known hosts */}
       {version.photoUrl && <img src={version.photoUrl} alt={version.dish.name} />}
 
       {beforeTable}

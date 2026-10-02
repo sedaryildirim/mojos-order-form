@@ -72,6 +72,19 @@ test("re-syncing after an ingredient price change reports the output as changed;
   expect(Number(out?.packPrice)).toBeCloseTo(40, 5);
 });
 
+test("a batch it cannot recost is reported by name instead of skipped silently", async () => {
+  const { flour } = await setup();
+  const batch = await makeBatch([{ ingredientId: flour.id, quantity: 500, unit: "G" }]);
+  await syncBatchOutput(batch.id, "Sedary");
+  // the pack is now counted in EACH, so a gram line can no longer be costed
+  await prisma.ingredient.update({ where: { id: flour.id }, data: { purchaseUnit: "EACH" } });
+
+  const skipped: string[] = [];
+  const changed = await syncBatchesForIngredients([flour.id], "Sedary", skipped);
+  expect(changed).toEqual([]);
+  expect(skipped).toEqual(["Brioche Bun"]);
+});
+
 test("a batch that uses another batch's output cascades a price change through both", async () => {
   const { flour } = await setup();
   const dough = await makeBatch([{ ingredientId: flour.id, quantity: 1000, unit: "G" }], { name: "Dough", yieldQuantity: 1000, yieldUnit: "G" });

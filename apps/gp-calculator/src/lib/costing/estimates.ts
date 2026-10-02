@@ -52,7 +52,7 @@ export function dishAttention(
   return result;
 }
 
-export const NO_INGREDIENTS = "No ingredients yet";
+const NO_INGREDIENTS = "No ingredients yet";
 
 // Same idea for batch recipes: the estimated ingredients among their lines (which includes
 // other batches that are themselves estimated), or NO_INGREDIENTS for an empty draft.
@@ -72,8 +72,8 @@ export function batchAttention(
   return result;
 }
 
-export const ESTIMATED_PRICE = "Price is a guess";
-export const BATCH_ESTIMATED = "Batch uses guessed prices";
+const ESTIMATED_PRICE = "Price is a guess";
+const BATCH_ESTIMATED = "Batch uses guessed prices";
 
 // Why an ingredient's price can't be trusted yet, or null when it's a real price.
 export function estimateNote(ingredient: { id: string; priceEstimated: boolean }, estimated: Set<string>): string | null {
