@@ -1,0 +1,24 @@
+# Kaif Food Bible import
+
+`kaif-food-bible.txt` is the recipe source (35 dishes and 17 batch recipes, 380 ingredient lines). A copy lives at
+`apps/gp-calculator/src/data/food-bible.txt`, which is the one the importer reads.
+
+Imported on 2026-10-02 with `npm run import:food-bible -- --backup <backup.json> --apply` (dry run without `--apply`).
+It only runs on an empty start: it refuses if the database already has dishes or batch recipes.
+
+## How lines are turned into costs
+
+- Every phrase is mapped in `apps/gp-calculator/src/data/food-bible-map.json`: to a Kaif ingredient (`"Supplier|Name"`), to one of
+  the bible's own batch recipes, to a mix split by share, to a **flagged estimate** (not on the Kaif list), or skipped (water).
+- `40g cheddar, brie` is 40 g of **each**. Words like `scrambled`, `poached`, `skin off` are ignored.
+- `A OR B` costs the **dearest** option. `(optional)` lines are left out, and `CAESAR SALAD` also gets a second dish,
+  *Chicken Caesar Salad*, that includes the chicken.
+- A recipe written in grams for a liquid costs it in millilitres (1 g = 1 ml). `1 bun` is one portion of the bun batch recipe.
+- Where a batch gives no yield, the yield is the weight of its ingredients (an egg counts 55 g).
+- Menu prices and categories come from the previous dishes by name (spelling differences like "Harrisa" are matched).
+
+## Estimates that still need a real price
+
+These have no price anywhere yet, so they cost 0 and their dishes show "guessed prices": Baking Powder, Baking Soda, Caesar Dressing,
+Chicken Schnitzel, Coffee, Cold Milk, Croutons, Date Sauce, Emulsifier, Lady Fingers, Raisins, Starter. The other flagged estimates
+(Hollandaise, Hummus, Falafel and so on) start at the guessed prices from the old data. Edit each one on the Ingredients page.
