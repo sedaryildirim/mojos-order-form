@@ -630,6 +630,8 @@ a:has(h3) div:has(> [data-stat]) { margin-top: auto; padding-top: var(--space-3)
 a:has(h3) > div > div:first-child > span { display: inline-flex; align-items: center; gap: var(--space-2); flex-shrink: 0; }
 
 /* Flags beside an ingredient name, e.g. "Estimated price" */
+/* A price with a unit badge after it: the number gets a fixed slot so the badges line up down the column. */
+td > data[data-amount] { display: inline-block; min-width: 7rem; }
 td > a + span, td > span {
   display: inline-block;
   margin-left: var(--space-2);

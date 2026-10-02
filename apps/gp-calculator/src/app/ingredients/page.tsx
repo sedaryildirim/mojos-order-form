@@ -377,7 +377,7 @@ function IngredientTable({ rows, cheaper }: { rows: IngredientRow[]; cheaper: Ma
                 </td>
                 <td>{formatTHB(Number(i.packPrice))}</td>
                 <td>
-                  {formatTHB(up.value)} <span>{up.label}</span>
+                  <data value={up.value} data-amount>{formatTHB(up.value)}</data> <span>{up.label}</span>
                 </td>
               </tr>
             );
