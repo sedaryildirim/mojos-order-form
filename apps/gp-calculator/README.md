@@ -27,8 +27,7 @@ src/
     client/               Browser-side helpers: actor, flash, api (safeFetch), site links, view mode
     auth/                 Sign-in: config, signed session, access rules, rate limit
     db/                   Prisma client and validation schemas
-  data/                   order-sheet-packs.json (pack-size exceptions), food-bible-map.json (recipe phrase -> ingredient);
-                          the recipe text itself is a git-ignored local file
+  data/                   order-sheet-packs.json (pack-size exceptions)
 prisma/                 Schema and migrations
 scripts/                Command-line tools (see "Commands")
 ```
@@ -52,9 +51,6 @@ All commands that write are dry runs unless you add `--apply`. They need `DATABA
 
 ```bash
 npm run sync:order-sheet [-- --apply] [-- --file ../web/config/data.js]
-npm run map:ingredients -- <mapping.json> [--apply]     # point recipes at another ingredient
-npm run prune:ingredients [-- --apply]                  # one-time cleanup of unused non-sheet ingredients
-npm run import:food-bible -- --backup <file> [--apply]  # one-time recipe import, empty database only
 npm run backup                                          # JSON backup of every table into backups/
 ```
 
@@ -87,6 +83,5 @@ The Food Bible parser also has tests against the real recipe file, which only ru
 ## Docs
 
 - `PRODUCT.md`, `DESIGN.md`: product intent and how the shared design system is applied.
-- `../../docs/gp-calculator/`: original spec and plans (historical).
-- `../../docs/superpowers/`: specs and plans for the order-sheet sync and the master folder.
+- `../../docs/archive/`: original spec and plans, and the specs and plans for the order-sheet sync and the master folder (historical).
 - `../../docs/food-bible/`: notes on the one-time recipe import.

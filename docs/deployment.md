@@ -17,7 +17,7 @@ It needs a server, so GitHub Pages cannot host it. Vercel is the simplest fit (i
 3. Set `GP_PASSWORD` and `GP_SESSION_SECRET` (required in production: without them nobody can sign in), plus `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `BLOB_READ_WRITE_TOKEN` (see `apps/gp-calculator/.env.example`).
 4. Optional: set `ORDER_SHEET_URL` if the order sheet is published somewhere other than `https://sedaryildirim.github.io/mojos-order-form/config/data.js`. The **Sync from order sheet** button downloads from this address only.
 5. Deploy with the project root set to `apps/gp-calculator`.
-6. On a brand-new database, open **Ingredients** and press **Sync from order sheet** (preview, then Apply) to load the Kaif ingredient list. Recipes are not in the repository; import them from your own copy with `npm run import:food-bible` (see [food-bible/README.md](food-bible/README.md)) while the database is still empty of dishes.
+6. On a brand-new database, open **Ingredients** and press **Sync from order sheet** (preview, then Apply) to load the Kaif ingredient list. Recipes are not in the repository. To move them to a new database, restore a `pg_dump` of the current one (see `npm run backup` and the root README) rather than re-importing; the one-time Food Bible importer has been removed (see [food-bible/README.md](food-bible/README.md)).
 
 After any release that changes the database schema, restart the server: a running Next.js server keeps the old Prisma client until it restarts.
 

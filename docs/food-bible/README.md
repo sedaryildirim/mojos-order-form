@@ -1,15 +1,13 @@
-# Kaif Food Bible import
+# Kaif Food Bible import (done)
 
 The recipe source is `kaif-food-bible.txt` (35 dishes and 17 batch recipes, 380 ingredient lines). **It is kept on the owner's machine only**: the
-repository is public, so the recipes (and the trial cost report) are git-ignored and never pushed. A copy at
-`apps/gp-calculator/src/data/food-bible.txt` is the one the importer reads. The tests use the invented `src/lib/import/sample-bible.txt` instead.
+repository is public, so the recipes (and the trial cost report) are git-ignored and never pushed. 
 
-Imported on 2026-10-02 with `npm run import:food-bible -- --backup <backup.json> --apply` (dry run without `--apply`).
-It only runs on an empty start: it refuses if the database already has dishes or batch recipes.
+Imported on 2026-10-02. The one-time importer (parser, phrase map and `npm run import:food-bible`) has since been removed from the code as it had done its job; it is in git history at commit `749028f` if ever needed. To move recipes to another database, restore a `pg_dump`.
 
-## How lines are turned into costs
+## How lines were turned into costs (for reference)
 
-- Every phrase is mapped in `apps/gp-calculator/src/data/food-bible-map.json`: to a Kaif ingredient (`"Supplier|Name"`), to one of
+- Every phrase was mapped: to a Kaif ingredient (`"Supplier|Name"`), to one of
   the bible's own batch recipes, to a mix split by share, to a **flagged estimate** (not on the Kaif list), or skipped (water).
 - `40g cheddar, brie` is 40 g of **each**. Words like `scrambled`, `poached`, `skin off` are ignored.
 - `A OR B` costs the **dearest** option. `(optional)` lines are left out, and `CAESAR SALAD` also gets a second dish,

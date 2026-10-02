@@ -26,8 +26,7 @@ docs/
   architecture.md         How the two apps fit together and link to each other
   deployment.md           Hosting each app, and the settings that link them
   food-bible/             Notes on the one-time recipe import (the recipes themselves are not in git)
-  gp-calculator/          Original GP spec and implementation plans (historical)
-  superpowers/            Specs and plans for the master folder and the order-sheet sync
+  archive/                Historical specs and plans (original GP build, master folder, order-sheet sync)
 scripts/
   setup.sh, stop.sh       One-time setup; stop the local servers
   dev.sh, dev/            Local dev server: site and GP Calculator on one port
@@ -76,9 +75,6 @@ Run these in `apps/gp-calculator` (they need `DATABASE_URL`; load it from `.env.
 | Command | What it does |
 |---|---|
 | `npm run sync:order-sheet [-- --apply] [-- --file <path>]` | Pull the Kaif order sheet into the ingredient list (see above) |
-| `npm run map:ingredients -- <mapping.json> [--apply]` | Point every recipe that uses one ingredient at another (same quantities; dishes get a new version) |
-| `npm run prune:ingredients [-- --apply]` | One-time cleanup: delete ingredients not on the Kaif sheet that nothing uses, archive ones only old versions use |
-| `npm run import:food-bible -- --backup <file> [--apply]` | One-time recipe import into an **empty** database (see [docs/food-bible](docs/food-bible/README.md)) |
 | `npm run backup` | JSON backup of every table into `backups/` (use `pg_dump` for a restorable copy) |
 
 Take a `pg_dump` before anything that writes in bulk, and confirm it restores into a scratch database.
@@ -87,7 +83,7 @@ Take a `pg_dump` before anything that writes in bulk, and confirm it restores in
 
 The GitHub repository is **public**. Never commit:
 
-- **Recipes, dish costs, menu prices or cost reports.** The Food Bible text (`docs/food-bible/kaif-food-bible.txt`, `apps/gp-calculator/src/data/food-bible.txt`) and `docs/superpowers/plans/*-sync-trial-report.md` are git-ignored local files; the tests use an invented sample.
+- **Recipes, dish costs, menu prices or cost reports.** The Food Bible text (`docs/food-bible/kaif-food-bible.txt`) and `docs/archive/superpowers/plans/*-sync-trial-report.md` are git-ignored local files; the tests use an invented sample.
 - **Backups and database dumps** (`apps/gp-calculator/backups/`) or **`.env` files**: both are git-ignored.
 - **Passwords or database logins.**
 

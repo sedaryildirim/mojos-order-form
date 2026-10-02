@@ -7,5 +7,4 @@
 
 # Recipes and cost reports stay on this machine (the repository is public)
 /docs/food-bible/kaif-food-bible.txt
-/apps/gp-calculator/src/data/food-bible.txt
-/docs/superpowers/plans/*-sync-trial-report.md
+/docs/archive/superpowers/plans/*-sync-trial-report.md
