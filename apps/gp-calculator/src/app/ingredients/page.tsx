@@ -126,19 +126,22 @@ export default function IngredientsPage() {
       <PageTitle title="Ingredients" />
       <div>
         <h1>Ingredients</h1>
-        <div>
+        {/* The links stay alone in their own div: the app styles a div of only links as a row of buttons. */}
+        <div data-header-actions>
           <SyncButton sync={sync} />
-          <Link href="/ingredients/import">
-            Import prices
-          </Link>
-          <a
-            href="/api/ingredients/export"
-          >
-            Download template
-          </a>
-          <Link href="/ingredients/new">
-            New ingredient
-          </Link>
+          <div>
+            <Link href="/ingredients/import">
+              Import prices
+            </Link>
+            <a
+              href="/api/ingredients/export"
+            >
+              Download template
+            </a>
+            <Link href="/ingredients/new">
+              New ingredient
+            </Link>
+          </div>
         </div>
       </div>
 
