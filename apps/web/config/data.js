@@ -4147,30 +4147,30 @@ const DATA = {
         "items": [
           {
             "id": "drk-coke-300glass",
-            "name": "Coke 300 ml Return Glass Bottle (+259 THB deposit/case)",
-            "unit": "Case (24 Bottles)",
-            "price": 195,
+            "name": "Coke 300 ml Return Glass Bottle (+259 THB deposit per 24-bottle case)",
+            "unit": "Bottle",
+            "price": 8.125,
             "par": null
           },
           {
             "id": "drk-cokezero-300glass",
-            "name": "Coke Zero 300 ml Return Glass Bottle (+259 THB deposit/case)",
-            "unit": "Case (24 Bottles)",
-            "price": 195,
+            "name": "Coke Zero 300 ml Return Glass Bottle (+259 THB deposit per 24-bottle case)",
+            "unit": "Bottle",
+            "price": 8.125,
             "par": null
           },
           {
             "id": "drk-sprite-300glass",
-            "name": "Sprite 300 ml Return Glass Bottle (+259 THB deposit/case)",
-            "unit": "Case (24 Bottles)",
-            "price": 195,
+            "name": "Sprite 300 ml Return Glass Bottle (+259 THB deposit per 24-bottle case)",
+            "unit": "Bottle",
+            "price": 8.125,
             "par": null
           },
           {
             "id": "drk-fantaorange-300glass",
-            "name": "Fanta Orange 300 ml Return Glass Bottle (+259 THB deposit/case)",
-            "unit": "Case (24 Bottles)",
-            "price": 195,
+            "name": "Fanta Orange 300 ml Return Glass Bottle (+259 THB deposit per 24-bottle case)",
+            "unit": "Bottle",
+            "price": 8.125,
             "par": null
           }
         ]
@@ -4282,22 +4282,22 @@ const DATA = {
           {
             "id": "drk-namthip-15l",
             "name": "Namthip Water 1.5 L Plastic Bottle",
-            "unit": "Pack (6 Bottles)",
-            "price": 45,
+            "unit": "Bottle",
+            "price": 7.5,
             "par": null
           },
           {
             "id": "drk-namthip-550",
             "name": "Namthip Water 550 ml Plastic Bottle",
-            "unit": "Pack (12 Bottles)",
-            "price": 45,
+            "unit": "Bottle",
+            "price": 3.75,
             "par": null
           },
           {
             "id": "drk-namthip-350",
             "name": "Namthip Water 350 ml Plastic Bottle",
-            "unit": "Pack (12 Bottles)",
-            "price": 42,
+            "unit": "Bottle",
+            "price": 3.5,
             "par": null
           }
         ]
