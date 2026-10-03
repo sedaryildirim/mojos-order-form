@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { SupplierForm, SupplierFormValues } from "@/components/suppliers/SupplierForm";
 import { setFlash } from "@/lib/client/flash";
 import { safeFetch } from "@/lib/client/api";
+import { PageTitle } from "@/components/layout/PageTitle";
 
 export default function NewSupplierPage() {
   const router = useRouter();
@@ -23,6 +24,7 @@ export default function NewSupplierPage() {
 
   return (
     <main>
+      <PageTitle title="New supplier" />
       <h1>New supplier</h1>
       <div>
         <SupplierForm onSubmit={handleSubmit} />

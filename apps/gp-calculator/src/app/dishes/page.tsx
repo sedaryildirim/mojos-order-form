@@ -28,6 +28,7 @@ interface DishRow {
   id: string;
   name: string;
   category: string;
+  badge: string | null;
   versions: Version[];
   attention: string[];
 }
@@ -205,11 +206,14 @@ function DishCard({ dish }: { dish: DishRow }) {
       <div>
         <div>
           <h3>{dish.name}</h3>
-          {latest && (
+          {(dish.badge || latest) && (
             <span>
-              <span>
-                v{latest.versionNumber}
-              </span>
+              {dish.badge && <data data-badge={dish.badge}>{dish.badge}</data>}
+              {latest && (
+                <span>
+                  v{latest.versionNumber}
+                </span>
+              )}
             </span>
           )}
         </div>
@@ -223,8 +227,6 @@ function DishCard({ dish }: { dish: DishRow }) {
                 }`}
           </p>
         )}
-
-        {!latest && <p>No recipe yet</p>}
 
         {latest && (
           <>
@@ -351,6 +353,7 @@ function DishTable({ rows }: { rows: DishRow[] }) {
                   <Link href={`/dishes/${d.id}`}>
                     {d.name}
                   </Link>
+                  {d.badge && <data data-badge={d.badge}>{d.badge}</data>}
                 </td>
                 <td>{d.category}</td>
                 <td>{cost !== null ? formatTHB(cost) : "n/a"}</td>

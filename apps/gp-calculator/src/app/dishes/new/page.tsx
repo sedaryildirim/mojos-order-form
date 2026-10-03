@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { safeFetch, apiError } from "@/lib/client/api";
 import { LIMITS } from "@/lib/db/validation";
 import { ACTOR } from "@/lib/client/actor";
+import { PageTitle } from "@/components/layout/PageTitle";
 
 export default function NewDishPage() {
   const router = useRouter();
@@ -34,6 +35,7 @@ export default function NewDishPage() {
 
   return (
     <main>
+      <PageTitle title="New dish" />
       <h1>New dish</h1>
       <div>
         <div>

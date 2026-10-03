@@ -65,9 +65,9 @@ main > div:has(> div > label) label { margin-bottom: var(--space-2); }
 /* Hint text under a field */
 input + p, select + p, textarea + p { margin: var(--space-2) 0 0; font-size: 13px; color: var(--muted-foreground); }
 
-/* Pick-lists: a list of buttons */
-ul:has(> li > button) { list-style: none; padding: 0; display: grid; gap: var(--space-2); max-height: 320px; overflow-y: auto; }
-ul:has(> li > button) button { width: 100%; justify-content: flex-start; text-align: left; font-weight: 500; }
+/* Pick-lists: a list whose items are a lone button (not rows that merely contain one, like recipe lines) */
+ul:has(> li > button:only-child) { list-style: none; padding: 0; display: grid; gap: var(--space-2); max-height: 320px; overflow-y: auto; }
+ul:has(> li > button:only-child) button { width: 100%; justify-content: flex-start; text-align: left; font-weight: 500; }
 
 /* Messages */
 [role="alert"] {
@@ -128,3 +128,79 @@ div[role="group"][aria-label="Layout"] button:last-child { border-radius: 0 var(
 div[role="group"]:not([aria-label="Layout"]) { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); }
 div[role="group"]:not([aria-label="Layout"]) p { margin: 0 var(--space-2) 0 0; font-weight: 500; }
 
+
+/* Form footer: the submit button and its Cancel link sit in one row with a gap, and any button
+   that follows the form (e.g. "Archive this ingredient") gets space above it. */
+form > div:has(> button[type="submit"]) { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4); }
+form + button, form + div[role="group"] { margin-top: var(--space-4); }
+
+/* ============ Batch recipe pages: one column width, aligned rows ============ */
+/* chart, "Scale this batch", the form and its buttons all share the form's width, so their edges line up */
+[data-batch-page] [data-gp-chart], [data-batch-page] > details, [data-batch-page] > div:has(> form) { max-width: 760px; }
+
+/* header fields: name + category on one row, then yield / portion size / menu price on three equal columns */
+[data-row="2"] { grid-template-columns: 2fr 1fr; }
+[data-row="3"] { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+[data-row] > div > label { display: block; margin-bottom: var(--space-2); }
+[data-row] > div > label > span { white-space: nowrap; }
+/* number + unit side by side */
+[data-pair] { display: grid; grid-template-columns: minmax(0, 1fr) 9.5rem; gap: var(--space-2); }
+
+/* ingredient picker: the two filters share a row, search takes the full width, and every part is spaced */
+[data-picker] > div:first-child { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+[data-picker] > div:first-child > div:last-child { grid-column: 1 / -1; }
+[data-picker] label { display: block; margin-bottom: var(--space-2); }
+[data-picker] > * + * { margin-top: var(--space-4); }
+
+/* recipe lines: name | quantity | unit | remove, in the same columns on every row */
+[data-lines] { margin-top: var(--space-4); }
+[data-lines] > li { display: grid; grid-template-columns: minmax(0, 1fr) 8rem 6rem auto; gap: var(--space-3); align-items: center; }
+[data-lines] > li > :is(input, select) { width: 100%; }
+[data-lines] > li > button { width: auto; }
+
+@media (max-width: 640px) {
+  [data-row="2"], [data-row="3"], [data-picker] > div:first-child { grid-template-columns: 1fr; }
+  [data-lines] > li { grid-template-columns: minmax(0, 1fr) 6rem auto; }
+  [data-lines] > li > span:first-child { grid-column: 1 / -1; }
+}
+
+/* Batch form flow: summary strip and chart on top, recipe lines, then an "Add ingredient" button that opens the picker */
+[data-summary] dl { margin: 0; }
+
+[data-add] { margin-top: var(--space-4); }
+[data-add] + [data-picker] { margin-top: var(--space-4); }
+
+/* Save bar stays pinned to the bottom of the screen while a long recipe scrolls */
+[data-save-bar] { position: sticky; bottom: 0; z-index: 5; padding: var(--space-3) 0; background: var(--background); border-top: 1px solid var(--border); }
+[data-save-bar] > button { flex: 1; }
+[data-batch-page] form [data-gp-chart] { margin-block: 0; } /* inside the form the grid gap already spaces the chart */
+/* the warning boxes above the form share the column width too */
+[data-batch-page] > :is(div[role="alert"], p[role="alert"]) { max-width: 760px; }
+
+/* polish: tag beside an ingredient name, breathing room under the title, no empty gaps */
+[data-lines] > li > span:first-child > span {
+  display: inline-block; margin-left: var(--space-2); padding: 1px var(--space-2);
+  border: 1px solid var(--danger); border-radius: 999px; background: var(--danger-bg);
+  font-size: 12px; font-weight: 500; color: var(--foreground);
+}
+[data-batch-page] > h1 + form { margin-top: var(--space-4); }
+[data-lines]:empty, [data-batch-page] div[aria-live]:empty { display: none; }
+[data-batch-page] > h1 + div:has(> form) { margin-top: var(--space-4); }
+
+/* Touch screens: everything you tap gets a 44px hit area: table sort buttons, links on their own (table cells,
+   list items, recipe lines, back links), the rows that open a section, the export menu and the file picker */
+@media (pointer: coarse) {
+  table th button { min-height: 44px; min-width: 44px; }
+  main :is(td, li, div) > a, main > a, main p > a:only-child, [data-lines] a { display: inline-flex; align-items: center; min-height: 44px; min-width: 44px; }
+  html nav[aria-label="Main"] a, html nav[aria-label="Main"] a[data-home], html nav[aria-label="Main"] button { min-height: 44px; }
+  html nav[aria-label="Main"] button[aria-label*="mode" i], html nav[aria-label="Main"] button[title*="mode" i] { min-width: 44px; }
+  nav[aria-label="Main"] > div > div:first-of-type a { display: inline-flex; align-items: center; }
+  summary { padding-block: 12px; }
+  main [data-menu] > div > a, [data-menu] button { min-height: 44px; }
+  input[type="file"] { min-height: 44px; }
+  label:has(> input[type="checkbox"]) { display: flex; align-items: center; gap: var(--space-2); min-height: 44px; }
+  input[type="checkbox"] { width: 24px; height: 24px; }
+}
+
+/* grid children may shrink below their content, so a wide table inside the chart scrolls instead of stretching the page */
+form > * { min-width: 0; }

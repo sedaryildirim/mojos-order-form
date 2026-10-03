@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { IngredientPicker, PickableIngredient } from "@/components/ingredients/IngredientPicker";
 import { dishVersionCost, RecipeLine } from "@/lib/costing/costing";
 import { batchPortions } from "@/lib/costing/batch-math";
@@ -49,6 +49,7 @@ export function BatchRecipeForm({
   submitting,
   lockYieldUnit,
   estimateOverrides,
+  chart,
 }: {
   suppliers: { id: string; name: string }[];
   categories: string[];
@@ -67,7 +68,11 @@ export function BatchRecipeForm({
   lockYieldUnit?: boolean;
   // fresher estimate flags than the ones the lines were loaded with (ingredientId -> note or null)
   estimateOverrides?: Record<string, string | null>;
+  // shown directly under the summary strip (the GP history chart on a saved batch)
+  chart?: ReactNode;
 }) {
+  // the add-ingredient list is tucked away once a recipe has lines; an empty recipe starts with it open
+  const [pickerOpen, setPickerOpen] = useState((initial?.lines.length ?? 0) === 0);
   const [name, setName] = useState(initial?.name ?? "");
   const [category, setCategory] = useState(initial?.category ?? "Bakery");
   const [yieldQuantity, setYieldQuantity] = useState<number | undefined>(initial?.yieldQuantity);
@@ -164,7 +169,37 @@ export function BatchRecipeForm({
 
   return (
     <form onSubmit={handleSubmit}>
-      <section data-row>
+      <section data-summary>
+        {costError ? (
+          <p>A line uses a unit that doesn&apos;t match its ingredient. Fix its unit before saving.</p>
+        ) : (
+          <dl>
+            <div>
+              <dt>Batch cost</dt>
+              <dd>{formatTHB(cost)}</dd>
+            </div>
+            <div>
+              <dt>Cost {perUnitLabel}</dt>
+              <dd>{perUnit !== null ? formatTHB(perUnit) : "Set the yield"}</dd>
+            </div>
+            {portions !== null && yieldUnit !== "EACH" && (
+              <>
+                <div>
+                  <dt>Portions</dt>
+                  <dd>{Math.floor(portions * 10) / 10}</dd>
+                </div>
+                <div>
+                  <dt>Cost per portion</dt>
+                  <dd>{perPortion !== null ? formatTHB(perPortion) : "n/a"}</dd>
+                </div>
+              </>
+            )}
+          </dl>
+        )}
+      </section>
+
+      {chart}
+      <section data-row="2">
         <div>
           <label htmlFor="name">Batch name</label>
           <input id="name" maxLength={LIMITS.name} required value={name} onChange={(e) => setName(e.target.value)}
@@ -178,9 +213,11 @@ export function BatchRecipeForm({
             {Array.from(new Set(["Bakery", "Bread", "Sauces & Prep", ...categories])).map((c) => <option key={c} value={c} />)}
           </datalist>
         </div>
+      </section>
+      <section data-row="3">
         <div>
           <label htmlFor="yieldQuantity">This batch makes</label>
-          <div>
+          <div data-pair>
             <input id="yieldQuantity" required type="number" min="0" step="any"
               value={yieldQuantity ?? ""} onChange={(e) => setYieldQuantity(e.target.value ? Number(e.target.value) : undefined)} />
             <select aria-label="Yield unit" value={yieldUnit} disabled={lockYieldUnit}
@@ -193,16 +230,6 @@ export function BatchRecipeForm({
           {lockYieldUnit && <p>Unit is locked because dishes already use this batch.</p>}
         </div>
         <div>
-          <label htmlFor="sellingPrice">
-            Menu price per portion <span>(฿, optional)</span>
-          </label>
-          <input id="sellingPrice" type="number" min="0" step="any"
-            value={sellingPrice ?? ""} onChange={(e) => setSellingPrice(e.target.value ? Number(e.target.value) : undefined)} />
-          {sellingPrice && perPortion !== null && (
-            <p>GP {(((sellingPrice - perPortion) / sellingPrice) * 100).toFixed(0)}% at this cost</p>
-          )}
-        </div>
-        <div>
           <label htmlFor="portionSize">
             Portion size <span>(g or ml, optional)</span>
           </label>
@@ -212,12 +239,20 @@ export function BatchRecipeForm({
             <p>Lets us work out how many portions the batch makes.</p>
           )}
         </div>
+        <div>
+          <label htmlFor="sellingPrice">
+            Menu price per portion <span>(฿, optional)</span>
+          </label>
+          <input id="sellingPrice" type="number" min="0" step="any"
+            value={sellingPrice ?? ""} onChange={(e) => setSellingPrice(e.target.value ? Number(e.target.value) : undefined)} />
+          {sellingPrice && perPortion !== null && (
+            <p>GP {(((sellingPrice - perPortion) / sellingPrice) * 100).toFixed(0)}% at this cost</p>
+          )}
+        </div>
       </section>
 
       <section>
         <h2>Ingredients in this batch</h2>
-        <IngredientPicker suppliers={suppliers} categories={categories} onSelect={addIngredient} />
-        {lines.length === 0 && <p>Pick ingredients above, then enter the quantity used for the whole batch.</p>}
         <div aria-live="polite">
           {notice && <p>{notice}</p>}
           {formError && (
@@ -226,7 +261,7 @@ export function BatchRecipeForm({
             </p>
           )}
         </div>
-        <ul>
+        <ul data-lines>
           {lines.map((line, index) => {
             const unitOptions = ALL_UNITS.filter((u) => unitFamily(u) === unitFamily(line.pricing.purchaseUnit));
             const estimateNote = estimateOverrides && line.ingredientId in estimateOverrides ? estimateOverrides[line.ingredientId] : line.estimateNote;
@@ -262,35 +297,11 @@ export function BatchRecipeForm({
             );
           })}
         </ul>
-      </section>
-
-      <section>
-        {costError ? (
-          <p>A line uses a unit that doesn&apos;t match its ingredient. Fix its unit before saving.</p>
-        ) : (
-          <dl>
-            <div>
-              <dt>Batch cost</dt>
-              <dd>{formatTHB(cost)}</dd>
-            </div>
-            <div>
-              <dt>Cost {perUnitLabel}</dt>
-              <dd>{perUnit !== null ? formatTHB(perUnit) : "Set the yield"}</dd>
-            </div>
-            {portions !== null && yieldUnit !== "EACH" && (
-              <>
-                <div>
-                  <dt>Portions</dt>
-                  <dd>{Math.floor(portions * 10) / 10}</dd>
-                </div>
-                <div>
-                  <dt>Cost per portion</dt>
-                  <dd>{perPortion !== null ? formatTHB(perPortion) : "n/a"}</dd>
-                </div>
-              </>
-            )}
-          </dl>
-        )}
+        {lines.length === 0 && <p>Pick ingredients below, then enter the quantity used for the whole batch.</p>}
+        <button type="button" data-add aria-expanded={pickerOpen} onClick={() => setPickerOpen((o) => !o)}>
+          {pickerOpen ? "Close ingredient list" : "+ Add ingredient"}
+        </button>
+        {pickerOpen && <IngredientPicker suppliers={suppliers} categories={categories} onSelect={addIngredient} />}
       </section>
 
       <section>
@@ -302,9 +313,11 @@ export function BatchRecipeForm({
         </div>
       </section>
 
-      <button type="submit" disabled={submitting || costError}>
-        {submitting ? "Saving…" : "Save batch recipe"}
-      </button>
+      <div data-save-bar>
+        <button type="submit" disabled={submitting || costError}>
+          {submitting ? "Saving…" : "Save batch recipe"}
+        </button>
+      </div>
     </form>
   );
 }

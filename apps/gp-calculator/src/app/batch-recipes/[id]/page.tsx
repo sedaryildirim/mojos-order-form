@@ -131,7 +131,7 @@ export default function EditBatchRecipePage() {
   const flagged = batch.lines.filter((l) => (l.ingredientId in overrides ? overrides[l.ingredientId] : l.estimateNote));
 
   return (
-    <main>
+    <main data-batch-page>
       <PageTitle title={batch.name} />
       <h1>{batch.name}</h1>
       <p>
@@ -153,17 +153,13 @@ export default function EditBatchRecipePage() {
           </p>
         </div>
       )}
-      {gpHistory.length > 0 && <GpHistoryChart points={gpHistory} />}
-      <BatchScaler
-        lines={batch.lines.map((l) => ({ name: l.ingredient.name, quantity: Number(l.quantity), unit: l.unit }))}
-        portions={batchPortions(Number(batch.yieldQuantity), batch.yieldUnit, batch.portionSize === null ? null : Number(batch.portionSize))}
-      />
       <div>
         <BatchRecipeForm
           suppliers={suppliers}
           categories={categories}
           lockYieldUnit={false}
           estimateOverrides={overrides}
+          chart={gpHistory.length > 0 ? <GpHistoryChart points={gpHistory} /> : undefined}
           initial={{
             name: batch.name,
             category: batch.category,
@@ -188,6 +184,10 @@ export default function EditBatchRecipePage() {
           }}
           onSubmit={handleSubmit}
           submitting={submitting}
+        />
+        <BatchScaler
+          lines={batch.lines.map((l) => ({ name: l.ingredient.name, quantity: Number(l.quantity), unit: l.unit }))}
+          portions={batchPortions(Number(batch.yieldQuantity), batch.yieldUnit, batch.portionSize === null ? null : Number(batch.portionSize))}
         />
         <ConfirmButton
           label="Delete this batch recipe"

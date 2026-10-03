@@ -74,6 +74,7 @@ model Dish {
   id        String        @id @default(cuid())
   name      String
   category  String
+  badge     String?
   createdAt DateTime      @default(now())
   createdBy String
   versions  DishVersion[]
@@ -118,6 +119,7 @@ model BatchRecipe {
   id                 String            @id @default(cuid())
   name               String
   category           String
+  badge              String?
   yieldQuantity      Decimal           @db.Decimal(10, 2)
   yieldUnit          PurchaseUnit
   portionSize        Decimal?          @db.Decimal(10, 2)

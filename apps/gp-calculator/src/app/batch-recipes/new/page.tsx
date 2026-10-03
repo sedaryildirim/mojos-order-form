@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { BatchRecipeForm, BatchRecipePayload } from "@/components/batch/BatchRecipeForm";
 import { setFlash } from "@/lib/client/flash";
 import { safeFetch } from "@/lib/client/api";
+import { PageTitle } from "@/components/layout/PageTitle";
 
 export default function NewBatchRecipePage() {
   const router = useRouter();
@@ -40,7 +41,8 @@ export default function NewBatchRecipePage() {
   }
 
   return (
-    <main>
+    <main data-batch-page>
+      <PageTitle title="New batch recipe" />
       <h1>New batch recipe</h1>
       {error && <p role="alert">{error}</p>}
       <div>

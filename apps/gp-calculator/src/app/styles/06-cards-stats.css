@@ -126,21 +126,20 @@ div[role="status"] > div[aria-hidden="true"] > div {
   main, article { padding: var(--space-5) var(--space-4) 64px; }
   nav[aria-label="Main"] > div { padding: var(--space-2) var(--space-4); }
   th, td { padding: var(--space-2) var(--space-3); }
-  /* small screens: wide tables scroll sideways inside their card, and the top bar links stay on one row */
+  /* small screens: wide tables scroll sideways inside their card, and the top bar tabs wrap so every one is visible */
   div:has(> table) { overflow-x: auto; }
   th { top: 0; white-space: nowrap; }
   td[data-num] { white-space: nowrap; }
   table { min-width: 620px; }
   td { max-width: 16rem; }
   nav[aria-label="Main"] > div { gap: var(--space-2) var(--space-2); }
+  nav[aria-label="Main"] { position: relative; }
   nav[aria-label="Main"] a[data-home] { padding: 0 10px; font-size: 13px; }
   nav[aria-label="Main"] button { padding: 0 12px; min-height: 40px; }
   nav[aria-label="Main"] > div > div:first-of-type {
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     flex-basis: 100%;
     order: 3;
-    overflow-x: auto;
-    scrollbar-width: none;
   }
   nav[aria-label="Main"] > div > div:first-of-type a { white-space: nowrap; }
   nav[aria-label="Main"] > div > div:last-of-type { margin-left: auto; }
@@ -157,3 +156,35 @@ div[role="status"] > div[aria-hidden="true"] > div {
   div:has(> table), dl > div { box-shadow: none; }
 }
 
+
+/* Small neutral badge beside a dish name (e.g. "Unchanged recipe"). A <data> element, not a <span>:
+   the global td > span rule would turn it into a red pill. */
+data[data-badge] {
+  display: inline-block;
+  padding: 1px var(--space-2);
+  border-radius: 999px;
+  border: 1px solid var(--accent-line);
+  background: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--foreground);
+  white-space: nowrap;
+}
+/* The badge floats to the right of the name cell so badges line up down the column. */
+td > a ~ data[data-badge] { float: right; margin-left: var(--space-2); }
+/* Badge colours by meaning, from the theme tokens so both themes work. */
+data[data-badge="Recipe updated"] { color: var(--success); background: var(--success-bg); border-color: var(--success); }
+data[data-badge="Unchanged recipe"] { color: var(--accent-ink); background: var(--accent-tint); border-color: var(--accent-line); }
+/* In a card header that stacks its children, the badge keeps its own width instead of stretching. */
+a:has(h3) data[data-badge] { align-self: flex-start; margin-top: var(--space-2); }
+td > data[data-badge] { white-space: nowrap; }
+/* Tables with badges are wider than most: tighter cell padding, a name column that fits name + pill + badge on one line, and no wrapping in the cells beside it. */
+table:has(data[data-badge]) :is(th, td) { padding-inline: var(--space-3); }
+td:has(> data[data-badge]) { min-width: 30rem; }
+td:has(> data[data-badge]) ~ td { white-space: nowrap; }
+/* "Needs attention" badge: same red as the other warnings. */
+data[data-badge$="weight missing"] { color: var(--danger); background: var(--danger-bg); border-color: var(--danger); }
+/* "New dish": amber, so it stands apart from the green, blue and red badges. Own values per theme (no amber token). */
+data[data-badge="New dish"] { color: #FBBF24; background: #2A2008; border-color: #FBBF24; }
+:root[data-theme="light"] data[data-badge="New dish"] { color: #B45309; background: #FFFBEB; border-color: #B45309; }

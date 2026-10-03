@@ -1346,7 +1346,7 @@ a.launch-card { text-decoration: none; }
 .send-again[open] > summary { color: var(--inverse-fg); }
 .send-again .btn { width: 100%; max-width: none; margin-top: var(--space-2); }
 
-.how-to .btn-link { display: block; margin: var(--space-1) 0 0; padding: 0; min-height: 44px; text-align: left; color: var(--accent-ink); }
+.how-to .btn-link { min-width: 44px; display: block; margin: var(--space-1) 0 0; padding: 0; min-height: 44px; text-align: left; color: var(--accent-ink); }
 
 /* Launcher hierarchy: Ordering is the daily tool, the calculator is secondary */
 .launch-card.is-primary { padding: var(--space-5) 72px var(--space-5) var(--space-5); border-color: var(--accent); box-shadow: var(--shadow-xl); }

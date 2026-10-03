@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { IngredientForm, IngredientFormValues } from "@/components/ingredients/IngredientForm";
 import { setFlash } from "@/lib/client/flash";
 import { safeFetch, apiError } from "@/lib/client/api";
+import { PageTitle } from "@/components/layout/PageTitle";
 
 export default function NewIngredientPage() {
   const router = useRouter();
@@ -33,6 +34,7 @@ export default function NewIngredientPage() {
 
   return (
     <main>
+      <PageTitle title="New ingredient" />
       <h1>New ingredient</h1>
       <div>
         {error && <p role="alert">{error}</p>}

@@ -49,7 +49,7 @@ export function IngredientPicker({
   const filtered = ingredients.filter((i) => i.name.toLowerCase().includes(search.toLowerCase()));
 
   return (
-    <div>
+    <div data-picker>
       <div>
         <div>
           <label htmlFor="picker-supplier">

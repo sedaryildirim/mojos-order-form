@@ -13,6 +13,7 @@ interface BatchRow {
   id: string;
   name: string;
   category: string;
+  badge: string | null;
   yieldQuantity: string;
   yieldUnit: "EACH" | "G" | "ML";
   totalCost: number | null;
@@ -148,6 +149,7 @@ function BatchCard({ batch }: { batch: BatchRow }) {
         {batch.isDraft && (
           <span>Needs ingredients</span>
         )}
+        {batch.badge && <data data-badge={batch.badge}>{batch.badge}</data>}
       </div>
       <p>{batch.category} · makes {yieldText}</p>
       {batch.attention.length > 0 && (
@@ -255,6 +257,7 @@ function BatchTable({ rows }: { rows: BatchRow[] }) {
                   <Link href={`/batch-recipes/${b.id}`}>
                     {b.name}
                   </Link>
+                  {b.badge && <data data-badge={b.badge}>{b.badge}</data>}
                   {b.isDraft && <span>Needs ingredients</span>}
                 </td>
                 <td>{b.category}</td>

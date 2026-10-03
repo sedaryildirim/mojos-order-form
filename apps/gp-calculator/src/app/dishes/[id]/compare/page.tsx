@@ -2,6 +2,7 @@ import { prisma } from "@/lib/db/prisma";
 import { diffVersionLines } from "@/lib/reports/diff";
 import { VersionCompare } from "@/components/dishes/VersionCompare";
 import { notFound } from "next/navigation";
+import { PageTitle } from "@/components/layout/PageTitle";
 
 type VersionProps = Parameters<typeof VersionCompare>[0]["oldVersion"];
 
@@ -32,6 +33,7 @@ export default async function ComparePage({
 
   return (
     <main>
+      <PageTitle title="Compare versions" />
       <h1>Compare versions</h1>
       <div>
         <VersionCompare oldVersion={oldVersion as unknown as VersionProps} newVersion={newVersion as unknown as VersionProps} diffs={diffs} />

@@ -31,22 +31,57 @@ function markTable(table: HTMLTableElement) {
   }
 }
 
+// A table that scrolls sideways has to be reachable with the keyboard, so give it a focus stop and a name.
+// It is removed again when the table fits (e.g. after the window is widened).
+function markScrollRegion(table: HTMLTableElement) {
+  const wrap = table.parentElement;
+  if (!wrap) return;
+  const overflowX = getComputedStyle(wrap).overflowX;
+  const scrolls = (overflowX === "auto" || overflowX === "scroll") && wrap.scrollWidth > wrap.clientWidth + 1;
+  if (scrolls) {
+    wrap.setAttribute("tabindex", "0");
+    wrap.setAttribute("role", "region");
+    if (!wrap.hasAttribute("aria-label")) wrap.setAttribute("aria-label", "Table, scrolls sideways");
+  } else if (wrap.getAttribute("aria-label") === "Table, scrolls sideways") {
+    wrap.removeAttribute("tabindex");
+    wrap.removeAttribute("role");
+    wrap.removeAttribute("aria-label");
+  }
+}
+
 export function TableAlign() {
   useEffect(() => {
     let queued = false;
     const run = () => {
       queued = false;
-      document.querySelectorAll("table").forEach(markTable);
+      document.querySelectorAll("table").forEach((t) => {
+        markTable(t);
+        markScrollRegion(t);
+      });
     };
     const schedule = () => {
       if (queued) return;
       queued = true;
       requestAnimationFrame(run);
     };
-    run();
-    const observer = new MutationObserver(schedule);
-    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
-    return () => observer.disconnect();
+    // The first pass waits until the browser is idle, so React has finished hydrating the page:
+    // editing table cells while it is still hydrating makes it warn about "extra attributes".
+    let observer: MutationObserver | undefined;
+    const start = () => {
+      run();
+      observer = new MutationObserver(schedule);
+      observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+    };
+    // Safari has no requestIdleCallback, so fall back to a short timer there
+    const hasIdle = typeof window.requestIdleCallback === "function";
+    const idle = hasIdle ? window.requestIdleCallback(start, { timeout: 400 }) : window.setTimeout(start, 200);
+    window.addEventListener("resize", schedule);
+    return () => {
+      if (hasIdle) window.cancelIdleCallback(idle);
+      else window.clearTimeout(idle);
+      window.removeEventListener("resize", schedule);
+      observer?.disconnect();
+    };
   }, []);
 
   return null;

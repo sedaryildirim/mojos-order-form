@@ -198,6 +198,7 @@ export function GpHistoryChart({ points, title = "GP history", target = TARGET_G
 
       <details>
         <summary>View data</summary>
+        <div>
         <table>
           <thead>
             <tr>
@@ -222,6 +223,7 @@ export function GpHistoryChart({ points, title = "GP history", target = TARGET_G
             ))}
           </tbody>
         </table>
+        </div>
       </details>
     </section>
   );

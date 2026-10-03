@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/db/prisma";
+import { PageTitle } from "@/components/layout/PageTitle";
 
 export const dynamic = "force-dynamic";
 
@@ -18,6 +19,7 @@ export default async function DishPage({ params }: { params: { id: string } }) {
       <Link href="/dishes">
         ← All dishes
       </Link>
+      <PageTitle title={dish.name} />
       <h1>{dish.name}</h1>
       <p>No recipe yet.</p>
       <Link href={`/dishes/${dish.id}/versions/new`}>

@@ -33,7 +33,7 @@ export default async function MenuSheetPage() {
         </div>
         <PrintButton />
       </div>
-      <h1>KAIF menu cost sheet</h1>
+      <h2>KAIF menu cost sheet</h2>
       <p>
         Cost, price and GP for every dish. Suggested price is for {TARGET_GP_PCT}% GP, rounded up to the next ฿5. Rows
         marked * use estimated prices, so their figures are approximate.
