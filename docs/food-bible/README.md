@@ -1,4 +1,6 @@
-# Kaif Food Bible import (done)
+# Kaif Food Bible import (done, then replaced)
+
+> **Replaced on 2026-10-03.** All 36 imported dishes and 17 batch recipes were cleared (backup: `apps/gp-calculator/backups/pre-menu-reset-20261003T203045.sql`) and the new menu was entered by hand from the owner's recipe sheets. The GP Calculator now holds **52 dishes, 30 batch recipes and 344 ingredients** (backup: `post-menu-rebuild-*.sql`). Nothing below drives the data any more; it is kept as a record of how the first import worked. Current state: see "Current placeholders" at the end.
 
 The recipe source is `kaif-food-bible.txt` (35 dishes and 17 batch recipes, 380 ingredient lines). **It is kept on the owner's machine only**: the
 repository is public, so the recipes (and the trial cost report) are git-ignored and never pushed. 
@@ -21,6 +23,23 @@ Imported on 2026-10-02. The one-time importer (parser, phrase map and `npm run i
 These have no price anywhere yet, so they cost 0 and their dishes show "guessed prices": Baking Powder, Baking Soda, Caesar Dressing,
 Chicken Schnitzel, Coffee, Cold Milk, Croutons, Date Sauce, Emulsifier, Lady Fingers, Raisins, Starter. The other flagged estimates
 (Hollandaise, Hummus, Falafel and so on) start at the guessed prices from the old data. Edit each one on the Ingredients page.
+
+## Current placeholders (2026-10-03)
+
+The new recipes use ingredients that are not on the Kaif order sheet. They sit under the supplier "Placeholder / Estimated" and mark every dish and batch that uses them as "guessed prices".
+
+**Priced at 0 (real price not known yet):** Sourdough Bread (in 9 dish lines, the biggest gap), Water, Baking Powder, Baking Soda, Bay Leaves, Chickpeas, Croutons, Raisins, Soy Sauce, Balsamic Vinegar, Brandy, Burger Bun, Coffee, Cold Milk, Date Sauce, Emulsifier, Ice, Lady Fingers, Miso, Nutmeg, Pickled Lemon, Potato Starch, Starter. (Caesar Dressing and Chicken Schnitzel are also 0 but no recipe uses them now.)
+
+**Carrying an estimate:** Bacon, Harissa, Curry Dip, Egyptian Hot Sauce, House Fries, Israeli Salad, Garlic Mayo, Burger Sauce, Caramelised Onion, Double Swiss Cheese, Pickled Cucumber, Cinnamon Powder, Cocoa Powder, Falafel, Nut Seed Mix, Sumac, Chia Seeds, Coleslaw, Fried Chicken, Gochujang Sauce, Homemade Jam, House Granola, Protein Powder, Regency, White Chocolate. **Dark Chocolate** (฿228 per kg) is an estimate worked back from the cost of the old Chocolate Chilli Ball, Bounty Bar and Chocolate Tartufo recipes, which it reproduces exactly.
+
+Set each real price on the Ingredients page. Every dish and batch that uses it recosts and gets a new version.
+
+## Conventions used when the new recipes were entered
+
+- Recipes written in grams for a liquid (cream, oil, vinegar, yoghurt) are entered in millilitres, 1 g = 1 ml. Teaspoons and tablespoons are converted to grams, and "1 pc" of something priced by weight (a banana, a rosti) to an estimated weight; these estimates are written in the recipe's notes.
+- A batch's yield is the total weight of its ingredients unless the owner gave one (desserts and sweets: portions x portion size). Each batch's notes say which.
+- Batch recipes that an old import had already published as an ingredient were **linked** to that ingredient, so no second ingredient with the same name was created.
+- Dishes that are one portion of a batch (cakes, sweets, desserts) are described in `apps/gp-calculator/README.md`.
 
 ## Related
 

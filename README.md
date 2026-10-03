@@ -13,7 +13,9 @@ The launcher menu has a card for each tool. The GP Calculator has an "All tools"
 
 - **Costs every dish and batch recipe** from ingredient prices. GP is `(menu price - cost) / menu price` (no VAT adjustment); the target is 75%.
 - **Ingredients come from the Kaif order sheet** (Makro Kaif, Wine Pro, Phangan Green Vegetables, La Bottega, Fruit Shop), refreshed with one button. Items the order sheet does not list (house-made sauces, baking basics) are **flagged estimates** with a guessed price until you enter a real one.
-- **Every price change creates a new "Updated" version** of each dish that uses it, so history is kept. A **GP history chart** at the bottom of a dish page, and on a batch recipe page, shows the last 6 updates.
+- **Every price change creates a new "Updated" version** of each dish that uses it, so history is kept. A **GP history chart** at the bottom of a dish page, and at the top of a batch recipe page, shows the last 6 updates.
+- **Badges** on dishes and batch recipes show where a recipe stands: *Recipe updated*, *Unchanged recipe*, *New dish*, or a red "... missing" note when a recipe is waiting for a weight or portion size.
+- **Cakes, sweets and desserts** are dishes made of one portion of a batch recipe, so their cost follows the batch.
 - **Exports:** PDF (amounts written as `THB 81.80`, since the PDF font has no baht symbol), Excel, and a public share link.
 
 ## Repository map
@@ -25,7 +27,7 @@ apps/
 docs/
   architecture.md         How the two apps fit together and link to each other
   deployment.md           Hosting each app, and the settings that link them
-  food-bible/             Notes on the one-time recipe import (the recipes themselves are not in git)
+  food-bible/             Notes on the one-time recipe import (replaced by hand-entered recipes on 2026-10-03) and the list of placeholder prices
   archive/                Historical specs and plans (original GP build, master folder, order-sheet sync)
 scripts/
   setup.sh, stop.sh       One-time setup; stop the local servers
@@ -77,14 +79,14 @@ Run these in `apps/gp-calculator` (they need `DATABASE_URL`; load it from `.env.
 | `npm run sync:order-sheet [-- --apply] [-- --file <path>]` | Pull the Kaif order sheet into the ingredient list (see above) |
 | `npm run backup` | JSON backup of every table into `backups/` (use `pg_dump` for a restorable copy) |
 
-Take a `pg_dump` before anything that writes in bulk, and confirm it restores into a scratch database.
+Take a `pg_dump` before anything that writes in bulk, and confirm it restores into a scratch database. The newest full dump of the rebuilt menu is `apps/gp-calculator/backups/post-menu-rebuild-*.sql`.
 
 ## Keeping this public repository clean
 
 The GitHub repository is **public**. Never commit:
 
 - **Recipes, dish costs, menu prices or cost reports.** The Food Bible text (`docs/food-bible/kaif-food-bible.txt`) and `docs/archive/superpowers/plans/*-sync-trial-report.md` are git-ignored local files; the tests use an invented sample.
-- **Backups and database dumps** (`apps/gp-calculator/backups/`) or **`.env` files**: both are git-ignored.
+- **Backups and database dumps** (`apps/gp-calculator/backups/`) or **`.env` files**: both are git-ignored. This includes everything entered in the GP Calculator (dishes, recipes, menu prices, badges): it lives only in the local database, so keep a `pg_dump` copy somewhere safe (see the GP README, "Commands").
 - **Passwords or database logins.**
 
 Before every push, read `git diff origin/master..HEAD`. Pushing `master` redeploys the live ordering form only when something under `apps/web` changed.
@@ -96,7 +98,8 @@ Before every push, read `git diff origin/master..HEAD`. Pushing `master` redeplo
 | Change a branch email or which suppliers a branch sees | `apps/web/config/config.js` |
 | Change items, prices or par levels on the order sheets | `apps/web/config/data.js`, then sync |
 | Give a new item a pack size the GP cannot read from its name | `apps/gp-calculator/src/data/order-sheet-packs.json` |
-| Set the real price of a flagged estimate (Hollandaise, Hummus...) | **Ingredients** page in the GP Calculator |
+| Set the real price of a flagged estimate (Sourdough Bread, Brioche Bun, Dark Chocolate...) | **Ingredients** page in the GP Calculator (list: `docs/food-bible/README.md`) |
+| Change a dish or batch badge | The database for now (see the GP README, "Badges"); a new badge text also needs a colour rule in `apps/gp-calculator/src/app/styles/06-cards-stats.css` |
 | Change where the two apps link to each other | see [docs/architecture.md](docs/architecture.md#how-they-link) |
 | Change colours, fonts or spacing | `apps/web/css/styles.css` and `apps/gp-calculator/src/app/styles/` (tokens at the top of `01-base.css`) |
 | Change the GP password | `GP_PASSWORD` (and `GP_SESSION_SECRET`) in `apps/gp-calculator/.env` |
@@ -107,3 +110,4 @@ Before every push, read `git diff origin/master..HEAD`. Pushing `master` redeplo
 - **Config before code:** anything the owner edits lives in a `config/` folder or an `.env` file, not in the app logic.
 - **One folder per concern:** web code is split into `ordering/` (form logic) and `shell/` (menu, effects); GP code is grouped by feature (`components/dishes`, `lib/costing`, `lib/sync`, ...).
 - **Dry run first:** anything that changes data in bulk previews before it applies.
+- **Phones:** every tap target is 44px on touch screens; the batch recipe screen is one 760px column and the Save bar stays pinned. Checked in Chrome at 390px and 1280px, with no accessibility violations (axe).
