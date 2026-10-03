@@ -183,8 +183,8 @@ td > data[data-badge] { white-space: nowrap; }
 table:has(data[data-badge]) :is(th, td) { padding-inline: var(--space-3); }
 td:has(> data[data-badge]) { min-width: 30rem; }
 td:has(> data[data-badge]) ~ td { white-space: nowrap; }
-/* "Needs attention" badge: same red as the other warnings. */
-data[data-badge$="weight missing"] { color: var(--danger); background: var(--danger-bg); border-color: var(--danger); }
+/* "Needs attention" badges ("... weight missing", "... size missing"): same red as the other warnings. */
+data[data-badge$="weight missing"], data[data-badge$="size missing"] { color: var(--danger); background: var(--danger-bg); border-color: var(--danger); }
 /* "New dish": amber, so it stands apart from the green, blue and red badges. Own values per theme (no amber token). */
 data[data-badge="New dish"] { color: #FBBF24; background: #2A2008; border-color: #FBBF24; }
 :root[data-theme="light"] data[data-badge="New dish"] { color: #B45309; background: #FFFBEB; border-color: #B45309; }
