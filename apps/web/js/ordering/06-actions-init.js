@@ -20,9 +20,11 @@ function emailOrder() {
     tooLong ? "Check your email" : "Email ready to send",
     tooLong
       ? "This order is long, so your mail app may have cut it off. Check the email before sending, or share the Excel file or copy the order instead."
-      : "Your mail app has opened with the order. Tap Send there. If you did not send it, restore your order below."
+      : "Your mail app should have opened with the order. Tap Send there. If nothing opened, or you did not send it, use Send again below or restore your order."
   ), 400);
 }
+
+const COPY_FAILED = "Couldn't copy. Use Share Excel or Email instead.";
 
 function copyOrderFromReview() {
   const body = buildOrderText();
@@ -33,14 +35,16 @@ function copyOrderFromReview() {
       "Order copied",
       "The order has been copied to your clipboard. Paste it into WhatsApp, Line, email, or wherever you send orders."
     );
-  });
+  }, () => showGlobalToast(COPY_FAILED));
 }
 
-function copyTextToClipboard(text, onDone) {
+// onDone runs only when the text really reached the clipboard; onFail runs otherwise.
+function copyTextToClipboard(text, onDone, onFail) {
+  const fail = onFail || (() => {});
   if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(onDone).catch(() => fallbackCopy(text, onDone));
+    navigator.clipboard.writeText(text).then(onDone).catch(() => fallbackCopy(text, onDone, fail));
   } else {
-    fallbackCopy(text, onDone);
+    fallbackCopy(text, onDone, fail);
   }
 }
 
@@ -55,10 +59,13 @@ function copyOrderText() {
       btn.classList.remove("copied");
     }, 2000);
   };
-  copyTextToClipboard(lastOrderText, done);
+  // Build the text now: lastOrderText is empty (or another supplier's) after an Excel/PDF send.
+  const body = buildOrderText();
+  lastOrderText = body;
+  copyTextToClipboard(body, done, () => showGlobalToast(COPY_FAILED));
 }
 
-function fallbackCopy(text, onDone) {
+function fallbackCopy(text, onDone, onFail) {
   const textarea = document.createElement("textarea");
   textarea.value = text;
   textarea.style.position = "fixed";
@@ -66,9 +73,10 @@ function fallbackCopy(text, onDone) {
   document.body.appendChild(textarea);
   textarea.focus();
   textarea.select();
-  try { document.execCommand("copy"); } catch (e) { /* ignore */ }
+  let ok = false;
+  try { ok = document.execCommand("copy"); } catch (e) { /* ok stays false */ }
   document.body.removeChild(textarea);
-  onDone();
+  if (ok) onDone(); else onFail();
 }
 
 function resetOrder() {

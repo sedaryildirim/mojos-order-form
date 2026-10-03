@@ -168,17 +168,22 @@ async function sendFile(kind) {
     showGlobalToast(`${label} isn't available right now. Use Email or Copy instead.`);
     return;
   }
+  // The guard covers only building the file. The share sheet can stay open (or never answer) on
+  // some phones and in-app browsers, and must not leave the buttons dead until a reload.
   fileBusy = true;
-  const buttons = $all(".file-btn");
-  buttons.forEach(b => { b.disabled = true; });
+  let file;
   try {
-    const file = kind === "pdf" ? buildOrderPdf() : buildOrderExcel();
-    await shareOrDownload(file.blob, file.filename, label, kind);
+    file = kind === "pdf" ? buildOrderPdf() : buildOrderExcel();
   } catch (e) {
     showGlobalToast(`Couldn't create the ${label} file. Use Email or Copy instead.`);
+    return;
   } finally {
     fileBusy = false;
-    buttons.forEach(b => { b.disabled = false; });
+  }
+  try {
+    await shareOrDownload(file.blob, file.filename, label, kind);
+  } catch (e) {
+    showGlobalToast(`Couldn't send the ${label} file. Use Email or Copy instead.`);
   }
 }
 
@@ -207,6 +212,7 @@ async function shareOrDownload(blob, filename, label, via) {
       }
     } catch (e) {
       if (e && e.name === "AbortError") return; // user cancelled the share sheet, do nothing
+      if (e && e.name === "InvalidStateError") return; // a share sheet is already open
       // any other failure: fall through to the plain download below
     }
   }
@@ -220,7 +226,7 @@ async function shareOrDownload(blob, filename, label, via) {
   document.body.removeChild(a);
   setTimeout(() => URL.revokeObjectURL(url), 1000);
   clearSentDraft(via);
-  showConfirmScreen("Order downloaded", `The ${label} file has been saved to your device.`);
+  showConfirmScreen("Order downloaded", `The ${label} file should now be in your downloads. If you can't find it, use Send again below to email or copy the order instead.`);
 }
 
 // The PDF goes straight to the supplier, so it lists what to deliver and nothing about money:
